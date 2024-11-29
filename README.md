@@ -1,21 +1,46 @@
-# Lumen PHP Framework
+### Instalation
+```
+git clone: https://github.com/M-Hidayatullah/base-admin-laravel-10-skydash.git
+```
 
-[![Build Status](https://travis-ci.org/laravel/lumen-framework.svg)](https://travis-ci.org/laravel/lumen-framework)
-[![Total Downloads](https://poser.pugx.org/laravel/lumen-framework/d/total.svg)](https://packagist.org/packages/laravel/lumen-framework)
-[![Latest Stable Version](https://poser.pugx.org/laravel/lumen-framework/v/stable.svg)](https://packagist.org/packages/laravel/lumen-framework)
-[![Latest Unstable Version](https://poser.pugx.org/laravel/lumen-framework/v/unstable.svg)](https://packagist.org/packages/laravel/lumen-framework)
-[![License](https://poser.pugx.org/laravel/lumen-framework/license.svg)](https://packagist.org/packages/laravel/lumen-framework)
+### composer install
+```
+composer install
+```
 
-Laravel Lumen is a stunningly fast PHP micro-framework for building web applications with expressive, elegant syntax. We believe development must be an enjoyable, creative experience to be truly fulfilling. Lumen attempts to take the pain out of development by easing common tasks used in the majority of web projects, such as routing, database abstraction, queueing, and caching.
+### copy .env
+```
+cp .env.example
+```
 
-## Official Documentation
+### generate keys
+```
+php artisan key:generate
+```
 
-Documentation for the framework can be found on the [Lumen website](http://lumen.laravel.com/docs).
+### run projects
+```
+php artisan serve
+```
 
-## Security Vulnerabilities
+**Preview dashboard**
+![dashboard](image.png)
 
-If you discover a security vulnerability within Lumen, please send an e-mail to Taylor Otwell at taylor@laravel.com. All security vulnerabilities will be promptly addressed.
+# Punya saran, ide, atau pertanyaan?
 
-## License
+Kirimkan dengan [membuka issue baru](https://github.com/M-Hidayatullah/base-admin-laravel-10-skydash/issues/new)
 
-The Lumen framework is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT)
+#
+### Trakteer Coffe, Untuk mendukung developers dalam pengembangan:
+<p align="center">
+<br>
+<a href="https://trakteer.id/m_hidayatullah2/link" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" height="45" width="170" alt="mhidayatullah" /></a>
+</p>
+
+Credit: [M-Hidayatullah](https://github.com/M-Hidayatullah)
+
+Last Edited on: 17/02/2024
+<p align="center">
+Menyala Abangku 🔥🔥🔥
+</p>
+<a href="https://www.youtube.com/channel/UCtCEqyh342MswIXhsF_y76Q"><img src="https://user-images.githubusercontent.com/73097560/115834477-dbab4500-a447-11eb-908a-139a6edaec5c.gif"></a>
