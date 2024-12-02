@@ -1,10 +1,12 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
 <head>
   <!-- Required meta tags -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <!-- CSRF Token -->
+  <meta name="csrf-token" content="{{ csrf_token() }}">
   <title>Login - Page</title>
   <!-- plugins:css -->
   <link rel="stylesheet" href="{{ asset('assets/vendors/feather/feather.css') }}">
@@ -31,17 +33,19 @@
               </div>
               <h4>Hello! let's get started</h4>
               <h6 class="font-weight-light">Sign in to continue.</h6>
-              <form class="pt-3">
+              <form class="pt-3" action="{{ url('/login') }}" method="POST">
+                @csrf
                 <div class="form-group">
-                  <input type="email" class="form-control form-control-lg" id="exampleInputEmail1" placeholder="Username">
+                  <input type="text" class="form-control form-control-lg" name="userid" placeholder="User ID">
                 </div>
                 <div class="form-group">
-                  <input type="password" class="form-control form-control-lg" id="exampleInputPassword1" placeholder="Password">
+                  <input type="password" class="form-control form-control-lg" name="password" placeholder="Password">
                 </div>
                 <div class="mt-3">
-                  <a class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn" href="../../index.html">SIGN IN</a>
+                  {{-- <a class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn" href="../../index.html">SIGN IN</a> --}}
+                  <button type="submit" class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn">SIGN IN</button>
                 </div>
-                <div class="my-2 d-flex justify-content-between align-items-center">
+                {{-- <div class="my-2 d-flex justify-content-between align-items-center">
                   <div class="form-check">
                     <label class="form-check-label text-muted">
                       <input type="checkbox" class="form-check-input">
@@ -49,15 +53,15 @@
                     </label>
                   </div>
                   <a href="#" class="auth-link text-black">Forgot password?</a>
-                </div>
+                </div> --}}
                 {{-- <div class="mb-2">
                   <button type="button" class="btn btn-block btn-facebook auth-form-btn">
                     <i class="ti-facebook mr-2"></i>Connect using facebook
                   </button>
                 </div> --}}
-                <div class="text-center mt-4 font-weight-light">
+                {{-- <div class="text-center mt-4 font-weight-light">
                   Don't have an account? <a href="/register" class="text-primary">Create</a>
-                </div>
+                </div> --}}
               </form>
             </div>
           </div>

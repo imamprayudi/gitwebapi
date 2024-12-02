@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\LoginController;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,9 +14,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('pages.user-pages.login.index');
-});
+Route::get('/', [LoginController::class, 'index'])->name('login');
+
+Route::post('/login', [LoginController::class, 'login']);
 
 Route::get('/dashboard', function () {
     return view('dashboard.index');
@@ -49,9 +50,6 @@ Route::get('/icons', function () {
     return view('pages.icons.index');
 });
 
-Route::get('/login', function () {
-    return view('pages.user-pages.login.index');
-});
 
 Route::get('/register', function () {
     return view('pages.user-pages.register.index');
