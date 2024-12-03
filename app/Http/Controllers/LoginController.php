@@ -28,34 +28,35 @@ class LoginController extends Controller
         // return env('EXTERNAL_API_URL');
                 
         $response = Http::post(env('EXTERNAL_API_URL') . '/login.php',$request->toArray());
-
+        
         // $response = Http::get('https://api.example.com/data');
-
         if ($response->successful()) {
             // Permintaan berhasil
             $data = $response->json();
             // dd($data);
             $this->createSession($data);
-            return view('dashboard.index');
+            return redirect('/dashboard');
             // dd($data); // Debug data
         } elseif ($response->failed()) {
             // Permintaan gagal
             $status = $response->status();
-            dd("Request failed with status: $status");
+            // dd("Request failed with status: $status");
+            return redirect('/',$status);
         } else {
             // Tambahan jika ada kondisi lain
-            dd('Unexpected response');
+            // dd('Unexpected response');
+            return redirect('/');
         }
 
-        if($data->success)
-        {
-            return response()->json([
-            'access_token' => $token->accessToken,
-            'token_type' => 'Bearer',
-            'expires_at' => Carbon::parse($tokenResult->expires_at)->toDateTimeString(),
-            'user' => $user->load(['mother.children', 'role', 'staff'])
-        ]);
-        }
+        // if($data->success)
+        // {
+        //     return response()->json([
+        //     'access_token' => $token->accessToken,
+        //     'token_type' => 'Bearer',
+        //     'expires_at' => Carbon::parse($tokenResult->expires_at)->toDateTimeString(),
+        //     'user' => $user->load(['mother.children', 'role', 'staff'])
+        // ]);
+        // }
         // if (!Auth::attempt($credentials)) {
         //     return response()->json(['message' => 'Unauthorized'], 401);
         // }
