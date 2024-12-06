@@ -20,41 +20,6 @@
         </div>
       </div>
       <div class="row">
-        <?php
-
-        //       echo '<br />';
-        //       echo '<img src="../assets/gambar/jvc.gif" alt="JVC KENWOOD CORPORATION" 
-        // style="float:left;width:220px;height:35px;">';
-        //       echo 'PT.JVCKENWOOD ELECTRONICS INDONESIA - PURCHASE ORDER CHANGE<br />';
-        //       echo '*** The Purchase Order CHANGE consider accepted if there is no reply within 5 days ***';
-        //       echo '<hr><br /><br />';
-        //       echo '<form method="post" action="jgetpoc.php" name="jfForm">';
-        //       echo 'Supplier : ';
-        //       echo '<select name="supp" id="idsupp">';
-        //       while (!$rs->EOF) {
-        //         echo '<option value="' . $rs->fields[1] . '">' . $rs->fields[2] . ' - ' . $rs->fields[1] . '</option>';
-        //         $rs->MoveNext();
-        //       }
-        // echo '</select>';
-        // echo '<br /><br />';
-        // echo 'DATE BETWEEN <input type="text" id="idtgl1" name="tgl1" />';
-        // echo '&nbsp;&nbsp;';
-        // echo 'AND <input type="text" id="idtgl2" name="tgl2" />';
-        // echo '&nbsp;&nbsp;';
-        // echo '  Filtered : ';
-        // echo '<select name="pilih" id="idpilih">';
-        // echo '<option value="1">All</option>';
-        // echo '<option value="2">Unread</option>';
-        // echo '<option value="3">Read</option>';
-        // echo '<option value="4">Not Yet Confirmed</option>';
-        // echo '<option value="5">Confirmed</option>';
-        // echo '<option value="6">Reject</option>';
-        // echo '</select>';
-        // echo '<input type=submit value="Display">';
-        // echo '</form>';
-        // $rs->Close();
-        // $db->Close();
-        ?>
       </div>
       <div class="row">
         <div class="card recent-sales overflow-auto ml-3">
@@ -62,11 +27,6 @@
             <h5 class="card-title">FILTER</h5>
             <form class="row g-3 ml-3" name="submit_poc" method="get">
               <div class="col-md-6">
-                <!-- supplier: $("[name=supplier]").val(),
-                from_date: $("[name=from_date]").val(),
-                end_date: $("[name=end_date]").val(),
-                select_po: $("[name=select_po]").val(),
-                filter_by: $("[name=filter_by]").val() -->
                 <div class="col-md-12">
                   <label for="supplier" class="form-label">Supplier</label>
                   <select type="text" id="supplier" name="supplier" class="form-control"></select>
