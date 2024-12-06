@@ -1,7 +1,7 @@
 <nav class="sidebar sidebar-offcanvas" id="sidebar">
     <ul class="nav">
       <li class="nav-item">
-        <a class="nav-link" href="index.html">
+        <a class="nav-link" href="./dashboard">
           <i class="icon-grid menu-icon"></i>
           <span class="menu-title">Dashboard</span>
         </a>
@@ -9,18 +9,30 @@
       <li class="nav-item">
         <a class="nav-link" data-toggle="collapse" href="#ui-basic" aria-expanded="false" aria-controls="ui-basic">
           <i class="icon-layout menu-icon"></i>
-          <span class="menu-title">UI Elements</span>
+          <span class="menu-title">Orders</span>
           <i class="menu-arrow"></i>
         </a>
         <div class="collapse" id="ui-basic">
           <ul class="nav flex-column sub-menu">
-            <li class="nav-item"> <a class="nav-link" href="/buttons">Buttons</a></li>
-            <li class="nav-item"> <a class="nav-link" href="/dropdowns">Dropdowns</a></li>
-            <li class="nav-item"> <a class="nav-link" href="/typography">Typography</a></li>
+            <li class="nav-item"> <a class="nav-link" href="/po">PO</a></li>
+            <li class="nav-item"> <a class="nav-link" href="/poc">POC</a></li>
+            <li class="nav-item"> <a class="nav-link" href="/ordbal">Order Balance</a></li>
           </ul>
         </div>
       </li>
       <li class="nav-item">
+        <a class="nav-link" data-toggle="collapse" href="#form-elements" aria-expanded="false" aria-controls="form-elements">
+          <i class="icon-columns menu-icon"></i>
+          <span class="menu-title">Schedules</span>
+          <i class="menu-arrow"></i>
+        </a>
+        <div class="collapse" id="form-elements">
+          <ul class="nav flex-column sub-menu">
+            <li class="nav-item"><a class="nav-link" href="#">coming soon</a></li>
+          </ul>
+        </div>
+      </li>
+      {{-- <li class="nav-item">
         <a class="nav-link" data-toggle="collapse" href="#form-elements" aria-expanded="false" aria-controls="form-elements">
           <i class="icon-columns menu-icon"></i>
           <span class="menu-title">Form elements</span>
@@ -99,6 +111,6 @@
           <i class="icon-paper menu-icon"></i>
           <span class="menu-title">Author</span>
         </a>
-      </li>
+      </li> --}}
     </ul>
   </nav>

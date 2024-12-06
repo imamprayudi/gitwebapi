@@ -10,18 +10,26 @@ class DashboardController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
+        // dd($request->session());
+        // Mengirim request ke API dengan method getMonthlyPoc
         $getMonthlyPoc = Http::get(env('EXTERNAL_API_URL') . '/dashboard.php',
             [
-                'method' => 'getMonthlyPoc'
-            ]
-        );
+                'method' => 'getMonthlyPoc',
+                'usr' => $request->session()->get('usr'),
+            ]);
+        // $getMonthlyPoc = Http::get(env('EXTERNAL_API_URL') . '/dashboard.php',
+        //     [
+        //         'method' => 'getMonthlyPoc'
+        //     ]
+        // );
+        // dd($getMonthlyPoc);
         // Cek apakah status HTTP 200 (berhasil)
         if ($getMonthlyPoc->successful()) {
             // Mengambil data JSON jika berhasil
             $monthlyPOC = $getMonthlyPoc->json();
-            dd('success',$monthlyPOC);  // Debug respons
+            // dd($monthlyPOC);  // Debug respons
         } else {
             // Jika gagal, tampilkan error atau status
             dd('Request failed with status: ' . $getMonthlyPoc->status());

@@ -13,76 +13,628 @@
            <div class="justify-content-end d-flex">
             <div class="dropdown flex-md-grow-1 flex-xl-grow-0">
               <button class="btn btn-sm btn-light bg-white dropdown-toggle" type="button" id="dropdownMenuDate2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-               <i class="mdi mdi-calendar"></i> Today (10 Jan 2021)
+               <i class="mdi mdi-calendar"></i> {{ $monthlyPOC['monthly'] }}
               </button>
-              <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuDate2">
+              {{-- <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuDate2">
                 <a class="dropdown-item" href="#">January - March</a>
                 <a class="dropdown-item" href="#">March - June</a>
                 <a class="dropdown-item" href="#">June - August</a>
                 <a class="dropdown-item" href="#">August - November</a>
-              </div>
+              </div> --}}
             </div>
            </div>
           </div>
         </div>
       </div>
     </div>
+    {{-- <div class="row">
+      <div class="col-12">
+      <div class="row">
+        <div class="col-sm-6 col-md-4 col-lg-4 col-xl">
+          <div class="card info-card sales-card bg-secondary shadow load-holder">
+            <div class="card-body">
+              <div class="col-12">
+                <div class="row">
+                  <h5 class="card-title col-7 text-info text-start outset" name="monthly"></h5>
+                  <p style="font-size:14px" class=" card-title col-5 text-light text-end outset">TOTAL ISSUE</p>
+                </div>
+              </div>
+              <div class="col-12">
+                <div class="row">
+                  <h6 class="text-info col-xl-6 text-start"> PO </h6>
+                  <h6 class="text-light col-xl-6 text-end mr-3" id="total_po"> 0</h6>
+                </div>
+                <div class="row">
+                  <h6 class="text-info col-xl-6 text-start"> POC</h6>
+                  <h6 class="text-light col-xl-6 text-end mr-3" id="total_poc">0</h6>
+                </div>
+              </div>
+              <div class="d-flex align-items-center">
+              </div>
+            </div>
+          </div>
+          <div class="card info-card sales-card bg-secondary shadow placeholder-glow">
+            <div class="card-body">
+              <div class="col-12">
+                <div class="row">
+                  <div class="col-7 card-title outset">
+                    <h5 class="col-12 placeholder"></h5>
+                  </div>
+                  <div class="col-5 card-title outset">
+                    <p style="font-size:14px" class="text-light text-end">TOTAL ISSUE</p>
+                  </div>
+                </div>
+              </div>
+              <div class="col-12">
+                <div class="row">
+                  <div class="col-7">
+                    <h6 class="text-info text-start"> PO </h6>
+                  </div>
+                  <div class="col-5">
+                    <h6 class="placeholder col-12"></h6>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-5">
+                    <h6 class="text-info text-start"> POC</h6>
+                  </div>
+                  <div class="col-7">
+                    <h6 class="col-12 placeholder"></h6>
+                  </div>
+                </div>
+              </div>
+              <div class="d-flex align-items-center">
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <!-- End TOTAL ISSUE -->
+
+        <!-- UNREAD STATUS -->
+        <div class="col-sm-6 col-md-4 col-lg-4 col-xl">
+          <div class="card info-card customers-card bg-unread shadow load-holder">
+            <div class="card-body">
+              <div class="col-12">
+                <div class="row">
+                  <h5 class="card-title col-7 text-dark text-start outset" name="monthly"></h5>
+                  <p style="font-size:14px" class=" card-title col-5 text-secondary text-end outset ">UNREAD</p>
+                </div>
+              </div>
+              <div class="d-flex align-items-center">
+                <div class="ps-3 col-12">
+                  <div class="row">
+                    <h6 class="text-dark col-4 text-start"> PO </h6>
+                    <div class="btn-group col-4">
+                      <p style="font-size:12px" class="text-success  fw-bold  text-start " id="percentpo_unread"></p>
+                      <p style="font-size:12px" class="text-success  fw-bold  text-start ">%</p>
+                    </div>
+                    <h6 class="text-secondary col-4 text-end mr-3" id="total_po_unread">0 </h6>
+                  </div>
+                  <div class="row">
+                    <h6 class="text-dark col-4 text-start"> POC</h6>
+                    <div class="btn-group col-4">
+                      <p style="font-size:12px" class="text-success  fw-bold  text-end " id="percentpoc_unread"></p>
+                      <p style="font-size:12px" class="text-success  fw-bold  text-end ">%</p>
+                    </div>
+                    <h6 class="text-secondary col-4 text-end mr-3" id="total_poc_unread">0 </h6>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card info-card customers-card bg-unread shadow placeholder-glow">
+            <div class="card-body">
+              <div class="col-12">
+                <div class="row">
+                  <div class="col-7 card-title outset">
+                    <h5 class="col-12 placeholder"></h5>
+                  </div>
+                  <div class="col-5 card-title outset">
+                    <p style="font-size:14px" class="text-secondary text-end">UNREAD</p>
+                  </div>
+                </div>
+              </div>
+              <div class="d-flex align-items-center">
+                <div class="ps-3 col-12">
+                  <div class="row">
+                    <div class="col-4">
+                      <h6 class="text-dark text-start"> PO </h6>
+                    </div>
+                    <div class="col-4">
+                      <p class="col-12 placeholder"></p>
+                    </div>
+                    <div class="col-4">
+                      <h6 class="col-12 placeholder"></h6>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-5">
+                      <h6 class="text-dark text-start"> POC</h6>
+                    </div>
+                    <div class="col-3">
+                      <p class="col-12 placeholder"></p>
+                    </div>
+                    <!-- <div class="btn-group col-4">
+                    </div> -->
+                    <div class="col-4">
+                      <h6 class="col-12 placeholder"></h6>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div><!-- End Revenue Card -->
+
+        <!-- READ & UNCONFIRM-->
+        <div class="col-sm-6 col-md-4 col-lg-4 col-xl">
+          <div class="card info-card customers-card bg-unconfirm shadow load-holder">
+            <div class="card-body">
+              <div class="col-12">
+                <div class="row">
+                  <h5 class="card-title col-7 text-dark text-start outset" name="monthly"></h5>
+                  <p style="font-size:14px" class=" card-title col-5 text-dark text-end  outset">UNCONFIRM</p>
+                </div>
+              </div>
+              <div class="d-flex align-items-center">
+                <div class="ps-3 col-12">
+                  <div class="row">
+                    <h6 class="text-dark col-4 text-start"> PO </h6>
+                    <div class="btn-group col-4">
+                      <p style="font-size:12px" class="text-success  fw-bold  text-end " id="percentpo_unconfirm"></p>
+                      <p style="font-size:12px" class="text-success  fw-bold  text-end ">%</p>
+                    </div>
+                    <h6 class="text-secondary col-4 text-end mr-3" id="total_po_unconfirm">0</h6>
+                  </div>
+                  <div class="row">
+                    <h6 class="text-dark col-4 text-start"> POC</h6>
+                    <div class="btn-group col-4">
+                      <p style="font-size:12px" class="text-success  fw-bold  text-end " id="percentpoc_unconfirm"></p>
+                      <p style="font-size:12px" class="text-success  fw-bold  text-end ">%</p>
+                    </div>
+                    <h6 class="text-secondary col-4 text-end mr-3" id="total_poc_unconfirm">0</h6>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card info-card customers-card bg-unconfirm shadow placeholder-glow">
+            <div class="card-body">
+              <div class="col-12">
+                <div class="row">
+                  <div class="col-5 card-title outset">
+                    <h5 class="col-12 placeholder"></h5>
+                  </div>
+                  <div class="col-7 card-title outset">
+                    <p class="text-dark text-end">UNCONFIRM</p>
+                  </div>
+                </div>
+              </div>
+              <div class="d-flex align-items-center">
+                <div class="ps-3 col-12">
+                  <div class="row">
+                    <div class="col-4">
+                      <h6 class="text-dark text-start"> PO </h6>
+                    </div>
+                    <div class="col-4">
+                      <p class="col-12 placeholder"></p>
+                    </div>
+                    <div class="col-4">
+                      <h6 class="col-12 placeholder"></h6>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-5">
+                      <h6 class="text-dark text-start"> POC </h6>
+                    </div>
+                    <div class="col-3">
+                      <p class="col-12 placeholder"></p>
+                    </div>
+                    <div class="col-4">
+                      <h6 class="col-12 placeholder"></h6>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <!-- End confirm -->
+
+        <!-- CONFIRM-->
+        <div class="col-sm-6 col-md-6 col-lg-6 col-xl">
+          <div class="card info-card customers-card bg-confirm shadow load-holder">
+            <div class="card-body">
+              <div class="col-12">
+                <div class="row">
+                  <h5 class="card-title col-7 text-dark text-start  outset" name="monthly"></h5>
+                  <p style="font-size:14px" class=" card-title col-5 text-dark text-end  outset">CONFIRMED</p>
+                </div>
+              </div>
+              <div class="d-flex align-items-center">
+                <div class="ps-3 col-12">
+                  <div class="row">
+                    <h6 class="text-dark col-4 text-start"> PO </h6>
+                    <div class="btn-group col-4">
+                      <p style="font-size:12px" class="text-success  fw-bold  text-end " id="percentpo_confirm"></p>
+                      <p style="font-size:12px" class="text-success  fw-bold  text-end ">%</p>
+                    </div>
+                    <h6 class="text-dark col-4 text-end mr-3" id="total_po_confirm">0 </h6>
+                  </div>
+                  <div class="row">
+                    <h6 class="text-dark col-4 text-start"> POC</h6>
+                    <div class="btn-group col-4">
+                      <p style="font-size:12px" class="text-success  fw-bold  text-end " id="percentpoc_confirm"></p>
+                      <p style="font-size:12px" class="text-success  fw-bold  text-end ">%</p>
+                    </div>
+                    <h6 class="text-dark col-4 text-end mr-3" id="total_poc_confirm">0 <span class="text-success small pt-1 fw-bold " id="percent_poc_unconfirm"></span> <span class="text-muted small pt-2 ps-1">%</span></h6>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card info-card customers-card bg-confirm shadow placeholder-glow">
+            <div class="card-body">
+              <div class="col-12">
+                <div class="row">
+                  <div class="col-7 card-title outset">
+                    <h5 class="col-12 placeholder"></h5>
+                  </div>
+                  <div class="col-5 card-title outset">
+                    <p style="font-size:14px" class="text-secondary text-end">CONFIRMED </p>
+                  </div>
+                </div>
+              </div>
+              <div class="d-flex align-items-center">
+                <div class="ps-3 col-12">
+                  <div class="row">
+                    <div class="col-4">
+                      <h6 class="text-dark text-start"> PO </h6>
+                    </div>
+                    <div class="col-4">
+                      <p class="col-12 placeholder"></p>
+                    </div>
+                    <div class="col-4">
+                      <h6 class="col-12 placeholder"></h6>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-5">
+                      <h6 class="text-dark text-start"> POC</h6>
+                    </div>
+                    <div class="col-3">
+                      <p class="col-12 placeholder"></p>
+                    </div>
+                    <!-- <div class="btn-group col-4">
+                    </div> -->
+                    <div class="col-4">
+                      <h6 class="col-12 placeholder"></h6>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <!-- End confirm -->
+
+        <!-- REJECTED STATUS -->
+        <div class="col-sm-6 col-md-6 col-lg-6 col-xl">
+          <div class="card info-card customers-card bg-rejected load-holder" id="infinite">
+            <div class="card-body">
+              <div class="col-12">
+                <div class="row">
+                  <h5 class="card-title col-7 text-dark text-start outset" name="monthly"></h5>
+                  <p style="font-size:14px" class="card-title col-5 text-white text-end outset">REJECTED </p>
+                </div>
+              </div>
+              <div class="d-flex align-items-center">
+                <div class="ps-3 col-12">
+                  <div class="row">
+                    <h6 class="text-dark col-4 text-start"> PO </h6>
+                    <div class="btn-group col-4">
+                      <p style="font-size:12px" class="text-success  fw-bold  text-start " id="percentpo_reject"></p>
+                      <p style="font-size:12px" class="text-success  fw-bold  text-start ">%</p>
+                    </div>
+                    <h6 class="text-white col-4 text-end mr-3" id="total_po_reject">
+                  </div>
+                  <div class="row">
+                    <h6 class="text-dark col-4 text-start"> POC</h6>
+                    <div class="btn-group col-4">
+                      <p style="font-size:12px" class="text-success  fw-bold  text-end " id="percentpoc_reject"></p>
+                      <p style="font-size:12px" class="text-success  fw-bold  text-end ">%</p>
+                    </div>
+                    <h6 class="text-white col-4 text-end mr-3" id="total_poc_reject">0 </h6>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card info-card customers-card bg-rejected placeholder-glow">
+            <div class="card-body">
+              <div class="col-12">
+                <div class="row">
+                  <div class="col-7 card-title outset">
+                    <h5 class="col-12 placeholder"></h5>
+                  </div>
+                  <div class="col-5 card-title outset">
+                    <p style="font-size:14px" class="text-white text-end">REJECTED </p>
+                  </div>
+                </div>
+              </div>
+              <div class="d-flex align-items-center">
+                <div class="ps-3 col-12">
+                  <div class="row">
+                    <div class="col-4">
+                      <h6 class="text-white text-start"> PO </h6>
+                    </div>
+                    <div class="col-4">
+                      <p class="col-12 placeholder"></p>
+                    </div>
+                    <div class="col-4">
+                      <h6 class="col-12 placeholder"></h6>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-5">
+                      <h6 class="text-white text-start"> POC</h6>
+                    </div>
+                    <div class="col-3">
+                      <p class="col-12 placeholder"></p>
+                    </div>
+                    <!-- <div class="btn-group col-4">
+                    </div> -->
+                    <div class="col-4">
+                      <h6 class="col-12 placeholder"></h6>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div><!-- End Revenue Card -->
+      </div>
+      <div class="row">
+        <div class="col-12">
+          <div class="card recent-sales overflow-auto ml-3">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-7 card-title">
+                  <h4>SUMMARY SUPPLIER PO</h4>
+                </div>
+                <div class="col-5 card-title">
+                  <div class="loading d-flex justify-content-end">
+                    <div class="spinner-border text-info" role="status">
+                      <span class="visually-hidden">Loading...</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- Table with stripped rows -->
+              <table id="table-summary-supplier-po" class="table table-striped ml-3 display responsive nowrap">
+              </table>
+              <!-- End Table with stripped rows -->
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <div class="row">
+        <div class="col-12">
+          <div class="card recent-sales overflow-auto ml-3">
+            <div class="card-body ">
+              <div class="row">
+                <div class="col-7 card-title">
+                  <div class="row">
+                    <h4>SUMMARY SUPPLIER PO <span class="text-danger">CHANGE</span></h4>
+
+                  </div>
+                </div>
+                <div class="col-5 card-title">
+                  <div class="loading d-flex justify-content-end">
+                    <div class="spinner-border text-info" role="status">
+                      <span class="visually-hidden">Loading...</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- Table with stripped rows -->
+              <table id="table-summary-supplier-poc" class="table table-striped ml-3 display responsive nowrap">
+              </table>
+              <!-- End Table with stripped rows -->
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="row">
+        <div class="card recent-sales overflow-auto ml-3">
+          <div class="card-body">
+            <h5 class="card-title">FILTER</h5>
+            <form class="row g-3 ml-3" name="submit_poc" method="get">
+              <div class="col-md-6">
+                <!-- supplier: $("[name=supplier]").val(),
+                from_date: $("[name=from_date]").val(),
+                end_date: $("[name=end_date]").val(),
+                select_po: $("[name=select_po]").val(),
+                filter_by: $("[name=filter_by]").val() -->
+                <div class="col-md-12">
+                  <label for="supplier" class="form-label">Supplier</label>
+                  <select type="text" id="supplier" name="supplier" class="form-control"></select>
+                </div>
+                <div class="row mt-2">
+                  <div class="col-md-6">
+                    <label for="from_date" class="form-label">From</label>
+                    <input type="date" name="from_date" class="form-control" id="from_date" value="<?//= date('Y-m-d') ?>">
+                  </div>
+                  <div class="col-md-6">
+                    <label for="end_date" class="form-label">To</label>
+                    <input type="date" name="end_date" class="form-control" id="end_date" value="<?//= date('Y-m-d') ?>">
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="col-12">
+                  <label for="filter_by" class="form-label">Filter By</label>
+                  <select class="form-select" name="filter_by" id="filter_by" data-placeholder="Filter By">
+                    <option>--Select Category--</option>
+                  </select>
+                </div>
+                <div class="col-12 mt-2">
+                  <label for="select_poc" class="form-label mb-2">Select Based on Filter by</label>
+                  <br>
+                  <select class="form-select col-12" name="select_poc" id="select_poc" data-placeholder="Search Item" multiple>
+                  </select>
+                </div>
+              </div>
+              <div class="col-12 text-end">
+                <button type="submit" class="btn btn-primary" id="submit_btn">Submit</button>
+                <button type="reset" class="btn btn-secondary ">Reset</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+      <div class="row mb-3">
+        <div class="message"></div>
+      </div>
+      <div class="loading row col-12 mb-2 d-flex justify-content-center">
+        <div class="spinner-border text-info mt-2" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="card recent-sales overflow-auto ml-3">
+          <div class="card-header">
+            DATA PURCHASE ORDER CHANGE
+          </div>
+          <div class="card-body">
+            <table id="table-purchase-order-change" class="table table-striped ml-3 display responsive nowrap">
+            </table>
+          </div>
+        </div>
+      </div>
+    </div> --}}
     <div class="row">
-      <div class="col-md-6 grid-margin stretch-card">
+      {{-- <div class="col-md-6 grid-margin stretch-card">
         <div class="card tale-bg">
           <div class="card-people mt-auto">
             <img src="{{ asset('assets/images/dashboard/people.svg') }}" alt="people">
             <div class="weather-info">
               <div class="d-flex">
-                <div>
+                {{-- <div>
                   <h2 class="mb-0 font-weight-normal"><i class="icon-sun mr-2"></i>31<sup>C</sup></h2>
-                </div>
+                </div> --}
                 <div class="ml-2">
-                  <h4 class="location font-weight-normal">Bangalore</h4>
-                  <h6 class="font-weight-normal">India</h6>
+                  <h4 class="location font-weight-normal">{{ $monthlyPOC['monthly'] }}</h4>
+                  {{-- <h6 class="font-weight-normal">India</h6> --}
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-      <div class="col-md-6 grid-margin transparent">
-        <div class="row">
-          <div class="col-md-6 mb-4 stretch-card transparent">
-            <div class="card card-tale">
+      </div> --}}
+      <div class="col-md-12 grid-margin transparent">
+        <div class="row mb-2">
+          <div class="col-md-12 stretch-card transparent">
+            <div class="card card-outline-primary">
               <div class="card-body">
-                <p class="mb-4">Today’s Bookings</p>
-                <p class="fs-30 mb-2">4006</p>
-                <p>10.00% (30 days)</p>
-              </div>
+                <p class="mb-1">Total Issue</p>
+                <div class="d-flex justify-content-between">
+                  <div class="col card card-body mr-1 card-outline-primary card-light-blue">
+                    <div class="d-flex justify-content-between">
+                    <p class="fs-30 text-start">PO</p>
+                    <p class="fs-30 text-end">{{ $monthlyPOC['total_po'] }}</p>
+                    </div>
+                  </div>
+                  <div class="col card card-body ml-1  card-outline-primary card-light-blue">
+                    <div class="d-flex justify-content-between">
+                    <p class="fs-30 text-start">POC</p>
+                    <p class="fs-30 text-end">{{ $monthlyPOC['total_poc'] }}</p>
+                    </div>
+                  </div>
+                  
+                </div>
+                {{-- <p>10.00% (30 days)</p> --}}
+              </div> 
             </div>
           </div>
-          <div class="col-md-6 mb-4 stretch-card transparent">
+        </div>
+        <div class="row">
+          <div class="col-md-6 mb-2 stretch-card transparent">
             <div class="card card-dark-blue">
               <div class="card-body">
-                <p class="mb-4">Total Bookings</p>
-                <p class="fs-30 mb-2">61344</p>
-                <p>22.00% (30 days)</p>
+                <p class="mb-4">Total Unread</p>
+                <div class="d-flex justify-content-between">
+                  <p class="fs-30 mb-2 text-start">PO</p>
+                  <p class="fs-30 mb-2 text-end">{{ $monthlyPOC['total_po_unread'] }}</p>
+                </div>
+                <p>{{ (number_format(((float)$monthlyPOC['total_po_unread']/(float)$monthlyPOC['total_po']), 2, '.', '')) * 100 }} % (PO)</p>
+                <div class="d-flex justify-content-between">
+                  <p class="fs-30 mb-2 text-start">POC</p>
+                  <p class="fs-30 mb-2 text-end">{{ $monthlyPOC['total_poc_unread'] }}</p>
+                </div>
+                <p>{{ (number_format(((float)$monthlyPOC['total_poc_unread']/(float)$monthlyPOC['total_poc']), 2, '.', '')) * 100  }}% (POC)</p>
+               
+              </div>
+            </div>
+          </div>
+        
+          <div class="col-md-6 mb-2 stretch-card transparent">
+            <div class="card card-light-blue">
+              <div class="card-body">
+                <p class="mb-4">Total Unconfirm</p>
+                <div class="d-flex justify-content-between">
+                  <p class="fs-30 mb-2 text-start">PO</p>
+                  <p class="fs-30 mb-2 text-end">{{ $monthlyPOC['total_po_unconfirm'] }}</p>
+                </div>
+                <p>{{ (number_format(((float)$monthlyPOC['total_po_unconfirm']/(float)$monthlyPOC['total_po']), 2, '.', '')) * 100 }} % (PO)</p>
+                <div class="d-flex justify-content-between">
+                  <p class="fs-30 mb-2 text-start">POC</p>
+                  <p class="fs-30 mb-2 text-end">{{ $monthlyPOC['total_poc_unconfirm'] }}</p>
+                </div>
+                <p>{{ (number_format(((float)$monthlyPOC['total_poc_unconfirm']/(float)$monthlyPOC['total_poc']), 2, '.', '')) * 100  }}% (POC)</p>
               </div>
             </div>
           </div>
         </div>
         <div class="row">
-          <div class="col-md-6 mb-4 mb-lg-0 stretch-card transparent">
-            <div class="card card-light-blue">
+          <div class="col-md-6 stretch-card transparent">
+            <div class="card">
               <div class="card-body">
-                <p class="mb-4">Number of Meetings</p>
-                <p class="fs-30 mb-2">34040</p>
-                <p>2.00% (30 days)</p>
+                <p class="mb-4">Total Confirmed</p>
+                <div class="d-flex justify-content-between">
+                  <p class="fs-30 mb-2 text-start">PO</p>
+                  <p class="fs-30 mb-2 text-end">{{ $monthlyPOC['total_po_confirm'] }}</p>
+                </div>
+                <p>{{ (number_format(((float)$monthlyPOC['total_po_confirm']/(float)$monthlyPOC['total_po']), 2, '.', '')) * 100 }} % (PO)</p>
+                <div class="d-flex justify-content-between">
+                  <p class="fs-30 mb-2 text-start">POC</p>
+                  <p class="fs-30 mb-2 text-end">{{ $monthlyPOC['total_poc_confirm'] }}</p>
+                </div>
+                <p>{{ (number_format(((float)$monthlyPOC['total_poc_confirm']/(float)$monthlyPOC['total_poc']), 2, '.', '')) * 100  }}% (POC)</p>
               </div>
             </div>
           </div>
           <div class="col-md-6 stretch-card transparent">
             <div class="card card-light-danger">
               <div class="card-body">
-                <p class="mb-4">Number of Clients</p>
-                <p class="fs-30 mb-2">47033</p>
-                <p>0.22% (30 days)</p>
+                <p class="mb-4">Total Rejected</p>
+                <div class="d-flex justify-content-between">
+                  <p class="fs-30 mb-2 text-start">PO</p>
+                  <p class="fs-30 mb-2 text-end">{{ $monthlyPOC['total_po_reject'] }}</p>
+                </div>
+                <p>{{ (number_format(((float)$monthlyPOC['total_po_reject']/(float)$monthlyPOC['total_po']), 2, '.', '')) * 100 }} % (PO)</p>
+                <div class="d-flex justify-content-between">
+                  <p class="fs-30 mb-2 text-start">POC</p>
+                  <p class="fs-30 mb-2 text-end">{{ $monthlyPOC['total_poc_reject'] }}</p>
+                </div>
+                <p>{{ (number_format(((float)$monthlyPOC['total_poc_reject']/(float)$monthlyPOC['total_poc']), 2, '.', '')) * 100  }}% (POC)</p>
               </div>
             </div>
           </div>
@@ -131,7 +683,7 @@
         </div>
       </div>
     </div>
-    <div class="row">
+    {{-- <div class="row">
       <div class="col-md-12 grid-margin stretch-card">
         <div class="card position-relative">
           <div class="card-body">
@@ -615,8 +1167,8 @@
           </div>
         </div>
       </div>
-    </div>
-    <div class="row">
+    </div> --}}
+    {{-- <div class="row">
       <div class="col-md-12 grid-margin stretch-card">
         <div class="card">
           <div class="card-body">
@@ -641,10 +1193,10 @@
                 </div>
               </div>
             </div>
-            </div>
           </div>
         </div>
       </div>
-  </div>
+    </div> --}}
+</div>
 @endsection
 

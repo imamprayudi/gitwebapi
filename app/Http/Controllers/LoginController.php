@@ -34,7 +34,8 @@ class LoginController extends Controller
             // Permintaan berhasil
             $data = $response->json();
             // dd($data);
-            $this->createSession($data);
+            $this->createSession($request,$data);
+            // return $_SESSION;
             return redirect('/dashboard');
             // dd($data); // Debug data
         } elseif ($response->failed()) {
@@ -75,13 +76,13 @@ class LoginController extends Controller
         // ]);
     }
 
-    public function createSession($data)
+    public function createSession($request, $data)
     {
-        $_SESSION['usr'] = $data['userid'];
-        $_SESSION['usrsecure'] = $data['usersecure'];
-        $_SESSION['usrgroup'] = $data['usergroup'];
-        $_SESSION['usrname'] = $data['username'];
-        $_SESSION['usrmail'] = $data['useremail'];
+        $request->session()->put('usr',$data['userid']);
+        $request->session()->put('usrsecure',$data['usersecure']);
+        $request->session()->put('usrgroup',$data['usergroup']);
+        $request->session()->put('usrname',$data['username']);
+        $request->session()->put('usrmail',$data['useremail']);
     }
     /**
      * Show the form for creating a new resource.

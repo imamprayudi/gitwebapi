@@ -3,6 +3,9 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\PoController;
+use App\Http\Controllers\PocController;
+use App\Http\Controllers\OrdbalController;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,6 +22,9 @@ Route::get('/', [LoginController::class, 'index'])->name('login');
 Route::post('/', [LoginController::class, 'login']);
 
 Route::get('/dashboard', [DashboardController::class,'index'])->name('dashboard');
+Route::get('/po', [PoController::class,'index'])->name('po');
+Route::get('/poc', [PocController::class,'index'])->name('poc');
+Route::get('/ordbal', [OrdbalController::class,'index'])->name('ordbal');
 
 Route::get('/forms', function () {
     return view('pages.forms.index');
