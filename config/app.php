@@ -30,6 +30,7 @@ return [
     */
 
     'env' => env('APP_ENV', 'production'),
+    'api_endpoint' => env('EXTERNAL_API_URL', 'https://svr1.jkei.jvckenwood.com/api_gitweb/api'),
 
     /*
     |--------------------------------------------------------------------------

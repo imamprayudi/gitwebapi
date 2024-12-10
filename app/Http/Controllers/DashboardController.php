@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Http\Client\ConnectionException;
+use Illuminate\Support\Facades\Log;
 
 class DashboardController extends Controller
 {
@@ -12,20 +14,24 @@ class DashboardController extends Controller
      */
     public function index(Request $request)
     {
-        // dd($request->session());
-        // Mengirim request ke API dengan method getMonthlyPoc
-        $getMonthlyPoc = Http::get(env('EXTERNAL_API_URL') . '/dashboard.php',
+        if($request->session()->get('usr') == null)
+        {
+            return redirect('/');
+        }
+        // Mengambil data dari API
+        // try {
+            $getMonthlyPoc = Http::get(env('EXTERNAL_API_URL') . '/dashboard.php',
             [
                 'method' => 'getMonthlyPoc',
                 'usr' => $request->session()->get('usr'),
             ]);
-        // $getMonthlyPoc = Http::get(env('EXTERNAL_API_URL') . '/dashboard.php',
-        //     [
-        //         'method' => 'getMonthlyPoc'
-        //     ]
-        // );
-        // dd($getMonthlyPoc);
+        // } catch (ConnectionException $e) {
+        //     Log::error($e->getMessage());
+        // }
+        
+        // dd($getMonthlyPoc->json());
         // Cek apakah status HTTP 200 (berhasil)
+        $monthlyPOC=null;
         if ($getMonthlyPoc->successful()) {
             // Mengambil data JSON jika berhasil
             $monthlyPOC = $getMonthlyPoc->json();

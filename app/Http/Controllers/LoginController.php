@@ -25,9 +25,13 @@ class LoginController extends Controller
         ]);
 
         $credentials = $request->only('userid', 'password');
-        // return env('EXTERNAL_API_URL');
-                
-        $response = Http::post(env('EXTERNAL_API_URL') . '/login.php',$request->toArray());
+        // dd(env('EXTERNAL_API_URL'));
+        
+        try {
+            $response = Http::post(env('EXTERNAL_API_URL') . '/login.php',$request->toArray());
+        } catch (ConnectionException $e) {
+            Log::error($e->getMessage());
+        }
         
         // $response = Http::get('https://api.example.com/data');
         if ($response->successful()) {

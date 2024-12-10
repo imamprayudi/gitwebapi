@@ -26,6 +26,14 @@
 
   <!-- endinject -->
   <link rel="shortcut icon" href="{{ asset('assets/images/favicon.png') }}" />
+
+   <!-- Select2 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet">
+
+    <!-- DataTables CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/datatables.net-dt@1.10.24/css/jquery.dataTables.min.css" rel="stylesheet">
+
+    <link href="./dist/main.bundle.css" rel="stylesheet">
 </head>
 <body>
   <div class="container-scroller">
@@ -141,7 +149,7 @@
             </div>
           </div>
           <!-- To do section tab ends -->
-          <div class="tab-pane fade" id="chats-section" role="tabpanel" aria-labelledby="chats-section">
+          {{-- <div class="tab-pane fade" id="chats-section" role="tabpanel" aria-labelledby="chats-section">
             <div class="d-flex align-items-center justify-content-between border-bottom">
               <p class="settings-heading border-top-0 mb-3 pl-3 pt-0 border-bottom-0 pb-0">Friends</p>
               <small class="settings-heading border-top-0 mb-3 pt-0 border-bottom-0 pb-0 pr-3 font-weight-normal">See All</small>
@@ -199,7 +207,7 @@
                 <small class="text-muted my-auto">47 min</small>
               </li>
             </ul>
-          </div>
+          </div> --}}
           <!-- chat tab ends -->
         </div>
       </div>
@@ -236,11 +244,11 @@
 
   <!-- End plugin js for this page -->
   <!-- inject:js -->
-  <script src="{{ asset('assets/js/off-canvas.js') }}"></script>
+  {{-- <script src="{{ asset('assets/js/off-canvas.js') }}"></script>
   <script src="{{ asset('assets/js/hoverable-collapse.js') }}"></script>
   <script src="{{ asset('assets/js/template.js') }}"></script>
   <script src="{{ asset('assets/js/settings.js') }}"></script>
-  <script src="{{ asset('assets/js/todolist.js') }}"></script>
+  <script src="{{ asset('assets/js/todolist.js') }}"></script> --}}
 
   <!-- endinject -->
   <!-- Plugin js for this page -->
@@ -263,6 +271,33 @@
   <script src="{{ asset('assets/js/dashboard.js') }}"></script>
   <script src="{{ asset('assets/js/Chart.roundedBarCharts.js') }}"></script>
   <!-- End custom js for this page-->
+{{-- 
+  <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    
+    <!-- Axios -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+    <!-- Select2 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
+
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.0/dist/sweetalert2.all.min.js"></script>
+
+    <!-- JSZip -->
+    <script src="https://cdn.jsdelivr.net/npm/jszip@3.7.1/dist/jszip.min.js"></script>
+
+    <!-- DataTables JS -->
+    <script src="https://cdn.jsdelivr.net/npm/datatables.net-dt@1.10.24/js/jquery.dataTables.min.js"></script>
+
+    <!-- DataTables Buttons JS -->
+    <script src="https://cdn.jsdelivr.net/npm/datatables.net-buttons-dt@2.0.1/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/datatables.net-buttons@2.0.1/js/buttons.html5.min.js"></script>
+
+    <!-- DataTables Select JS -->
+    <script src="https://cdn.jsdelivr.net/npm/datatables.net-select-dt@1.3.1/js/dataTables.select.min.js"></script> --}}
+
+  @yield('scripts')
 </body>
 
 </html>

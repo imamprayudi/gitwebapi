@@ -23,6 +23,8 @@ Route::post('/', [LoginController::class, 'login']);
 
 Route::get('/dashboard', [DashboardController::class,'index'])->name('dashboard');
 Route::get('/po', [PoController::class,'index'])->name('po');
+Route::get('/getFilterBy', [PoController::class,'getFilterBy'])->name('getFilterBy');
+
 Route::get('/poc', [PocController::class,'index'])->name('poc');
 Route::get('/ordbal', [OrdbalController::class,'index'])->name('ordbal');
 

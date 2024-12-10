@@ -3,6 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Http\Client\ConnectionException;
+use Illuminate\Support\Facades\Log;
+
 
 class PoController extends Controller
 {
@@ -11,7 +15,51 @@ class PoController extends Controller
      */
     public function index(Request $request)
     {
-        return view('pages.orders.po');
+        if($request->session()->get('usr') == null)
+        {
+            return redirect('/');
+        }
+        
+        $getSupplier = Http::get(env('EXTERNAL_API_URL') . '/jpo.php',
+        [
+            'method' => 'getSupplierGroup',
+            'usr' => $request->session()->get('usr')
+        ]);
+
+        // dd($getSupplier);
+         $Suppliers=[];
+         if ($getSupplier->successful()) {
+            // Mengambil data JSON jika berhasil
+            $Suppliers = $getSupplier->json();
+            // dd($Suppliers);  // Debug respons
+        } else {
+            // Jika gagal, tampilkan error atau status
+            dd('Request failed with status: ' . $getSupplier->status());
+        }
+        
+        return view('pages.orders.po', compact('Suppliers'));
+    }
+
+    public function getFilterBy(Request $request)
+    {
+        $getFilterBy = Http::get(env('EXTERNAL_API_URL') . '/jpo.php',
+        [
+            'method' => 'getFilterBy',
+            'usr' => $request->session()->get('usr')
+        ]);
+       
+        // dd($getFilterBy);
+         $FilterBy=[];
+         if ($getFilterBy->successful()) {
+            // Mengambil data JSON jika berhasil
+            $FilterBy = $getFilterBy->json();
+            // dd($FilterBy);  // Debug respons
+        } else {
+            // Jika gagal, tampilkan error atau status
+            dd('Request failed with status: ' . $getFilterBy->status());
+        }
+
+        return $FilterBy;
     }
 
     /**
