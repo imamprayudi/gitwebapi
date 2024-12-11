@@ -1,47 +1,44 @@
-import path from 'path';
-import { fileURLToPath } from 'url';
-import MiniCssExtractPlugin from 'mini-css-extract-plugin';
-import CssMinimizerPlugin from 'css-minimizer-webpack-plugin';
+const path = require('path');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 
-// Untuk mendapatkan __dirname dalam ES Module
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
-export default {
-    mode: 'production',
-    entry: {
-        main: './resources/src/index.js',
-        // login: './resources/src/login.js',
-        // dashboard: './resources/src/dashboard.js',
-        jpo: './resources/src/jpo.js',
-        // jpoc: './resources/src/jpoc.js',
-        // jpo_detail: './resources/src/jpo_detail.js',
-        // jpoc_detail: './resources/src/jpoc_detail.js'
+module.exports = {
+    mode:'production',
+    entry:{
+        main:'./src/index.js',
+        login:'./src/login.js',
+        tinymce:'tinymce/tinymce.js',
+        dashboard:'./src/dashboard.js',
+        jpo:'./src/jpo.js',
+        jpoc:'./src/jpoc.js',
+        jpo_detail:'./src/jpo_detail.js',
+        jpoc_detail:'./src/jpoc_detail.js'
+        // utama:'./src/utama.js'
     },
-    optimization: {
-        minimizer: [
+    optimization:{
+        minimizer:[
             `...`,
             new CssMinimizerPlugin()
         ],
         removeAvailableModules: true,
     },
-    plugins: [new MiniCssExtractPlugin({
-        filename: '[name].bundle.css',
-    })],
-    target: 'web',
-    output: {
-        filename: '[name].bundle.js',
-        path: path.resolve(__dirname, './dist'),
-        clean: true
+    plugins: [ new MiniCssExtractPlugin({
+        filename:'[name].bundle.css',
+    }) ],
+    target:'web',
+    output:{
+        filename:'[name].bundle.js',
+        path: path.resolve(__dirname,'dist'),
+        clean:true
     },
-    module: {
-        rules: [
+    module:{
+        rules:[
             {
                 test: /\.css$/i,
-                use: [MiniCssExtractPlugin.loader, "css-loader"]
+                use:[MiniCssExtractPlugin.loader,"css-loader"]
             },
             {
-                test: /\.(?:js|mjs|cjs)$/i,
+                test: /\.(?:js|mjs|cjs)$/,
                 exclude: /node_modules/,
                 use: {
                     loader: 'babel-loader',
@@ -55,11 +52,15 @@ export default {
             {
                 test: /\.s[ac]ss$/i,
                 use: [
+                    // Creates `style` nodes from JS strings
                     MiniCssExtractPlugin.loader,
+                    // Translates CSS into CommonJS
                     "css-loader",
+                    // Compiles Sass to CSS
                     "sass-loader",
                 ],
             },
         ]
     },
-};
+
+}

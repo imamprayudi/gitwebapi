@@ -1,0 +1,12 @@
+[
+    {
+        "supp": "12345",
+        "partno": "Ed Spencer",
+        "partname": "ed@sencha.com"
+    },
+    {
+        "supp": "23456",
+        "partno": "Abe Elias",
+        "partname": "abe@sencha.com"
+    },
+]

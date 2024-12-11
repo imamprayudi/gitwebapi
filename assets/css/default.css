@@ -1,0 +1,45 @@
+#outer
+{
+	padding: 0em;
+	margin: 0em;
+	width: 100%;
+    
+}
+
+#logo
+{
+	width: 25%;
+}
+
+
+#nama
+{
+	width: 50%;
+	color:white;
+        background-color:blue;
+
+}
+
+/*
+
+table
+{
+border:1px solid #ccc;
+margin:2px;
+margin-bottom:10px;
+}
+td
+{
+font-family:Arial, Helvetica, sans-serif;font-size:11px;
+background:whitesmoke;border-right:1px solid #ddd;border-bottom:1px solid #f3f3f3
+}
+th 
+{
+font-size:15px;
+text-align:left;
+padding-top:5px;
+padding-bottom:4px;
+background-color:#0F176E;
+color:#ffffff;
+}
+*/

@@ -1,0 +1,18 @@
+>> New format file name
+nama file = suppcode . partno . po . (qty atau sequence)
+
+
+
+
+>> Script revise
+$namafile = $partno . $jml . '.jpg';
+$namafile = trim($vsupp).'_'.trim($partno).'_'.trim($po).'_'.trim($jml) . '.jpg';
+
+$namafile = $partno . $extfile . '.jpg';
+$namafile = trim($vsupp).'_'.trim($partno).'_'.trim($po).'_'.trim($extfile) . '.jpg';
+
+$namafile = $partno . $stdpack . '.jpg';
+$namafile = trim($vsupp).'_'.trim($partno).'_'.trim($po).'_'.trim($stdpack) . '.jpg';
+
+$a = $partno . $stdpack . '.jpg';
+$a = trim($vsupp).'_'.trim($partno).'_'.trim($po).'_'.trim($stdpack) . '.jpg';

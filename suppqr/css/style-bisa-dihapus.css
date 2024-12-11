@@ -1,0 +1,74 @@
+@import url(https://fonts.googleapis.com/css?family=Arvo);
+*{
+	margin: 0;
+	padding: 0;
+	font-family: 'Arvo', serif;
+}
+#wrapper {
+	background: #185a9d; /* fallback for old browsers */
+	background: -webkit-linear-gradient(top, #fff 0% , #eee 50%); /* Chrome 10-25, Safari 5.1-6 */
+	background: linear-gradient(to bottom, #fff 0% , #eee 50%); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+	z-index: 1;
+}
+/*#header {
+    background: url(../img/banner.jpg) no-repeat;
+    background-size: 70%;
+    background-position: center;
+}*/
+#header {
+    background: url(../img/banner.jpg) no-repeat;
+    _height: 100px;
+    _width: auto;
+    background-size: 60% 150px;
+    background-position: top center;
+}
+img.logo {
+	background-repeat: no-repeat;
+	margin: auto;
+	padding: 0 0 0 10px;
+	width: 30%;
+}
+.description{
+	font-family:'Segoe UI',Arial,sans-serif; 
+	font-size:10px; 
+	text-align:right;
+	width: 100%;
+}
+#nav .menu {
+	background: #CDCDCD;
+	padding: 14px 0;
+	position: relative;
+	width: 100%;
+	font-size: 10pt;
+	box-shadow: 0 1px 2px #000;
+}
+#nav .menu a {
+	text-decoration: none;
+	color : #185a9d;
+	padding: 14px;
+}
+#nav .menu a:hover {
+	background: rgba(200, 200, 200, 0.25);
+	border-radius: 10xp;
+	animation: nav-color 2s 1 forwards;
+}
+#section{
+	position:relative;
+	padding: 20px 10px 0 10px;
+	font-size: 10pt;
+}
+/* Chrome, Safari, Opera */
+@-webkit-keyframes nav-color {
+    --from {background: rgba(200, 200, 200, 0.25);}
+    to {background: rgba(204, 238, 255, 1);}
+}
+
+/* Standard syntax */
+@keyframes nav-color {
+    --from {background: rgba(200, 200, 200, 0.25);}
+    to {background: rgba(204, 238, 255, 1);}
+}
