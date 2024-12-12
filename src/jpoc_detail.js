@@ -1,6 +1,7 @@
-const $ = require("jquery");
-const axios = require("axios");
-const select2 = require("select2");
+import $ from "jquery";
+import axios from "axios";
+import select2 from "select2";
+
 import Swal from "sweetalert2";
 
 import jszip from "jszip";
@@ -106,7 +107,7 @@ $(function () {
       // console.log("set query => ", query)
       // console.log("set param => ",data);
       $("div.loading").removeClass("d-none")
-      let url = "../api/jpoc.php"
+      let url = "https://svr1.jkei.jvckenwood.com/api_gitweb/api/jpoc.php"
       if(usrsecure == 0 || usrsecure == 1 || usrsecure == 2 || usrsecure == 5)
       renderMessage({
         html: "You can not confirm this PO / POC",
@@ -201,7 +202,7 @@ $(function () {
       // console.log("set query => ", query);
       // console.log("set param => ",data);
       $("div.loading").removeClass("d-none");
-      let url = "../api/jpoc.php";
+      let url = "https://svr1.jkei.jvckenwood.com/api_gitweb/api/jpoc.php";
       if (usrsecure == 0 || usrsecure == 1 || usrsecure == 2 || usrsecure == 5)
         renderMessage({
           html: "You can not reject this PO / POC",
@@ -321,7 +322,7 @@ function getDataPoChangeDetail(params = null) {
   }
   params.method = "getDataPoChangeDetail";
   axios
-    .get("../api/jpoc.php", {
+    .get("https://svr1.jkei.jvckenwood.com/api_gitweb/api/jpoc.php", {
       params: params
     })
     // .then((res) => res.data)
@@ -570,7 +571,7 @@ function getDataPoChangeDetail(params = null) {
 
 function updateReadStatus(params = null){
   axios
-    .get("../api/jpoc.php", {
+    .get("https://svr1.jkei.jvckenwood.com/api_gitweb/api/jpoc.php", {
       params: params
     })
     .then((res) => res.data)

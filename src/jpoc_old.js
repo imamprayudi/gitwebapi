@@ -28,7 +28,7 @@ $(function () {
 
   // getSupplierGroup
   axios
-    .get("../api/jpo.php", {
+    .get("https://svr1.jkei.jvckenwood.com/api_gitweb/api/jpo.php", {
       params: {
         method: "getSupplierGroup"
       }
@@ -56,7 +56,7 @@ $(function () {
   // getData Input PO/Partnumber/TransmissionDate based on filter by
   function getFilter() {
     axios
-      .get("../api/jpoc.php", {
+      .get("https://svr1.jkei.jvckenwood.com/api_gitweb/api/jpoc.php", {
         params: {
           method: "getFilterBy",
           supplier: $("[name=supplier]").val(),
@@ -103,7 +103,7 @@ $(function () {
     $("div.message").html(null);
 
     axios
-      .get("../api/jpoc.php", {
+      .get("https://svr1.jkei.jvckenwood.com/api_gitweb/api/jpoc.php", {
         params: {
           method: "getDataPoChangeST",
           supplier: $("[name=supplier]").val(),
@@ -462,7 +462,7 @@ $(function () {
   // update read status from supplier
   params.method = "updateReadStatus";
   axios
-    .get("../api/jpo.php", {
+    .get("https://svr1.jkei.jvckenwood.com/api_gitweb/api/jpo.php", {
       params: params
     })
     .then((res) => res.data)
@@ -541,7 +541,7 @@ $(function () {
       console.log("set query => ", query);
       // console.log("set param => ",data);
       $("div.loading").removeClass("d-none");
-      let url = "../api/jpo.php";
+      let url = "https://svr1.jkei.jvckenwood.com/api_gitweb/api/jpo.php";
       axios
         .get(url, {
           params: {
@@ -610,7 +610,7 @@ $(function () {
       console.log("set query => ", query);
       // console.log("set param => ",data);
       $("div.loading").removeClass("d-none");
-      let url = "../api/jpo.php";
+      let url = "https://svr1.jkei.jvckenwood.com/api_gitweb/api/jpo.php";
       axios
         .get(url, {
           params: {
@@ -675,7 +675,7 @@ function getDataPoDetail(params = null) {
   }
   params.method = "getDataPoDetail";
   axios
-    .get("../api/jpo.php", {
+    .get("https://svr1.jkei.jvckenwood.com/api_gitweb/api/jpo.php", {
       params: params
     })
     // .then((res) => res.data)

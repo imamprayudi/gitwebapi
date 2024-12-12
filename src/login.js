@@ -1,9 +1,13 @@
-const $ = require('jquery');
-const axios = require('axios');
-import 'dotenv/config';
-const apiExternal = process.env.EXTERNAL_API_URL;
+
+import $ from "jquery";
+import axios from "axios";
 
 
+// const dotenv = require('dotenv');
+// dotenv.config();
+// const apiExternal = process.env.EXTERNAL_API_URL;
+
+// console.log(apiExternal);
 // function toggleLoadingLogin() {
 //     $('div.loading').toggleClass('d-none');
 // }
@@ -22,7 +26,7 @@ function renderMessage(obj = { html: null, classes: '', icons: null }) {
 
 $(function () {
   // $('div.message').html(null);
-  console.log('AAAPOIASIAA', apiExternal);
+  // console.log('AAAPOIASIAA', apiExternal);
   $('div.message').html(null);
   if ($('div.loading').hasClass('d-none') == false)
     $('div.loading').addClass('d-none');
@@ -41,16 +45,38 @@ $(function () {
     $('div.loading').toggleClass('d-none');
     $('div.message').html(null);
     // toggleLoadingLogin();
-
     axios
-      .post("../api/login.php", {
+      .post("https://svr1.jkei.jvckenwood.com/api_gitweb/api/login.php", {
         userid: $("[name=userid]").val(),
         password: $("[name=password]").val()
       })
       .then(({ data }) => {
         console.log("LOGIN", data)
         if (data.success) {
-          window.location.href = "../contents_v2/";
+          sessionStorage.setItem('poc_auth', JSON.stringify({
+            usr: data.userid,
+            usrsecure: data.usersecure,
+            usrgroup: data.usergroup,
+            usrname: data.username,
+            usrmail: data.useremail
+          }));
+
+          $.post('../contents_v2/layouts/session.php', {
+            usr: data.userid,
+            usrsecure: data.usersecure,
+            usrgroup: data.usergroup,
+            usrname: data.username,
+            usrmail: data.useremail
+          },
+            function (data) {
+              if (data.success) {
+                $('#error').html(data.message).fadeIn(1000);
+                window.location.href = "../contents_v2/";
+              }
+              else {
+                $('#error').html(data.message).fadeIn(1000);
+              }
+            }, 'json');
         }
         else {
           renderMessage({

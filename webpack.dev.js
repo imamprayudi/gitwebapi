@@ -1,7 +1,7 @@
 const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
-const env = require('dotenv').config();
+// const env = require('dotenv').config();
 
 module.exports = {
     mode: 'development',

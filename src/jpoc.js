@@ -28,7 +28,7 @@ $(function () {
 
   // getSupplierGroup
   axios
-    .get("../api/jpoc.php", {
+    .get("https://svr1.jkei.jvckenwood.com/api_gitweb/api/jpoc.php", {
       params: {
         method: "getSupplierGroup"
       }
@@ -56,7 +56,7 @@ $(function () {
   // getData Input PO/Partnumber/TransmissionDate based on filter by
   function getFilter() {
     axios
-      .get("../api/jpoc.php", {
+      .get("https://svr1.jkei.jvckenwood.com/api_gitweb/api/jpoc.php", {
         params: {
           method: "getFilterBy",
           supplier: $("[name=supplier]").val(),
@@ -103,7 +103,7 @@ $(function () {
     $("div.message").html(null);
 
     axios
-      .get("../api/jpoc.php", {
+      .get("https://svr1.jkei.jvckenwood.com/api_gitweb/api/jpoc.php", {
         params: {
           method: "getDataPoChangeST",
           supplier: $("[name=supplier]").val(),

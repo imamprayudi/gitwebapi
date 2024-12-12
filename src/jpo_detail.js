@@ -103,7 +103,7 @@ $(function () {
       // console.log("set query => ", query)
       // console.log("set param => ",data);
       $("div.loading").removeClass("d-none");
-      let url = "../api/jpo.php";
+      let url = "https://svr1.jkei.jvckenwood.com/api_gitweb/api/jpo.php";
       if (usrsecure == 0 || usrsecure == 1 || usrsecure == 2 || usrsecure == 5)
         renderMessage({
           html: "You can not confirm this PO / POC",
@@ -196,7 +196,7 @@ $(function () {
       // console.log("set query => ", query);
       // console.log("set param => ",data);
       $("div.loading").removeClass("d-none");
-      let url = "../api/jpo.php";
+      let url = "https://svr1.jkei.jvckenwood.com/api_gitweb/api/jpo.php";
       if (usrsecure == 0 || usrsecure == 1 || usrsecure == 2 || usrsecure == 5)
         renderMessage({
           html: "You can not reject this PO / POC",
@@ -314,7 +314,7 @@ function getDataPoDetail(params = null) {
   }
   params.method = "getDataPoDetail";
   axios
-    .get("../api/jpo.php", {
+    .get("https://svr1.jkei.jvckenwood.com/api_gitweb/api/jpo.php", {
       params: params
     })
     // .then((res) => res.data)
@@ -533,7 +533,7 @@ function getDataPoDetail(params = null) {
 
 function updateReadStatus(params = null) {
   axios
-    .get("../api/jpo.php", {
+    .get("https://svr1.jkei.jvckenwood.com/api_gitweb/api/jpo.php", {
       params: params
     })
     .then((res) => res.data)

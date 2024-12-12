@@ -1,4 +1,4 @@
-import 'dotenv/config';
+// import 'dotenv/config';
 import $ from 'jquery/dist/jquery.slim.js';
 // const $ = require('jquery');
 import css from './style.css';
@@ -10,7 +10,7 @@ import { select2 } from '../node_modules/select2/dist/js/select2.full.min.js';
 import { Swal } from '../node_modules/sweetalert2/dist/sweetalert2.min.js';
 import '../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js';
 
-const apiExternal = process.env.EXTERNAL_API_URL;
+// const apiExternal = process.env.EXTERNAL_API_URL;
 // require('dotenv').config();
 $(function () {
 

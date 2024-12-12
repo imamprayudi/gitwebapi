@@ -1,6 +1,7 @@
-const $ = require("jquery");
-const axios = require("axios");
-const select2 = require("select2");
+import $ from "jquery";
+import axios from "axios";
+import select2 from "select2";
+
 import Swal from "sweetalert2";
 
 import jszip from "jszip";
@@ -9,8 +10,8 @@ import "datatables.net-buttons-dt";
 import "datatables.net-buttons/js/buttons.html5.mjs";
 import "datatables.net-select-dt";
 
-import 'dotenv/config';
-const apiExternal = process.env.EXTERNAL_API_URL;
+// import 'dotenv/config';
+// const apiExternal = process.env.EXTERNAL_API_URL;
 
 window.Swal = Swal;
 // // CommonJS
@@ -29,17 +30,18 @@ $(function () {
     closeOnSelect: false
   });
 
-  console.log('APIOIIIIIII', apiExternal);
+  // console.log('APIOIIIIIII', apiExternal);
   // getSupplierGroup
   axios
-    .get("../api/jpo.php", {
+    .get("https://svr1.jkei.jvckenwood.com/api_gitweb/api/jpo.php", {
       params: {
-        method: "getSupplierGroup"
+        method: "getSupplierGroup",
+        usr: sessionStorage.getItem('poc_auth')
       }
     })
     .then((res) => res.data.data)
     .then((res) => {
-      // console.log("datasupplier",res);
+      console.log("datasupplier ================>", res);
       var toAppend = "";
       $.each(res, function (i, o) {
         // console.log("data supplier",o)
@@ -60,14 +62,15 @@ $(function () {
   // getData Input PO/Partnumber/TransmissionDate based on filter by
   function getFilter() {
     axios
-      .get("../api/jpo.php", {
+      .get("https://svr1.jkei.jvckenwood.com/api_gitweb/api/jpo.php", {
         params: {
           method: "getFilterBy",
           supplier: $("[name=supplier]").val(),
           from_date: $("[name=from_date]").val(),
           end_date: $("[name=end_date]").val(),
           filter_by: $("[name=filter_by]").val(),
-          select_po: $("[name=select_po]").val()
+          select_po: $("[name=select_po]").val(),
+          usr: sessionStorage.getItem('poc_auth')
         }
       })
       .then((res) => res.data.data)
@@ -107,14 +110,15 @@ $(function () {
     $("div.message").html(null);
 
     axios
-      .get("../api/jpo.php", {
+      .get("https://svr1.jkei.jvckenwood.com/api_gitweb/api/jpo.php", {
         params: {
           method: "getDataPoST",
           supplier: $("[name=supplier]").val(),
           from_date: $("[name=from_date]").val(),
           end_date: $("[name=end_date]").val(),
           select_po: $("[name=select_po]").val(),
-          filter_by: $("[name=filter_by]").val()
+          filter_by: $("[name=filter_by]").val(),
+          usr: sessionStorage.getItem('poc_auth')
         }
       })
       .then((res) => res.data)

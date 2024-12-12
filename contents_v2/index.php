@@ -1,5 +1,5 @@
 <?php require('layouts/header.php'); ?>
-<?php require('../contents/koneksi.php'); ?>
+<?//php require('../contents/koneksi.php'); ?>
 <style>
   div.dataTables_filter input {
     width: 400px;
@@ -49,9 +49,10 @@
   }
 </style>
 <?php
-
-$viewpo = $db->Execute("select top 1000 pono  from MAILPO ");
-$viewpartno = $db->Execute("select top 1000  partno from MAILPO");
+// print_r($_SESSION);
+// die();
+// $viewpo = $db->Execute("select top 1000 pono  from MAILPO ");
+// $viewpartno = $db->Execute("select top 1000  partno from MAILPO");
 
 if (isset($_SESSION['usr'])) {
   $myid = $_SESSION["usr"];
@@ -59,8 +60,9 @@ if (isset($_SESSION['usr'])) {
   echo "session time out";
 ?>
   <script>
-    window.location.href = '../index.php';
-  </script>
+    window.location.href = '../index.html';
+   </script>
+
 <?php
 }
 ?>
@@ -741,7 +743,7 @@ if (isset($_SESSION['usr'])) {
                     </table>`
     });
 
-    axios.get('../api/dashboard.php', {
+    axios.get('https://svr1.jkei.jvckenwood.com/api_gitweb/api/dashboard.php', {
         params: {
           method: "getDataFilter",
           supplier: $('[name=supplier]').val(),

@@ -2,7 +2,6 @@
 if (session_status() === PHP_SESSION_NONE) {
   session_start();
 }
-
 isset($_SESSION['usr']) ? $myid = $_SESSION["usr"] : header("location:../contents/login.html");
 $myid = $_SESSION["usr"];
 $mysecure = $_SESSION["usrsecure"];

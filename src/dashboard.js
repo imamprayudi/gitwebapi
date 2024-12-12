@@ -31,16 +31,18 @@ $(function (){
   });
 
   axios
-    .get("../api/dashboard.php", {
+    .get("https://svr1.jkei.jvckenwood.com/api_gitweb/api/dashboard.php", {
       params: {
-        method: "getMonthlyPoc"
+        method: "getMonthlyPoc",
+        usr: sessionStorage.getItem('poc_auth')
       }
     })
     .then((res) => res.data)
     .then((res) => {
       $(".placeholder-glow").hide();
       $(".load-holder").show();
-      console.log(res, "dashboard result ");
+      console.log({ sessionStorage });
+      console.log(res, "dashboard getMonthlyPoc =====================>");
 
       $('[name="monthly"]').text(res.monthly);
 
@@ -90,9 +92,10 @@ $(function (){
     });
   // getSupplierGroup
   axios
-    .get("../api/jpo.php", {
+    .get("https://svr1.jkei.jvckenwood.com/api_gitweb/api/jpo.php", {
       params: {
-        method: "getSupplierGroup"
+        method: "getSupplierGroup",
+        usr: sessionStorage.getItem('poc_auth')
       }
     })
     .then((res) => res.data.data)
@@ -120,14 +123,15 @@ $(function (){
     e.preventDefault();
 
     axios
-      .get("../api/dashboard.php", {
+      .get("https://svr1.jkei.jvckenwood.com/api_gitweb/api/dashboard.php", {
         params: {
           method: "getDataFilter",
           supplier: $("[name=supplier]").val(),
           from_date: $("[name=from_date]").val(),
           end_date: $("[name=end_date]").val(),
           select_po: $("[name=select_po]").val(),
-          filter_by: $("[name=filter_by]").val()
+          filter_by: $("[name=filter_by]").val(),
+          usr: sessionStorage.getItem('poc_auth')
         }
       })
       .then(function (response) {
@@ -223,9 +227,10 @@ $(function (){
 
 function fetchSummarySupplier() {
     axios
-      .get("../api/dashboard.php", {
+      .get("https://svr1.jkei.jvckenwood.com/api_gitweb/api/dashboard.php", {
         params: {
-          method: "getSummarySupplier"
+          method: "getSummarySupplier",
+          usr: sessionStorage.getItem('poc_auth')
         }
       })
       .then((res) => res.data)
@@ -574,14 +579,15 @@ function fetchSummarySupplier() {
 function getFilter(param) {
   console.log("change " + param);
   axios
-    .get("../api/jpo.php", {
+    .get("https://svr1.jkei.jvckenwood.com/api_gitweb/api/jpo.php", {
       params: {
         method: "getFilterBy",
         supplier: $("[name=supplier]").val(),
         from_date: $("[name=from_date]").val(),
         end_date: $("[name=end_date]").val(),
         filter_by: $("[name=filter_by]").val(),
-        select_po: $("[name=select_po]").val()
+        select_po: $("[name=select_po]").val(),
+        usr: sessionStorage.getItem('poc_auth')
       }
     })
     .then((res) => res.data.data)
