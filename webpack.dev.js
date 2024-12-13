@@ -13,7 +13,8 @@ module.exports = {
         jpo: './src/jpo.js',
         jpoc: './src/jpoc.js',
         jpo_detail: './src/jpo_detail.js',
-        jpoc_detail: './src/jpoc_detail.js'
+        jpoc_detail: './src/jpoc_detail.js',
+        jordbal: './src/jordbal.js'
         // utama:'./src/utama.js'
     },
     optimization: {

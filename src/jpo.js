@@ -18,6 +18,10 @@ window.Swal = Swal;
 // const Swal = require('sweetalert2');
 
 $(function () {
+  let authSession = JSON.parse(sessionStorage.getItem('poc_auth'));
+  if (!sessionStorage.getItem('poc_auth')) {
+    window.location.href = "../contents/login.html";
+  }
   $("div.message").html(null);
   if ($("div.loading").hasClass("d-none") == false)
     $("div.loading").addClass("d-none");
@@ -36,7 +40,7 @@ $(function () {
     .get("https://svr1.jkei.jvckenwood.com/api_gitweb/api/jpo.php", {
       params: {
         method: "getSupplierGroup",
-        usr: sessionStorage.getItem('poc_auth')
+        usr: authSession.usr
       }
     })
     .then((res) => res.data.data)
@@ -70,7 +74,7 @@ $(function () {
           end_date: $("[name=end_date]").val(),
           filter_by: $("[name=filter_by]").val(),
           select_po: $("[name=select_po]").val(),
-          usr: sessionStorage.getItem('poc_auth')
+          usr: authSession.usr
         }
       })
       .then((res) => res.data.data)
@@ -118,14 +122,14 @@ $(function () {
           end_date: $("[name=end_date]").val(),
           select_po: $("[name=select_po]").val(),
           filter_by: $("[name=filter_by]").val(),
-          usr: sessionStorage.getItem('poc_auth')
+          usr: authSession.usr
         }
       })
       .then((res) => res.data)
       .then((res) => {
 
-        console.log("dataaaaaaaaaaaaa", res);
-        console.log("dataaaaaaaaaaaaa", $("[name=filter_by]").val());
+        // console.log("dataaaaaaaaaaaaa", res);
+        // console.log("dataaaaaaaaaaaaa", $("[name=filter_by]").val());
         if (res.success == false) {
           renderMessage({
             html: res.message,

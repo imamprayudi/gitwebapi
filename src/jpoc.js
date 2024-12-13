@@ -14,6 +14,10 @@ window.Swal = Swal;
 // const Swal = require('sweetalert2');
 
 $(function () {
+  let authSession = JSON.parse(sessionStorage.getItem('poc_auth'));
+  if (!sessionStorage.getItem('poc_auth')) {
+    window.location.href = "../contents/login.html";
+  }
   $("div.message").html(null);
   if ($("div.loading").hasClass("d-none") == false)
     $("div.loading").addClass("d-none");
@@ -30,7 +34,8 @@ $(function () {
   axios
     .get("https://svr1.jkei.jvckenwood.com/api_gitweb/api/jpoc.php", {
       params: {
-        method: "getSupplierGroup"
+        method: "getSupplierGroup",
+        usr: authSession.usr
       }
     })
     .then((res) => res.data.data)
@@ -63,7 +68,8 @@ $(function () {
           from_date: $("[name=from_date]").val(),
           end_date: $("[name=end_date]").val(),
           filter_by: $("[name=filter_by]").val(),
-          select_poc: $("[name=select_poc]").val()
+          select_poc: $("[name=select_poc]").val(),
+          usr: authSession.usr
         }
       })
       .then((res) => res.data.data)
@@ -110,7 +116,8 @@ $(function () {
           from_date: $("[name=from_date]").val(),
           end_date: $("[name=end_date]").val(),
           select_poc: $("[name=select_poc]").val(),
-          filter_by: $("[name=filter_by]").val()
+          filter_by: $("[name=filter_by]").val(),
+          usr: authSession.usr
         }
       })
       .then((res) => res.data)

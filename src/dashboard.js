@@ -16,6 +16,10 @@ window.Swal = Swal;
 // const Swal = require('sweetalert2');
 
 $(function (){
+  let authSession = JSON.parse(sessionStorage.getItem('poc_auth'));
+  if (!sessionStorage.getItem('poc_auth')) {
+    window.location.href = "../contents/login.html";
+  }
   $(".load-holder").hide();
   $(".placeholder-glow").show();
 
@@ -34,15 +38,15 @@ $(function (){
     .get("https://svr1.jkei.jvckenwood.com/api_gitweb/api/dashboard.php", {
       params: {
         method: "getMonthlyPoc",
-        usr: sessionStorage.getItem('poc_auth')
+        usr: authSession.usr
       }
     })
     .then((res) => res.data)
     .then((res) => {
       $(".placeholder-glow").hide();
       $(".load-holder").show();
-      console.log({ sessionStorage });
-      console.log(res, "dashboard getMonthlyPoc =====================>");
+      // console.log({ sessionStorage });
+      // console.log(res, "dashboard getMonthlyPoc =====================>");
 
       $('[name="monthly"]').text(res.monthly);
 
@@ -91,16 +95,19 @@ $(function (){
       $("#po").text(res.po);
     });
   // getSupplierGroup
+  
+  // console.log("authSession", authSession);
+  // return;
   axios
     .get("https://svr1.jkei.jvckenwood.com/api_gitweb/api/jpo.php", {
       params: {
         method: "getSupplierGroup",
-        usr: sessionStorage.getItem('poc_auth')
+        usr: authSession.usr
       }
     })
     .then((res) => res.data.data)
     .then((res) => {
-      // console.log("datasupplier",res);
+      // console.log("datasupplier", res);
       var toAppend = "";
       $.each(res, function (i, o) {
         // console.log("data supplier",o)
@@ -117,7 +124,7 @@ $(function (){
     });
   // END Of getSupplierGroup
   // ------------------------
-  fetchSummarySupplier();
+  fetchSummarySupplier(authSession);
 
   $("form[name=filter-all]").submit((e) => {
     e.preventDefault();
@@ -131,13 +138,13 @@ $(function (){
           end_date: $("[name=end_date]").val(),
           select_po: $("[name=select_po]").val(),
           filter_by: $("[name=filter_by]").val(),
-          usr: sessionStorage.getItem('poc_auth')
+          usr: authSession.usr
         }
       })
       .then(function (response) {
-        console.log(response.message);
+        // console.log(response.message);
 
-        console.log("data_filter_all =>", response);
+        // console.log("data_filter_all =>", response);
         let tablerepeat = new DataTable("#repeat-po", {
           data: response.data.repeated,
           fixedHeader: true,
@@ -220,22 +227,22 @@ $(function (){
         //     }
       })
       .catch(function (error) {
-        console.log(error);
+        // console.log(error);
       });
   });
 });
 
-function fetchSummarySupplier() {
+function fetchSummarySupplier(authSession) {
     axios
       .get("https://svr1.jkei.jvckenwood.com/api_gitweb/api/dashboard.php", {
         params: {
           method: "getSummarySupplier",
-          usr: sessionStorage.getItem('poc_auth')
+          usr: authSession.usr
         }
       })
       .then((res) => res.data)
       .then((res) => {
-        console.log("SUMMARY DATA =>", res);
+        // console.log("SUMMARY DATA =>", res);
         let tableSumSuppPo = new DataTable("#table-summary-supplier-po", {
           data: res.data_po,
           fixedHeader: false,
@@ -553,7 +560,7 @@ function fetchSummarySupplier() {
         tableSumSuppPoc.columns.adjust().draw();
       })
       .catch((error) => {
-        console.log({ error });
+        // console.log({ error });
         let res = error.response;
         let data = res.data;
         let msg = data.message;
@@ -577,7 +584,7 @@ function fetchSummarySupplier() {
 
 
 function getFilter(param) {
-  console.log("change " + param);
+  // console.log("change " + param);
   axios
     .get("https://svr1.jkei.jvckenwood.com/api_gitweb/api/jpo.php", {
       params: {
@@ -587,12 +594,12 @@ function getFilter(param) {
         end_date: $("[name=end_date]").val(),
         filter_by: $("[name=filter_by]").val(),
         select_po: $("[name=select_po]").val(),
-        usr: sessionStorage.getItem('poc_auth')
+        usr: authSession.usr
       }
     })
     .then((res) => res.data.data)
     .then((res) => {
-      console.log(res);
+      // console.log(res);
       var toAppend = "";
       $.each(res, function (i, o) {
         toAppend += "<option>" + o + "</option>";

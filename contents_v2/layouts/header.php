@@ -280,7 +280,7 @@ $mymail = $_SESSION["usrmail"];
   <aside id="sidebar" class="sidebar">
     <ul class="sidebar-nav" id="sidebar-nav">
       <li class="nav-item">
-        <a href="#" class="nav-link"><small>Version 2.0.0-ALPHA-35</small></a>
+        <a href="#" class="nav-link"><small>Version 2.0.1</small></a>
       </li>
       <li class="nav-item">
         <a class="nav-link " href="../contents_v2/index.php">
@@ -294,7 +294,7 @@ $mymail = $_SESSION["usrmail"];
           <i class="bi bi-menu-button-wide"></i><span>Orders</span><i class="bi bi-chevron-down ms-auto"></i>
         </a>
         <ul id="order-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-          <li>
+          <!-- <li>
             <a href="../contents/jfc2y.php">
               <i class="bi bi-circle"></i><span>Forecast</span>
             </a>
@@ -308,7 +308,7 @@ $mymail = $_SESSION["usrmail"];
             <a href="../contents/jforecastarcy.php">
               <i class="bi bi-circle"></i><span>Forecast Archived OLD</span>
             </a>
-          </li>
+          </li> -->
           <li>
             <a href="../contents/jpo.php">
               <i class="bi bi-circle"></i><span>Purchase Order</span>
@@ -320,15 +320,15 @@ $mymail = $_SESSION["usrmail"];
             </a>
           </li>
           <li>
-            <a href="../contents/jordbal.php">
+            <a href="./jordbal.php">
               <i class="bi bi-circle"></i><span>Order Balance</span>
             </a>
           </li>
-          <li>
+          <!-- <li>
             <a href="../contents/jordbalnew.php">
               <i class="bi bi-circle"></i><span>Order Balance New</span>
             </a>
-          </li>
+          </li> -->
         </ul>
       </li><!-- End Order Nav -->
 
@@ -337,7 +337,7 @@ $mymail = $_SESSION["usrmail"];
           <i class="bi bi-menu-button-wide"></i><span>Schedules</span><i class="bi bi-chevron-down ms-auto"></i>
         </a>
         <ul id="schedule-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-          <li>
+          <!-- <li>
             <a href="../contents/jtds.php">
               <i class="bi bi-circle"></i><span>Time Delivery</span>
             </a>
@@ -346,7 +346,7 @@ $mymail = $_SESSION["usrmail"];
             <a href="../contents/jbps.php">
               <i class="bi bi-circle"></i><span>Big Parts</span>
             </a>
-          </li>
+          </li> -->
         </ul>
       </li><!-- End Schedule Nav -->
 
@@ -355,7 +355,7 @@ $mymail = $_SESSION["usrmail"];
           <i class="bi bi-menu-button-wide"></i><span>Materials</span><i class="bi bi-chevron-down ms-auto"></i>
         </a>
         <ul id="material-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-          <li>
+          <!-- <li>
             <a href="../contents/jmatsum.php">
               <i class="bi bi-circle"></i><span>Summary</span>
             </a>
@@ -369,7 +369,7 @@ $mymail = $_SESSION["usrmail"];
             <a href="../contents/jmatiss.php">
               <i class="bi bi-circle"></i><span>Issued Detail</span>
             </a>
-          </li>
+          </li> -->
         </ul>
       </li><!-- End Material Nav -->
 
@@ -378,7 +378,7 @@ $mymail = $_SESSION["usrmail"];
           <i class="bi bi-menu-button-wide"></i><span>Statement of Account</span><i class="bi bi-chevron-down ms-auto"></i>
         </a>
         <ul id="soa-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-          <li>
+          <!-- <li>
             <a href="../contents/jsoa.php">
               <i class="bi bi-circle"></i><span>Detail</span>
             </a>
@@ -392,7 +392,7 @@ $mymail = $_SESSION["usrmail"];
             <a href="../contents/jsoaend.php">
               <i class="bi bi-circle"></i><span>End</span>
             </a>
-          </li>
+          </li> -->
         </ul>
       </li><!-- End Soa Nav -->
 
@@ -401,7 +401,7 @@ $mymail = $_SESSION["usrmail"];
           <i class="bi bi-menu-button-wide"></i><span>Delivery</span><i class="bi bi-chevron-down ms-auto"></i>
         </a>
         <ul id="delivery-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-          <li>
+          <!-- <li>
             <a href="../contents/jverify.php">
               <i class="bi bi-circle"></i><span>Delivery Instruction</span>
             </a>
@@ -415,7 +415,7 @@ $mymail = $_SESSION["usrmail"];
             <a href="../suppqr/jmnl_barcode.php">
               <i class="bi bi-circle"></i><span>Print Barcode Label</span>
             </a>
-          </li>
+          </li> -->
         </ul>
       </li><!-- End Delivery Nav -->
       <!-- 
