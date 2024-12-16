@@ -122,7 +122,8 @@ $(function () {
           end_date: $("[name=end_date]").val(),
           select_po: $("[name=select_po]").val(),
           filter_by: $("[name=filter_by]").val(),
-          usr: authSession.usr
+          usr: authSession.usr,
+          usrsecure: authSession.usrsecure
         }
       })
       .then((res) => res.data)
