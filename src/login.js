@@ -20,7 +20,7 @@ function renderMessage(obj = { html: null, classes: '', icons: null }) {
     + '</div>';
 
   $('div.message').html(htmo);
-  console.log('Message Rendering', obj.html)
+  // console.log('Message Rendering', obj.html)
   return;
 }
 
@@ -51,9 +51,9 @@ $(function () {
         password: $("[name=password]").val()
       })
       .then(({ data }) => {
-        console.log("LOGIN", data)
+        // console.log("LOGIN", data)
         if (data.success) {
-          sessionStorage.setItem('poc_auth', JSON.stringify({
+          localStorage.setItem('poc_auth', JSON.stringify({
             usr: data.userid,
             usrsecure: data.usersecure,
             usrgroup: data.usergroup,
@@ -91,7 +91,7 @@ $(function () {
         // console.log("path", window.location.pathname)
       })
       .catch((error) => {
-        console.log("login catch ", error);
+        // console.log("login catch ", error);
         let res = error.response;
         let data = res.data;
         let msg = data.message;
@@ -146,5 +146,5 @@ $(function () {
 //         this.parameters = $(this);
 //     })
 
-//     console.log("form input", parameters)
+//   // console.log("form input", parameters)
 // });

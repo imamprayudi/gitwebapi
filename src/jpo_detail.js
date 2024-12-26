@@ -25,7 +25,7 @@ function renderMessage(obj = { html: null, classes: "", icons: null }) {
     "</div>";
 
   $("div.message").html(htmo);
-  console.log("Message Rendering", obj.html);
+  // console.log("Message Rendering", obj.html);
   return;
 }
 
@@ -63,7 +63,13 @@ var tablePODetail;
 //   echo "CONFIRMATION " . $mysecure;
 // }
 $(function () {
-  var usrsecure = $("#usrsecure").val();
+  let authSession = JSON.parse(localStorage.getItem('poc_auth'));
+  if (!localStorage.getItem('poc_auth')) {
+    window.location.href = "../contents/login.html";
+  }
+
+  var usrLogin = authSession.usr;
+  var usrsecure = authSession.usrsecure;
   $("div.message").html(null);
   var search = location.search.substring(1);
   var params = JSON.parse(
@@ -84,11 +90,14 @@ $(function () {
   // ---------------------------------------
 
   $("button#confirm_podtl").on("click", function (e) {
-    console.log("confirm_podtl START");
+    let authSession = JSON.parse(localStorage.getItem('poc_auth'));
+    let usr = authSession.usr;
+    let usrsecure = authSession.usrsecure;
+    // console.log("confirm_podtl START");
     e.preventDefault();
     var reason = $("#reason").val();
     var data = tablePODetail.rows({ selected: true }).data().toArray();
-    console.log("confirm_podtl DATA == ", data);
+    // console.log("confirm_podtl DATA == ", data);
     
     if (data.length == 0) {
       renderMessage({
@@ -96,22 +105,34 @@ $(function () {
         classes: "alert-danger",
         icons: "fa-solid fa-ban"
       });
-      console.log("Select PO First !");
+      // console.log("Select PO First !");
     } else {
       var query = getUrlVars();
-      console.log("confirm_podtl PARAM == ", query);
+      // console.log("confirm_podtl PARAM == ", query);
       // console.log("set query => ", query)
       // console.log("set param => ",data);
       $("div.loading").removeClass("d-none");
       let url = "https://svr1.jkei.jvckenwood.com/api_gitweb/api/jpo.php";
+
+
+      // console.log("CONFIRM", {
+      //   "url": url,
+      //   "reason": reason,
+      //   "data": data,
+      //   "query": query,
+      //   "usr": authSession.usr
+      //   "usersecure": authSession.usersecure
+      // });
+      // return;
+
       if (usrsecure == 0 || usrsecure == 1 || usrsecure == 2 || usrsecure == 5)
         renderMessage({
           html: "You can not confirm this PO / POC",
           classes: "alert-danger",
-          icons: "fa-solid fa-ban"
+          icons: "vdfa-solid fa-ban"
         });
 
-      console.log("confirm_podtl PROCESSING !");
+      // console.log("confirm_podtl PROCESSING !");
       // confirmed based on user secure
       let status = "CONFIRM";
       if (usrsecure == 3) {
@@ -124,32 +145,37 @@ $(function () {
         status = "CONFIRM PUT BACK";
       }
 
-      console.log("confirm_podtl STATUS !", {
-        status: status,
-        reason: reason,
-        usrsecure: usrsecure
-      });
-
+      // console.log("confirm_podtl STATUS !", {
+      //   method: "confirm",
+      //   data: data,
+      //   additional: query,
+      //   status: status,
+      //   reason: reason,
+      //   usrsecure: usrsecure,
+      //   usr: usr
+      // });
+      // return;
       axios
         .get(url, {
           params: {
-            method: "confirm",
+            method: "confirmReason",
             data: data,
             additional: query,
             status: status,
             reason: reason,
-            usrsecure: usrsecure
+            usrsecure: usrsecure,
+            usr: usr
           }
         })
         .then((res) => {
-          if ($.fn.dataTable.isDataTable("#table-purchase-order-detail")) {
-            $("#table-purchase-order-detail").DataTable().destroy();
-            $("#table-purchase-order-detail").empty();
-          }
-          // console.log("confirm By Supplier => ", res);
-          console.log("confirm_podtl DONE !", res);
-          $("div.message").html(null);
-          $("#reason").val("");
+          // if ($.fn.dataTable.isDataTable("#table-purchase-order-detail")) {
+          //   $("#table-purchase-order-detail").DataTable().destroy();
+          //   $("#table-purchase-order-detail").empty();
+          // }
+          console.log("confirm By Supplier => ", res);
+          // console.log("confirm_podtl DONE !", res);
+          // $("div.message").html(null);
+          // $("#reason").val("");
         })
         .catch((error) => {
           console.log({ error });
@@ -177,11 +203,14 @@ $(function () {
   });
 
   $("button#reject_podtl").on("click", function (e) {
-    console.log("reject_podtl START");
+    // console.log("reject_podtl START");
     e.preventDefault();
+    let authSession = JSON.parse(localStorage.getItem('poc_auth'));
+    let usr = authSession.usr;
+    let usrsecure = authSession.usrsecure;
     var reason = $("#reason").val();
     var data = tablePODetail.rows({ selected: true }).data().toArray();
-    console.log("reject_podtl DATA => ", data);
+    // console.log("reject_podtl DATA => ", data);
 
     if (data.length == 0) {
       renderMessage({
@@ -189,10 +218,10 @@ $(function () {
         classes: "alert-danger",
         icons: "fa-solid fa-ban"
       });
-      console.log("Select PO First !");
+      // console.log("Select PO First !");
     } else {
       var query = getUrlVars();
-      console.log("reject_podtl PARAM == ", query);
+      // console.log("reject_podtl PARAM == ", query);
       // console.log("set query => ", query);
       // console.log("set param => ",data);
       $("div.loading").removeClass("d-none");
@@ -204,7 +233,7 @@ $(function () {
           icons: "fa-solid fa-ban"
         });
 
-      console.log("reject_podtl PROCESSING !");
+      // console.log("reject_podtl PROCESSING !");
 
       let status = "REJECT";
       if (usrsecure == 3) {
@@ -216,15 +245,15 @@ $(function () {
       if (usrsecure == 6) {
         status = "REJECT PUT BACK";
       }
-      console.log("reject_podtl STATUS !", {
-        status: status,
-        reason: reason,
-        usrsecure: usrsecure
-      });
+      // console.log("reject_podtl STATUS !", {
+      //   status: status,
+      //   reason: reason,
+      //   usrsecure: usrsecure
+      // });
       axios
         .get(url, {
           params: {
-            method: "confirm",
+            method: "confirmReason",
             data: data,
             additional: query,
             status: status,
@@ -237,12 +266,12 @@ $(function () {
             $("#table-purchase-order-detail").DataTable().destroy();
             $("#table-purchase-order-detail").empty();
           }
-          console.log("reject_podtl DONE !", res);
+          // console.log("reject_podtl DONE !", res);
           $("div.message").html(null);
           $("#reason").val("");
         })
         .catch((error) => {
-          console.log("Error 230 jpo_detail", { error });
+          // console.log("Error 230 jpo_detail", { error });
           let res = error.response;
           let msg = error.message;
           // let msg = data.message;
@@ -319,7 +348,7 @@ function getDataPoDetail(params = null) {
     })
     // .then((res) => res.data)
     .then((res) => {
-      console.log("get data PO Detail", res);
+      // console.log("get data PO Detail", res);
       res = res.data;
       if (res.success == false) {
         renderMessage({
@@ -512,7 +541,7 @@ function getDataPoDetail(params = null) {
       }
     })
     .catch((error) => {
-      console.log("error get data po detail => ", { error });
+      // console.log("error get data po detail => ", { error });
       let msg = error.message;
       msg = msg || "Something went wrong";
 
@@ -538,7 +567,7 @@ function updateReadStatus(params = null) {
     })
     .then((res) => res.data)
     .then((res) => {
-      console.log("read status updating", res);
+      // console.log("read status updating", res);
       $(".pagetitle>h1").html("Purchase Order Detail - " + res.supplier);
 
       if (res.message == "not supplier") {

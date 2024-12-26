@@ -16,8 +16,8 @@ window.Swal = Swal;
 // const Swal = require('sweetalert2');
 
 $(function (){
-  let authSession = JSON.parse(sessionStorage.getItem('poc_auth'));
-  if (!sessionStorage.getItem('poc_auth')) {
+  let authSession = JSON.parse(localStorage.getItem('poc_auth'));
+  if (!localStorage.getItem('poc_auth')) {
     window.location.href = "../contents/login.html";
   }
   $(".load-holder").hide();
@@ -45,7 +45,7 @@ $(function (){
     .then((res) => {
       $(".placeholder-glow").hide();
       $(".load-holder").show();
-      // console.log({ sessionStorage });
+      // console.log({ localStorage });
       // console.log(res, "dashboard getMonthlyPoc =====================>");
 
       $('[name="monthly"]').text(res.monthly);

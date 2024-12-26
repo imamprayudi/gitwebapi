@@ -754,7 +754,7 @@ if (isset($_SESSION['usr'])) {
         }
       })
       .then(function(response) {
-        console.log("repeated_detail => ", response)
+      // console.log("repeated_detail => ", response)
 
         let repeate_detail_table = new DataTable('#repeated_detail', {
           data: response.data.pochange,

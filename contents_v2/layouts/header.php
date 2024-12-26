@@ -418,6 +418,13 @@ $mymail = $_SESSION["usrmail"];
           </li> -->
         </ul>
       </li><!-- End Delivery Nav -->
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="https://svr1.jkei.jvckenwood.com/api_gitweb/WI.pdf" target="_blank">
+          <i class="bi bi-question-circle"></i>
+          <span>Manual Instruction</span>
+        </a>
+      </li>
       <!-- 
       <li class="nav-heading">Pages</li>
 

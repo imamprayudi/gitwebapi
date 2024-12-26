@@ -27,7 +27,7 @@ function renderMessage(obj = { html: null, classes: "", icons: null }) {
     "</div>";
 
   $("div.message").html(htmo);
-  console.log("Message Rendering", obj.html);
+  // console.log("Message Rendering", obj.html);
   return;
 }
 
@@ -88,22 +88,22 @@ $(function () {
   // ---------------------------------------
 
   $("button#confirm_pochangedtl").on("click", function (e) {
-    console.log("confirm_pochangedtl START");
+    // console.log("confirm_pochangedtl START");
     e.preventDefault();
     var reason = $("#reason").val()
     // var usrsecure = $("#usrsecure").val()
     var data = tablePOChangeDetail.rows({ selected: true }).data().toArray();
-      console.log("confirm_pochangedtl DATA == " , data);
+    // console.log("confirm_pochangedtl DATA == " , data);
     if (data.length == 0) {
       renderMessage({
         html: "Select PO first !",
         classes: "alert-danger",
         icons: "fa-solid fa-ban"
       })
-      console.log("Select PO First !");
+      // console.log("Select PO First !");
     } else {
       var query = getUrlVars()
-      console.log("confirm_pochangedtl PARAM == ", query);
+      // console.log("confirm_pochangedtl PARAM == ", query);
       // console.log("set query => ", query)
       // console.log("set param => ",data);
       $("div.loading").removeClass("d-none")
@@ -115,7 +115,7 @@ $(function () {
         icons: "fa-solid fa-ban"
       });
 
-      console.log("confirm_pochangedtl PROCESSING !");
+      // console.log("confirm_pochangedtl PROCESSING !");
       // confirmed based on user secure
       let status = "CONFIRM"
       if(usrsecure == 3) {
@@ -130,11 +130,11 @@ $(function () {
         status = "CONFIRM PUT BACK";
       }
 
-      console.log("confirm_pochangedtl STATUS !", {
-        status: status,
-        reason: reason,
-        usrsecure: usrsecure
-      });
+      // console.log("confirm_pochangedtl STATUS !", {
+      //   status: status,
+      //   reason: reason,
+      //   usrsecure: usrsecure
+      // });
 
       axios
         .get(url, {
@@ -153,12 +153,12 @@ $(function () {
             $("#table-purchase-order-change-detail").empty();
           }
           // console.log("confirm By Supplier => ", res);
-          console.log("confirm_pochangedtl DONE !", res);
+          // console.log("confirm_pochangedtl DONE !", res);
           $("div.message").html(null);
           $("#reason").val('');
         })
         .catch((error) => {
-          console.log({ error });
+          // console.log({ error });
           let res = error.response;
           let data = res.data;
           let msg = data.message;
@@ -183,11 +183,11 @@ $(function () {
   });
   
   $("button#reject_pochangedtl").on("click", function (e) {
-    console.log("reject_pochangedtl START");
+    // console.log("reject_pochangedtl START");
     e.preventDefault();
     var reason = $("#reason").val();
     var data = tablePOChangeDetail.rows({ selected: true }).data().toArray();
-    console.log("reject_pochangedtl DATA => ", data);
+    // console.log("reject_pochangedtl DATA => ", data);
 
     if (data.length == 0) {
       renderMessage({
@@ -195,10 +195,10 @@ $(function () {
         classes: "alert-danger",
         icons: "fa-solid fa-ban"
       });
-      console.log("Select PO First !");
+      // console.log("Select PO First !");
     } else {
       var query = getUrlVars();
-      console.log("reject_pochangedtl PARAM == ", query);
+      // console.log("reject_pochangedtl PARAM == ", query);
       // console.log("set query => ", query);
       // console.log("set param => ",data);
       $("div.loading").removeClass("d-none");
@@ -210,7 +210,7 @@ $(function () {
           icons: "fa-solid fa-ban"
         });
 
-        console.log("reject_pochangedtl PROCESSING !");
+      // console.log("reject_pochangedtl PROCESSING !");
 
         let status = "REJECT";
         if (usrsecure == 3) {
@@ -222,11 +222,11 @@ $(function () {
         if (usrsecure == 6) {
           status = "REJECT PUT BACK";
         }
-        console.log("reject_pochangedtl STATUS !", {
-          status: status,
-          reason: reason,
-          usrsecure: usrsecure
-        });
+      // console.log("reject_pochangedtl STATUS !", {
+      //   status: status,
+      //   reason: reason,
+      //   usrsecure: usrsecure
+      // });
       axios
         .get(url, {
           params: {
@@ -243,12 +243,12 @@ $(function () {
             $("#table-purchase-order-change-detail").DataTable().destroy();
             $("#table-purchase-order-change-detail").empty();
           }
-          console.log("reject_pochangedtl DONE !", res);
+          // console.log("reject_pochangedtl DONE !", res);
           $("div.message").html(null);
           $("#reason").val("");
         })
         .catch((error) => {
-          console.log("Error 230 jpo_detail", { error });
+          // console.log("Error 230 jpo_detail", { error });
           let res = error.response;
           let msg = error.message;
           // let msg = data.message;
@@ -283,11 +283,11 @@ function renderPage(usrsecure) {
   if (usrsecure == 0 || usrsecure == 1 || usrsecure == 2 || usrsecure == 5)
   {
     $("#confirmation").hide();
-    console.log("Confirmation Hide");
+    // console.log("Confirmation Hide");
   }
   else{
     $("#confirmation").show();
-    console.log("Confirmation Show");
+    // console.log("Confirmation Show");
   }
   if (usrsecure == '3') {
     $("#confirm_title").html("SUPPLIER CONFIRMATION");
@@ -327,7 +327,7 @@ function getDataPoChangeDetail(params = null) {
     })
     // .then((res) => res.data)
     .then((res) => {
-      console.log("get data PO Change Detail", res);
+      // console.log("get data PO Change Detail", res);
       res = res.data;
       if (res.success == false) {
         renderMessage({
@@ -548,7 +548,7 @@ function getDataPoChangeDetail(params = null) {
       }
     })
     .catch((error) => {
-      console.log("error get data po detail => ", { error });
+      // console.log("error get data po detail => ", { error });
       let msg = error.message;
       msg = msg || "Something went wrong";
 
@@ -576,7 +576,7 @@ function updateReadStatus(params = null){
     })
     .then((res) => res.data)
     .then((res) => {
-      console.log("read status updating", res);
+      // console.log("read status updating", res);
       $(".pagetitle>h1").html("Purchase Order Detail - " + res.supplier);
 
       if (res.message == "not supplier") {
@@ -608,7 +608,7 @@ function updateReadStatus(params = null){
       }
     })
     .catch((error) => {
-      console.log({ error });
+      // console.log({ error });
       let res = error.response;
       let data = res.data;
       let msg = data.message;

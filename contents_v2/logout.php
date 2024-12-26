@@ -9,5 +9,6 @@ session_start();
 
 ?>
 <script>
+  localStorage.removeItem('poc_auth');
  window.location.href = '../index.html';
 </script>

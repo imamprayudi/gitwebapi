@@ -38,7 +38,7 @@
           <span class="visually-hidden">Loading...</span>
         </div>
       </div>
-      <input class="form-control" id="usrsecure" hidden=true value="<?= $mysecure ?>" />
+      <!-- <input class="form-control" id="usrsecure" hidden=true value="<?//= $mysecure ?>" /> -->
       <div class="row" id="confirmation">
         <div class="card recent-sales overflow-auto ml-3">
           <div class="card-header" id="confirm_title">

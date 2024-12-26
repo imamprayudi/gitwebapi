@@ -18,8 +18,8 @@ window.Swal = Swal;
 // const Swal = require('sweetalert2');
 
 $(function () {
-  let authSession = JSON.parse(sessionStorage.getItem('poc_auth'));
-  if (!sessionStorage.getItem('poc_auth')) {
+  let authSession = JSON.parse(localStorage.getItem('poc_auth'));
+  if (!localStorage.getItem('poc_auth')) {
     window.location.href = "../contents/login.html";
   }
   $("div.message").html(null);
@@ -45,7 +45,7 @@ $(function () {
     })
     .then((res) => res.data.data)
     .then((res) => {
-      console.log("datasupplier ================>", res);
+      // console.log("datasupplier ================>", res);
       var toAppend = "";
       $.each(res, function (i, o) {
         // console.log("data supplier",o)
@@ -79,7 +79,7 @@ $(function () {
       })
       .then((res) => res.data.data)
       .then((res) => {
-        console.log(res);
+        // console.log(res);
         if ($.fn.dataTable.isDataTable("#table-purchase-order-st")) {
           $("#table-purchase-order-st").DataTable().destroy();
           $("#table-purchase-order-st").empty();
@@ -171,11 +171,11 @@ $(function () {
                       "View Detail" +
                       "</a>"
                     );
-                    return (
-                      '<button id="btn-detail" class="btn btn-sm btn-info ml-1" onclick="po_detail(' +
-                      data +
-                      ')" >Detail</button>'
-                    );
+                    // return (
+                    //   '<button id="btn-detail" class="btn btn-sm btn-info ml-1" onclick="po_detail(' +
+                    //   data +
+                    //   ')" >Detail</button>'
+                    // );
                   }
                 },
                 { title: "Transmission Date", data: "transdate" },
@@ -442,7 +442,7 @@ $(function () {
         }
       })
       .catch((error) => {
-        console.log({ error });
+        // console.log({ error });
         let res = error.response;
         let data = res.data;
         let msg = data.message;

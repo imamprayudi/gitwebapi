@@ -14,8 +14,8 @@ window.Swal = Swal;
 // const Swal = require('sweetalert2');
 
 $(function () {
-  let authSession = JSON.parse(sessionStorage.getItem('poc_auth'));
-  if (!sessionStorage.getItem('poc_auth')) {
+  let authSession = JSON.parse(localStorage.getItem('poc_auth'));
+  if (!localStorage.getItem('poc_auth')) {
     window.location.href = "../contents/login.html";
   }
   $("div.message").html(null);
@@ -74,7 +74,7 @@ $(function () {
       })
       .then((res) => res.data.data)
       .then((res) => {
-        console.log(res);
+        // console.log(res);
         if ($.fn.dataTable.isDataTable("#table-purchase-order-change")) {
           $("#table-purchase-order-change").DataTable().destroy();
           $("#table-purchase-order-change").empty();
@@ -123,8 +123,8 @@ $(function () {
       })
       .then((res) => res.data)
       .then((res) => {
-        console.log("dataaaaaaaaaaaaa", res);
-        console.log("dataaaaaaaaaaaaa", $("[name=filter_by]").val());
+        // console.log("dataaaaaaaaaaaaa", res);
+        // console.log("dataaaaaaaaaaaaa", $("[name=filter_by]").val());
         if (res.success == false) {
           renderMessage({
             html: res.message,
@@ -436,7 +436,7 @@ $(function () {
         }
       })
       .catch((error) => {
-        console.log({ error });
+        // console.log({ error });
         let res = error.response;
         let data = res.data;
         let msg = data.message;
