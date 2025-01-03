@@ -67,7 +67,13 @@ var tablePOChangeDetail;
 //   echo "CONFIRMATION " . $mysecure;
 // }
 $(function () {
-  var usrsecure = $("#usrsecure").val();
+  let authSession = JSON.parse(localStorage.getItem('poc_auth'));
+  if (!localStorage.getItem('poc_auth')) {
+    window.location.href = "../contents/login.html";
+  }
+
+  var usrLogin = authSession.usr;
+  var usrsecure = authSession.usrsecure;
   $("div.message").html(null);
   var search = location.search.substring(1);
   var params = JSON.parse(

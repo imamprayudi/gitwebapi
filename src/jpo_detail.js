@@ -492,21 +492,21 @@ function getDataPoDetail(params = null) {
               }
             },
             { title: "TRANSMISSION NO", data: "idno" },
-            {
-              title: "PO STATUS",
-              data: "",
-              render: function (data, type, row) {
-                if (row.newdate > row.olddate) {
-                  return "<p class='text-danger fw-bold'> PO DOWN</p>";
-                } else if (row.newdate < row.olddate) {
-                  return "<p class='text-success fw-bold'> PO UP</p>";
-                } else if (row.newqty == 0) {
-                  return "<span class='text-secondary fw-bold'> PO CANCEL</span>";
-                } else if (row.newqty < row.oldqty) {
-                  return "<span class='text-warning fw-bold'> PO REDUCE</span>";
-                }
-              }
-            },
+            // {
+            //   title: "PO STATUS",
+            //   data: "",
+            //   render: function (data, type, row) {
+            //     if (row.newdate > row.olddate) {
+            //       return "<p class='text-danger fw-bold'> PO DOWN</p>";
+            //     } else if (row.newdate < row.olddate) {
+            //       return "<p class='text-success fw-bold'> PO UP</p>";
+            //     } else if (row.newqty == 0) {
+            //       return "<span class='text-secondary fw-bold'> PO CANCEL</span>";
+            //     } else if (row.newqty < row.oldqty) {
+            //       return "<span class='text-warning fw-bold'> PO REDUCE</span>";
+            //     }
+            //   }
+            // },
             { title: "PO NUMBER", data: "pono" },
             { title: "PART NUMBER", data: "partno" },
             { title: "PART NAME", data: "partname" },

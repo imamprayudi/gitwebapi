@@ -85,7 +85,7 @@
       <div class="row">
         <div class="alert alert-warning" role="alert">
           <i class="fa-solid fa-triangle-exclamation"></i>
-          *** The Purchase Order consider accepted if there is no reply within 5 days ***
+          *** The Purchase Order consider accepted if there is no reply within 3 days ***
         </div>
       </div>
       <div class="row">
