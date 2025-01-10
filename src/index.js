@@ -15,7 +15,7 @@ import '../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js';
 $(function () {
 
     // Filter By Selection
-    let allowFilter = ['PO No', 'Part No', 'Transmission Date'];
+    let allowFilter = ['Transmission Date', 'PO No', 'Part No'];
     let filterBy = '';
     $.each(allowFilter, function (i, o) {
         let trans = o.toLowerCase().toString().replace(' ', '');

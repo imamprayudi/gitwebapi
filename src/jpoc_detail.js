@@ -1,7 +1,6 @@
-import $ from "jquery";
-import axios from "axios";
-import select2 from "select2";
-
+const $ = require("jquery");
+const axios = require("axios");
+const select2 = require("select2");
 import Swal from "sweetalert2";
 
 import jszip from "jszip";
@@ -9,7 +8,7 @@ import DataTable from "datatables.net-dt";
 import "datatables.net-buttons-dt";
 import "datatables.net-buttons/js/buttons.html5.mjs";
 import "datatables.net-select-dt";
-import "../assets_v2/js/dataTables.checkboxes";
+// import "../assets_v2/js/dataTables.checkboxes";
 
 // window.Swal = Swal;
 // // CommonJS
@@ -74,6 +73,7 @@ $(function () {
 
   var usrLogin = authSession.usr;
   var usrsecure = authSession.usrsecure;
+  // alert(usrsecure);
   $("div.message").html(null);
   var search = location.search.substring(1);
   var params = JSON.parse(
@@ -94,6 +94,9 @@ $(function () {
   // ---------------------------------------
 
   $("button#confirm_pochangedtl").on("click", function (e) {
+    let authSession = JSON.parse(localStorage.getItem('poc_auth'));
+    let usr = authSession.usr;
+    let usrsecure = authSession.usrsecure;
     // console.log("confirm_pochangedtl START");
     e.preventDefault();
     var reason = $("#reason").val()
@@ -145,7 +148,7 @@ $(function () {
       axios
         .get(url, {
           params: {
-            method: "confirm",
+            method: "confirmReason",
             data: data,
             additional: query,
             status: status,
@@ -154,11 +157,11 @@ $(function () {
           }
         })
         .then((res) => {
-          if ($.fn.dataTable.isDataTable("#table-purchase-order-change-detail")) {
-            $("#table-purchase-order-change-detail").DataTable().destroy();
-            $("#table-purchase-order-change-detail").empty();
-          }
-          // console.log("confirm By Supplier => ", res);
+          // if ($.fn.dataTable.isDataTable("#table-purchase-order-change-detail")) {
+          //   $("#table-purchase-order-change-detail").DataTable().destroy();
+          //   $("#table-purchase-order-change-detail").empty();
+          // }
+          console.log("confirm By Supplier => ", res);
           // console.log("confirm_pochangedtl DONE !", res);
           $("div.message").html(null);
           $("#reason").val('');
@@ -190,14 +193,17 @@ $(function () {
   
   $("button#reject_pochangedtl").on("click", function (e) {
     // console.log("reject_pochangedtl START");
-    e.preventDefault();
+    e.preventDefault(); 
+    let authSession = JSON.parse(localStorage.getItem('poc_auth'));
+    let usr = authSession.usr;
+    let usrsecure = authSession.usrsecure;
     var reason = $("#reason").val();
     var data = tablePOChangeDetail.rows({ selected: true }).data().toArray();
     // console.log("reject_pochangedtl DATA => ", data);
 
     if (data.length == 0) {
       renderMessage({
-        html: "Select PO first !",
+        html: "Select POC first !",
         classes: "alert-danger",
         icons: "fa-solid fa-ban"
       });
@@ -236,7 +242,7 @@ $(function () {
       axios
         .get(url, {
           params: {
-            method: "confirm",
+            method: "confirmReason",
             data: data,
             additional: query,
             status: status,
@@ -287,14 +293,12 @@ $(function () {
 
 function renderPage(usrsecure) {
   if (usrsecure == 0 || usrsecure == 1 || usrsecure == 2 || usrsecure == 5)
-  {
+
     $("#confirmation").hide();
-    // console.log("Confirmation Hide");
-  }
-  else{
+  // console.log("Confirmation Hide");
     $("#confirmation").show();
     // console.log("Confirmation Show");
-  }
+
   if (usrsecure == '3') {
     $("#confirm_title").html("SUPPLIER CONFIRMATION");
     $("#confirm_pochangedtl").html("<i class='bi bi-check-circle'></i> CONFIRM");
@@ -351,10 +355,17 @@ function getDataPoChangeDetail(params = null) {
           retrieve: true,
           responsive: false,
           dom: "Bfrltip",
+          columnDefs: [
+            {
+              orderable: false,
+              className: "select-checkbox",
+              targets: 0
+            }
+          ],
           // order: [2, "desc"],
           select: {
             style: "multi",
-            selector: "tr"
+            // selector: "tr"
           },
           buttons: ["excelHtml5", "csvHtml5", "selectAll", "selectNone"],
           lengthMenu: [
@@ -366,7 +377,8 @@ function getDataPoChangeDetail(params = null) {
               title: "#",
               data: null,
               name: "cb_pochangedtl",
-              defaultContent: '<input type="checkbox" name="cb_pochangedtl">'
+              defaultContent: ""
+              // defaultContent: '<input type="checkbox" name="cb_pochangedtl">'
             },
             // {
             //   title: "Detail Comment",
@@ -614,7 +626,7 @@ function updateReadStatus(params = null){
       }
     })
     .catch((error) => {
-      // console.log({ error });
+      console.log({ error });
       let res = error.response;
       let data = res.data;
       let msg = data.message;

@@ -38,7 +38,8 @@ $(function (){
     .get("https://svr1.jkei.jvckenwood.com/api_gitweb/api/dashboard.php", {
       params: {
         method: "getMonthlyPoc",
-        usr: authSession.usr
+        usr: authSession.usr,
+        monthly: $('[name="monthly_poc"]').val()
       }
     })
     .then((res) => res.data)

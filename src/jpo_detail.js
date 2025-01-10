@@ -319,9 +319,7 @@ function renderPage(usrsecure) {
     );
   } else if (usrsecure == "6") {
     $("#confirm_title").html("MATERIAL CONTROL CONFIRMATION");
-    $("#confirm_podtl").html(
-      "<i class='bi bi-check-circle'></i> CONFIRM PUT BACK"
-    );
+    $("#confirm_podtl").html("<i class='bi bi-check-circle'></i> CONFIRM PUT BACK");
     $("#reject_podtl").html("<i class='bi bi-x-circle'></i> REJECT PUT BACK");
   } else {
     $("#confirm_title").html("CONFIRMATION " + usrsecure);

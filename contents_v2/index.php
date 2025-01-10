@@ -81,6 +81,11 @@ if (isset($_SESSION['usr'])) {
     <!-- Left side columns -->
     <div class="col-12">
       <div class="row">
+        <div class="card-body">
+          <input type="month" name="monthly_poc" class="form-control" id="monthly_poc" value="<?= date('Y-m') ?>">
+        </div>
+      </div>
+      <div class="row">
         <div class="col-sm-6 col-md-4 col-lg-4 col-xl">
           <div class="card info-card sales-card bg-secondary shadow load-holder">
             <div class="card-body">
