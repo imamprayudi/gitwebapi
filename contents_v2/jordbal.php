@@ -95,7 +95,7 @@
                   // while (!$rs->EOF) {
                   //   echo '<option value="' . $rs->fields[1] . '">' . $rs->fields[2] . ' - ' . $rs->fields[1] . '</option>';
                   //   $rs->MoveNext();
-                  // } 
+                  // }  
                   ?>
                 </select> -->
               </div>
