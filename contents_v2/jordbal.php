@@ -85,43 +85,33 @@
       <div class="row">
         <div class="card card-info">
           <div class="card-body">
-            <form method="post" action="jgetordbal.php" name="jfForm" class="row gx-3 gy-2 align-items-center">
+            <form method="post" action="jgetordbal.php" name="submit_ordbal" class="row gx-3 gy-2 align-items-center">
               <div class="col-6">
                 <label for="supplier" class="form-label">Supplier</label>
                   <select type="text" id="supplier" name="supplier" class="form-control"></select>
-                <!-- <label class="col-form-label" for="idsupp">Supplier</label>
-                <select class="form-select" name="supp" id="idsupp">
-                  <?php
-                  // while (!$rs->EOF) {
-                  //   echo '<option value="' . $rs->fields[1] . '">' . $rs->fields[2] . ' - ' . $rs->fields[1] . '</option>';
-                  //   $rs->MoveNext();
-                  // }  
-                  ?>
-                </select> -->
-              </div>
-              <div class="col-3">
-                <label class="col-form-label" for="idurutan">Order By</label>
-                <select class="form-select" name="urutan" id="idurutan">
-                  <option value="1">Part Number</option>
-                  <option value="2">Req Date</option>
-                  <option value="3">PO Number</option>
-                  <option value="4">Model</option>
-                  <option value="5">Issue Date</option>
-                </select>
               </div>
               <div class="col-2 mt-4">
                 <input type=submit value="Display" class="btn btn-info">
               </div>
             </form>
-            <?php
-            // $rs->Close();
-            // $db->Close();
-            ?>
-
-            <div id="fdata" class="table-responsive"></div>
-            <!-- <div id="sfcl">
-            </div> -->
-
+          </div>
+        </div>
+      </div>
+      <div class="row mb-3">
+        <div class="message"></div>
+      </div>
+      <div class="loading row col-12 mb-2 d-flex justify-content-center">
+        <div class="spinner-border text-info mt-2" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+      </div>
+      <div class="row">
+        <div class="card recent-sales overflow-auto ml-3">
+          <div class="card-header">
+            DATA ORDER BALANCE
+          </div>
+          <div class="card-body">
+            <table id="table-orderBalance" class="table table-striped ml-3 display responsive nowrap"></table>
           </div>
         </div>
       </div>
