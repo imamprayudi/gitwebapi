@@ -93,7 +93,8 @@ $(function () {
             fixedHeader: false,
             retrieve: true,
             responsive: false,
-            dom: "Bfrltip",
+            // dom: "Bfrltip",
+            dom: "Bfrl",
             order: [2, "desc"],
             select: {
               style: "multi",
@@ -105,6 +106,7 @@ $(function () {
               [25, 50, 75, "All"]
             ],
             columns: [
+              { title: "NO", data: "partnumber" },
               { title: "PART NUMBER", data: "partnumber" },
               { title: "PART NAME", data: "partname" },
               { title: "ORDER QTY", data: "orderqty" },
@@ -119,8 +121,20 @@ $(function () {
             ]
           });
           tableOrdBal.clear().draw();
+
           tableOrdBal.rows.add(res.data); // Add new data
+          tableOrdBal.on('order.dt search.dt', function () {
+            let i = 1;
+
+            tableOrdBal
+              .cells(null, 0, { search: 'applied', order: 'applied' })
+              .every(function (cell) {
+                this.data(i++);
+              });
+          })
+            .draw();
           tableOrdBal.columns.adjust().draw();
+
         }
       })
       .catch((error) => {

@@ -13,7 +13,8 @@ module.exports = {
         jpoc:'./src/jpoc.js',
         jpo_detail:'./src/jpo_detail.js',
         jpoc_detail: './src/jpoc_detail.js',
-        jordbal: './src/jordbal.js'
+        jordbal: './src/jordbal.js',
+        barcode_label: './src/barcode_label.js'
         // utama:'./src/utama.js'
     },
     optimization:{

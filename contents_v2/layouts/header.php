@@ -410,12 +410,12 @@ $mymail = $_SESSION["usrmail"];
             <a href="../suppqr/jstd_pack.php">
               <i class="bi bi-circle"></i><span>Std Packing Maintenance</span>
             </a>
-          </li>
+          </li> -->
           <li>
-            <a href="../suppqr/jmnl_barcode.php">
+            <a href="./print_barcode_label.php">
               <i class="bi bi-circle"></i><span>Print Barcode Label</span>
             </a>
-          </li> -->
+          </li>
         </ul>
       </li><!-- End Delivery Nav -->
 
