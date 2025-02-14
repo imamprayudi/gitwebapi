@@ -51,8 +51,38 @@ $(function () {
       });
       $("#supplier").find("option").remove().end().append(toAppend);
     });
+
+  axios
+    .get("https://svr1.jkei.jvckenwood.com/api_gitweb/api/controller.php", {
+      params: {
+        method: "TdsTransDate",
+        usr: authSession.usr
+      }
+    })
+    .then((res) => res.data.data)
+    .then((res) => {
+      console.log("transdate ================>", res);
+      // var toAppend = "";
+      // $.each(res, function (i, o) {
+      //   console.log("transdate", o)
+      //   toAppend +=
+      //     '<option value="' +
+      //     o.transdate +
+      //     '">' +
+      //     o.transdate +
+      //     "</option>";
+      // });
+      // $("#tgl").find("option").remove().end().append(toAppend);
+      var toAppend = '';
+      $.each(res, function (index, date) {
+        toAppend += '<option value="' + date + '">' + date + '</option>';
+      });
+      $('#tgl').append(toAppend);
+    });
+  // });
   // END Of getSupplierGroup
   // ------------------------
+
 
   $("form[name=submit_tds]").submit((e) => {
     e.preventDefault();
@@ -60,40 +90,81 @@ $(function () {
     $("div.loading").toggleClass("d-none");
     $("div.message").html(null);
 
-    axios
-      .get("https://svr1.jkei.jvckenwood.com/api_gitweb/api/jtds.php", {
-        params: {
-          method: "getDataTds",
-          supplier: $("[name=supplier]").val(),
-          // from_date: $("[name=from_date]").val(),
-          // end_date: $("[name=end_date]").val(),
-          // select_po: $("[name=select_po]").val(),
-          // filter_by: $("[name=filter_by]").val(),
-          usr: authSession.usr,
-          usrsecure: authSession.usrsecure
-        }
-      })
+    function initializeDataTable(header, data) {
+      // Buat array kolom untuk DataTable
+      const columns = Object.keys(header).map((key, index) => {
+        return {
+          title: header[key], // Judul kolom dari header
+          data: key.toLowerCase() // Properti data sesuai dengan kunci
+        };
+      });
+
+      // Inisialisasi DataTable
+      let tableTimeDelivery = new DataTable("#table-timeDelivery", {
+        data: data,
+        fixedHeader: false,
+        retrieve: true,
+        responsive: false,
+        dom: "Bfrl",
+        order: [2, "desc"],
+        select: {
+          style: "multi",
+          selector: "tr"
+        },
+        buttons: ["excelHtml5", "csvHtml5", "selectAll", "selectNone"],
+        lengthMenu: [
+          [25, 50, 75, -1],
+          [25, 50, 75, "All"]
+        ],
+        columns: columns
+      });
+
+      // Atur ulang nomor urut pada kolom pertama
+      tableTimeDelivery.on('order.dt search.dt', function () {
+        let i = 1;
+        tableTimeDelivery
+          .cells(null, 0, { search: 'applied', order: 'applied' })
+          .every(function (cell) {
+            this.data(i++);
+          });
+      }).draw();
+
+      tableTimeDelivery.columns.adjust().draw();
+    }
+    axios.get("https://svr1.jkei.jvckenwood.com/api_gitweb/api/controller.php", {
+      params: {
+        method: "getDataTimeDelivery",
+        supplier: $("[name=supplier]").val(),
+        tgl: $("[name=tgl]").val(),
+        usr: authSession.usr,
+        usrsecure: authSession.usrsecure
+      }
+    })
       .then((res) => res.data)
       .then((res) => {
+        console.log(res)
+        // return;
 
-        console.log("data Time Delivery :::: ", res);
-        // console.log("dataaaaaaaaaaaaa", $("[name=filter_by]").val());
-        if (res.success == false) {
-          renderMessage({
-            html: res.message,
-            classes: "alert-warning",
-            icons: "fa-solid fa-triangle-exclamation"
+        if (res.success) {
+
+          // initializeDataTable(res.header.header[0], res.data);
+          let header = res.header[0];
+          let data = res.data;
+          // console.log(header);
+          // return;
+          const columns = Object.keys(header).map((key, index) => {
+            return {
+              title: header[key], // Judul kolom dari header
+              data: key.toLowerCase() // Properti data sesuai dengan kunci
+            };
           });
-          return;
-        }
 
-        if (res.success == true) {
+          // Inisialisasi DataTable
           let tableTimeDelivery = new DataTable("#table-timeDelivery", {
-            data: res.data,
+            data: data,
             fixedHeader: false,
             retrieve: true,
             responsive: false,
-            // dom: "Bfrltip",
             dom: "Bfrl",
             order: [2, "desc"],
             select: {
@@ -105,60 +176,133 @@ $(function () {
               [25, 50, 75, -1],
               [25, 50, 75, "All"]
             ],
-            columns: [
-              { title: "NO", data: "partnumber" },
-              { title: "PART NUMBER", data: "partnumber" },
-              { title: "PART NAME", data: "partname" },
-              { title: "ORDER QTY", data: "orderqty" },
-              { title: "REQUIRED DATE", data: "reqdate" },
-              { title: "PO NUMBER", data: "ponumber" },
-              { title: "SQ", data: "posq" },
-              { title: "ORDER BALANCE", data: "timeDelivery" },
-              { title: "SUPP REST", data: "supprest" },
-              { title: "MODEL", data: "model" },
-              { title: "ISSUE DATE", data: "issuedate" },
-              { title: "PO TYPE", data: "potype" },
-            ]
+            columns: columns
           });
-          tableTimeDelivery.clear().draw();
 
-          tableTimeDelivery.rows.add(res.data); // Add new data
+          // Atur ulang nomor urut pada kolom pertama
           tableTimeDelivery.on('order.dt search.dt', function () {
             let i = 1;
-
             tableTimeDelivery
               .cells(null, 0, { search: 'applied', order: 'applied' })
               .every(function (cell) {
                 this.data(i++);
               });
-          })
-            .draw();
-          tableTimeDelivery.columns.adjust().draw();
+          }).draw();
 
+          tableTimeDelivery.columns.adjust().draw();
+        } else {
+          renderMessage({
+            html: res.message,
+            classes: "alert-warning",
+            icons: "fa-solid fa-triangle-exclamation"
+          });
         }
       })
       .catch((error) => {
-        console.log({ error });
-        let res = error.response;
-        let data = res.data;
-        let msg = data.message;
-
-        msg = msg || "Something went wrong";
-
+        console.error("Terjadi kesalahan:", error);
         renderMessage({
-          html: msg,
+          html: "Something went wrong",
           classes: "alert-danger",
           icons: "fa-solid fa-ban"
         });
-
-        $("#userid").focus();
-        $("div.loading").addClass("d-none");
-        $("#btn_login").attr("disabled", false);
       })
       .finally(() => {
         $("div.loading").addClass("d-none");
         $("#submit_btn").attr("disabled", false);
       });
+
+
+
+    // axios
+    //   .get("https://svr1.jkei.jvckenwood.com/api_gitweb/api/controller.php", {
+    //     params: {
+    //       method: "getDataTimeDelivery",
+    //       supplier: $("[name=supplier]").val(),
+    //       tgl: $("[name=tgl]").val(),
+    //       // end_date: $("[name=end_date]").val(),
+    //       // select_po: $("[name=select_po]").val(),
+    //       // filter_by: $("[name=filter_by]").val(),
+    //       usr: authSession.usr,
+    //       usrsecure: authSession.usrsecure
+    //     }
+    //   })
+    //   .then((res) => res.data)
+    //   .then((res) => {
+
+    //     console.log("data Time Delivery :::: ", res);
+    //     // console.log("dataaaaaaaaaaaaa", $("[name=filter_by]").val());
+    //     if (res.success == false) {
+    //       renderMessage({
+    //         html: res.message,
+    //         classes: "alert-warning",
+    //         icons: "fa-solid fa-triangle-exclamation"
+    //       });
+    //       return;
+    //     }
+
+    //     if (res.success == true) {
+    //       let tableTimeDelivery = new DataTable("#table-timeDelivery", {
+    //         data: res.data,
+    //         fixedHeader: false,
+    //         retrieve: true,
+    //         responsive: false,
+    //         // dom: "Bfrltip",
+    //         dom: "Bfrl",
+    //         order: [2, "desc"],
+    //         select: {
+    //           style: "multi",
+    //           selector: "tr"
+    //         },
+    //         buttons: ["excelHtml5", "csvHtml5", "selectAll", "selectNone"],
+    //         lengthMenu: [
+    //           [25, 50, 75, -1],
+    //           [25, 50, 75, "All"]
+    //         ],
+    //         columns: [
+    //           { title: "NO", data: "partno" },
+    //           { title: "PART NUMBER", data: "partno" },
+
+    //         ]
+    //       });
+    //       tableTimeDelivery.clear().draw();
+
+    //       tableTimeDelivery.rows.add(res.data); // Add new data
+    //       tableTimeDelivery.on('order.dt search.dt', function () {
+    //         let i = 1;
+
+    //         tableTimeDelivery
+    //           .cells(null, 0, { search: 'applied', order: 'applied' })
+    //           .every(function (cell) {
+    //             this.data(i++);
+    //           });
+    //       })
+    //         .draw();
+    //       tableTimeDelivery.columns.adjust().draw();
+
+    //     }
+    //   })
+    //   .catch((error) => {
+    //     console.log({ error });
+    //     let res = error.response;
+    //     let data = res.data;
+    //     let msg = data.message;
+
+    //     msg = msg || "Something went wrong";
+
+    //     renderMessage({
+    //       html: msg,
+    //       classes: "alert-danger",
+    //       icons: "fa-solid fa-ban"
+    //     });
+
+    //     $("#userid").focus();
+    //     $("div.loading").addClass("d-none");
+    //     $("#btn_login").attr("disabled", false);
+    //   })
+    //   .finally(() => {
+    //     $("div.loading").addClass("d-none");
+    //     $("#submit_btn").attr("disabled", false);
+    //   });
   });
 
 });

@@ -15,7 +15,9 @@ module.exports = {
         jpo_detail: './src/jpo_detail.js',
         jpoc_detail: './src/jpoc_detail.js',
         jordbal: './src/jordbal.js',
-        barcode_label: './src/barcode_label.js'
+        barcode_label: './src/barcode_label.js',
+        jtds: './src/jtds.js',
+        jbps: './src/jbps.js'
         // utama:'./src/utama.js'
     },
     optimization: {

@@ -27,10 +27,14 @@
       <div class="row">
         <div class="card card-info">
           <div class="card-body">
-            <form method="post" action="jgetordbal.php" name="submit_ordbal" class="row gx-3 gy-2 align-items-center">
+            <form method="post" action="jgetordbal.php" name="submit_tds" class="row gx-3 gy-2 align-items-center">
               <div class="col-6">
                 <label for="supplier" class="form-label">Supplier</label>
                   <select type="text" id="supplier" name="supplier" class="form-control"></select>
+              </div>
+              <div class="col-3">
+                <label for="from_date" class="form-label">Transmission Date</label>
+                <select type="text" id="tgl" name="tgl" class="form-control"></select>
               </div>
               <div class="col-2 mt-4">
                 <input type=submit value="Display" class="btn btn-info">
