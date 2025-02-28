@@ -294,8 +294,8 @@ $mymail = $_SESSION["usrmail"];
           <i class="bi bi-menu-button-wide"></i><span>Orders</span><i class="bi bi-chevron-down ms-auto"></i>
         </a>
         <ul id="order-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-          <!-- <li>
-            <a href="../contents/jfc2y.php">
+          <li>
+            <a href="./jfc2y.php">
               <i class="bi bi-circle"></i><span>Forecast</span>
             </a>
           </li>
@@ -308,7 +308,7 @@ $mymail = $_SESSION["usrmail"];
             <a href="../contents/jforecastarcy.php">
               <i class="bi bi-circle"></i><span>Forecast Archived OLD</span>
             </a>
-          </li> -->
+          </li>
           <li>
             <a href="../contents/jpo.php">
               <i class="bi bi-circle"></i><span>Purchase Order</span>
