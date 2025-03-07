@@ -25,7 +25,7 @@ $(function () {
   $("div.message").html(null);
   if ($("div.loading").hasClass("d-none") == false)
     $("div.loading").addClass("d-none");
-  $("#submit_bps").attr("disabled", false);
+  $("#submit_forecast").attr("disabled", false);
 
   axios
     .get("https://svr1.jkei.jvckenwood.com/api_gitweb/api/jordbal.php", {
@@ -52,30 +52,13 @@ $(function () {
       $("#supplier").find("option").remove().end().append(toAppend);
     });
 
-  axios
-    .get("https://svr1.jkei.jvckenwood.com/api_gitweb/api/controller.php", {
-      params: {
-        method: "BpsTransDate",
-        usr: authSession.usr
-      }
-    })
-    .then((res) => res.data.data)
-    .then((res) => {
-      console.log("transdate ================>", res);
-      var toAppend = '';
-      $.each(res, function (index, date) {
-        toAppend += '<option value="' + date + '">' + date + '</option>';
-      });
-      $('#tgl').append(toAppend);
-    });
-  // });
   // END Of getSupplierGroup
   // ------------------------
 
 
-  $("form[name=submit_bps]").submit((e) => {
+  $("form[name=submit_fcy]").submit((e) => {
     e.preventDefault();
-    $("#submit_bps").attr("disabled", true);
+    $("#submit_fcy").attr("disabled", true);
     $("div.loading").toggleClass("d-none");
     $("div.message").html(null);
 
@@ -89,7 +72,7 @@ $(function () {
       });
 
       // Inisialisasi DataTable
-      let tableBPS = new DataTable("#table-BPS", {
+      let tableForecast = new DataTable("#table-forecast", {
         data: data,
         fixedHeader: false,
         retrieve: true,
@@ -109,22 +92,22 @@ $(function () {
       });
 
       // Atur ulang nomor urut pada kolom pertama
-      tableBPS.on('order.dt search.dt', function () {
+      tableForecast.on('order.dt search.dt', function () {
         let i = 1;
-        tableBPS
+        tableForecast
           .cells(null, 0, { search: 'applied', order: 'applied' })
           .every(function (cell) {
             this.data(i++);
           });
       }).draw();
 
-      tableBPS.columns.adjust().draw();
+      tableForecast.columns.adjust().draw();
     }
     axios.get("https://svr1.jkei.jvckenwood.com/api_gitweb/api/controller.php", {
       params: {
-        method: "getDataBPS",
+        method: "getDataForecast2y",
         supplier: $("[name=supplier]").val(),
-        tgl: $("[name=tgl]").val(),
+        tipe: $("[name=tipe]").val(),
         usr: authSession.usr,
         usrsecure: authSession.usrsecure
       }
@@ -149,11 +132,12 @@ $(function () {
           });
 
           // Inisialisasi DataTable
-          let tableBPS = new DataTable("#table-BPS", {
+          let tableForecast = new DataTable("#table-forecast", {
             data: data,
             fixedHeader: false,
             retrieve: true,
             responsive: false,
+            linebreaks: true,
             dom: "Bfrl",
             order: [2, "desc"],
             select: {
@@ -169,16 +153,16 @@ $(function () {
           });
 
           // Atur ulang nomor urut pada kolom pertama
-          tableBPS.on('order.dt search.dt', function () {
+          tableForecast.on('order.dt search.dt', function () {
             let i = 1;
-            tableBPS
+            tableForecast
               .cells(null, 0, { search: 'applied', order: 'applied' })
               .every(function (cell) {
                 this.data(i++);
               });
           }).draw();
 
-          tableBPS.columns.adjust().draw();
+          tableForecast.columns.adjust().draw();
         } else {
           renderMessage({
             html: res.message,
@@ -197,101 +181,11 @@ $(function () {
       })
       .finally(() => {
         $("div.loading").addClass("d-none");
-        $("#submit_bps").attr("disabled", false);
+        $("#submit_forecast").attr("disabled", false);
       });
 
 
 
-    // axios
-    //   .get("https://svr1.jkei.jvckenwood.com/api_gitweb/api/controller.php", {
-    //     params: {
-    //       method: "getDataBPS",
-    //       supplier: $("[name=supplier]").val(),
-    //       tgl: $("[name=tgl]").val(),
-    //       // end_date: $("[name=end_date]").val(),
-    //       // select_po: $("[name=select_po]").val(),
-    //       // filter_by: $("[name=filter_by]").val(),
-    //       usr: authSession.usr,
-    //       usrsecure: authSession.usrsecure
-    //     }
-    //   })
-    //   .then((res) => res.data)
-    //   .then((res) => {
-
-    //     console.log("data Time Delivery :::: ", res);
-    //     // console.log("dataaaaaaaaaaaaa", $("[name=filter_by]").val());
-    //     if (res.success == false) {
-    //       renderMessage({
-    //         html: res.message,
-    //         classes: "alert-warning",
-    //         icons: "fa-solid fa-triangle-exclamation"
-    //       });
-    //       return;
-    //     }
-
-    //     if (res.success == true) {
-    //       let tableTimeDelivery = new DataTable("#table-timeDelivery", {
-    //         data: res.data,
-    //         fixedHeader: false,
-    //         retrieve: true,
-    //         responsive: false,
-    //         // dom: "Bfrltip",
-    //         dom: "Bfrl",
-    //         order: [2, "desc"],
-    //         select: {
-    //           style: "multi",
-    //           selector: "tr"
-    //         },
-    //         buttons: ["excelHtml5", "csvHtml5", "selectAll", "selectNone"],
-    //         lengthMenu: [
-    //           [25, 50, 75, -1],
-    //           [25, 50, 75, "All"]
-    //         ],
-    //         columns: [
-    //           { title: "NO", data: "partno" },
-    //           { title: "PART NUMBER", data: "partno" },
-
-    //         ]
-    //       });
-    //       tableTimeDelivery.clear().draw();
-
-    //       tableTimeDelivery.rows.add(res.data); // Add new data
-    //       tableTimeDelivery.on('order.dt search.dt', function () {
-    //         let i = 1;
-
-    //         tableTimeDelivery
-    //           .cells(null, 0, { search: 'applied', order: 'applied' })
-    //           .every(function (cell) {
-    //             this.data(i++);
-    //           });
-    //       })
-    //         .draw();
-    //       tableTimeDelivery.columns.adjust().draw();
-
-    //     }
-    //   })
-    //   .catch((error) => {
-    //     console.log({ error });
-    //     let res = error.response;
-    //     let data = res.data;
-    //     let msg = data.message;
-
-    //     msg = msg || "Something went wrong";
-
-    //     renderMessage({
-    //       html: msg,
-    //       classes: "alert-danger",
-    //       icons: "fa-solid fa-ban"
-    //     });
-
-    //     $("#userid").focus();
-    //     $("div.loading").addClass("d-none");
-    //     $("#btn_login").attr("disabled", false);
-    //   })
-    //   .finally(() => {
-    //     $("div.loading").addClass("d-none");
-    //     $("#submit_bps").attr("disabled", false);
-    //   });
   });
 
 });

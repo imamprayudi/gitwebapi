@@ -27,7 +27,7 @@
       <div class="row">
         <div class="card card-info">
           <div class="card-body">
-            <form method="post" action="jgetordbal.php" name="submit_tds" class="row gx-3 gy-2 align-items-center">
+            <form method="post" name="submit_tds" class="row gx-3 gy-2 align-items-center">
               <div class="col-6">
                 <label for="supplier" class="form-label">Supplier</label>
                   <select type="text" id="supplier" name="supplier" class="form-control"></select>

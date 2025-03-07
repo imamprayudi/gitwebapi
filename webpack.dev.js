@@ -17,7 +17,8 @@ module.exports = {
         jordbal: './src/jordbal.js',
         barcode_label: './src/barcode_label.js',
         jtds: './src/jtds.js',
-        jbps: './src/jbps.js'
+        jbps: './src/jbps.js',
+        jforecast: './src/jforecast.js'
         // utama:'./src/utama.js'
     },
     optimization: {
