@@ -4,7 +4,7 @@ import $ from 'jquery/dist/jquery.slim.js';
 import css from './style.css';
 import { main } from '../assets_v2/js/nice_main.js';
 import { fontawesome } from '@fortawesome/fontawesome-free/js/fontawesome.js';
-import { validate } from '../template/utama/assets/vendor/php-email-form/validate';
+// import { validate } from '../template/utama/assets/vendor/php-email-form/validate';
 
 import { select2 } from '../node_modules/select2/dist/js/select2.full.min.js';
 import { Swal } from '../node_modules/sweetalert2/dist/sweetalert2.min.js';

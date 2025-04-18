@@ -2,9 +2,8 @@
 <html>
 
 <head>
-  <title>Forecast 2 Years Version</title>
+  <title>Forecast Archived</title>
   <link href="../assets/css/styles.css" rel="stylesheet" type="text/css">
- 
 </head>
 
 <body>
@@ -17,12 +16,12 @@
   <main id="main" class="main">
 
     <div class="pagetitle">
-      <h1>Forecast</h1>
+      <h1>Forecast Archived</h1>
       <nav>
         <ol class="breadcrumb">
           <li class="breadcrumb-item"><a href="index.php">Home</a></li>
           <li class="breadcrumb-item"><a href="#">Orders</a></li>
-          <li class="breadcrumb-item active">Forecast</li>
+          <li class="breadcrumb-item active">Forecast Archived</li>
         </ol>
       </nav>
     </div><!-- End Page Title -->
@@ -31,7 +30,7 @@
       <div class="row">
         <div class="card card-info">
           <div class="card-body">
-            <form name="submit_fcy" class="row gx-3 gy-2 align-items-center">
+            <form name="submit_fcyArc" class="row gx-3 gy-2 align-items-center">
               <div class="col-6">
                 <label for="supplier" class="form-label">Supplier</label>
                   <select type="text" id="supplier" name="supplier" class="form-control"></select>
@@ -44,7 +43,7 @@
                 </select>
               </div>
               <div class="col-2 mt-4">
-                <input type=submit value="Display" class="btn btn-info" id="submit_fcy">
+                <input type=submit value="Display" class="btn btn-info" id="submit_forecastArc">
               </div>
             </form>
 
@@ -62,10 +61,10 @@
       <div class="row"> <!-- sfcl -->
         <div class="card recent-sales overflow-auto ml-3">
           <div class="card-header">
-            FORECAST 2 YEARS
+            FORECAST ARCHIVED
           </div>
           <div class="card-body">
-            <table id="table-forecast" class="table table-striped ml-3 display responsive nowrap"></table>
+            <table id="table-forecastArc" class="table table-striped ml-3 display responsive nowrap"></table>
           </div>
         </div>
       </div>

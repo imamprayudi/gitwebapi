@@ -181,7 +181,138 @@ $(function () {
       })
       .finally(() => {
         $("div.loading").addClass("d-none");
-        $("#submit_forecast").attr("disabled", false);
+        $("#submit_fcy").attr("disabled", false);
+      });
+
+
+
+  });
+  $("form[name=submit_fcyArc]").submit((e) => {
+    e.preventDefault();
+    $("#submit_fcyArc").attr("disabled", true);
+    $("div.loading").toggleClass("d-none");
+    $("div.message").html(null);
+
+    function initializeDataTable(header, data) {
+      // Buat array kolom untuk DataTable
+      const columns = Object.keys(header).map((key, index) => {
+        return {
+          title: header[key], // Judul kolom dari header
+          dataArc: key.toLowerCase() // Properti data sesuai dengan kunci
+        };
+      });
+
+      // Inisialisasi DataTable
+      let tableForecastArc = new DataTable("#table-forecastArc", {
+        data: dataArc,
+        fixedHeader: false,
+        retrieve: true,
+        responsive: false,
+        dom: "Bfrl",
+        order: [2, "desc"],
+        select: {
+          style: "multi",
+          selector: "tr"
+        },
+        buttons: ["excelHtml5", "csvHtml5", "selectAll", "selectNone"],
+        lengthMenu: [
+          [25, 50, 75, -1],
+          [25, 50, 75, "All"]
+        ],
+        columns: columns
+      });
+
+      // Atur ulang nomor urut pada kolom pertama
+      tableForecastArc.on('order.dt search.dt', function () {
+        let i = 1;
+        tableForecastArc
+          .cells(null, 0, { search: 'applied', order: 'applied' })
+          .every(function (cell) {
+            this.data(i++);
+          });
+      }).draw();
+
+      tableForecastArc.columns.adjust().draw();
+    }
+    axios.get("https://svr1.jkei.jvckenwood.com/api_gitweb/api/controller.php", {
+      params: {
+        method: "getDataForecast2yArc",
+        supplier: $("[name=supplier]").val(),
+        tipe: $("[name=tipe]").val(),
+        usr: authSession.usr,
+        usrsecure: authSession.usrsecure
+      }
+    })
+      .then((res) => res.data)
+      .then((res) => {
+        console.log(res)
+        // return;
+
+        if (res.success) {
+
+          // initializeDataTable(res.header.header[0], res.data);
+          let header = res.header[0];
+          let dataArc = res.data;
+          // console.log(header);
+          // return;
+          const columns = Object.keys(header).map((key, index) => {
+            return {
+              title: header[key], // Judul kolom dari header
+              data: key.toLowerCase() // Properti data sesuai dengan kunci
+            };
+          });
+
+          // Inisialisasi DataTable
+          let tableForecastArc = new DataTable("#table-forecastArc", {
+            data: dataArc,
+            fixedHeader: false,
+            retrieve: true,
+            responsive: false,
+            linebreaks: true,
+            dom: "Bfrl",
+            order: [2, "desc"],
+            select: {
+              style: "multi",
+              selector: "tr"
+            },
+            buttons: ["excelHtml5", "csvHtml5", "selectAll", "selectNone"],
+            lengthMenu: [
+              [25, 50, 75, -1],
+              [25, 50, 75, "All"]
+            ],
+            columns: columns
+          });
+
+          // Atur ulang nomor urut pada kolom pertama
+          tableForecastArc.on('order.dt search.dt', function () {
+            let i = 1;
+            tableForecastArc
+              .cells(null, 0, { search: 'applied', order: 'applied' })
+              .every(function (cell) {
+                this.data(i++);
+              });
+          }).draw();
+
+          tableForecastArc.columns.adjust().draw();
+        } else {
+          renderMessage({
+            html: res.message,
+            classes: "alert-warning",
+            icons: "fa-solid fa-triangle-exclamation"
+          });
+        }
+      })
+      .catch((error) => {
+        console.error("Terjadi kesalahan:", error);
+        renderMessage({
+          html: "Something went wrong",
+          classes: "alert-danger",
+          icons: "fa-solid fa-ban"
+        });
+      })
+      .finally(() => {
+        $("div.loading").addClass("d-none");
+        $("#submit_fcyArc").attr("disabled", false);
       });
 
 

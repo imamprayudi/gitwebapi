@@ -300,22 +300,22 @@ $mymail = $_SESSION["usrmail"];
             </a>
           </li>
           <li>
-            <a href="../contents/jfc2yarc.php">
+            <a href="./jfc2yarc.php">
               <i class="bi bi-circle"></i><span>Forecast Archived</span>
             </a>
           </li>
           <li>
-            <a href="../contents/jforecastarcy.php">
+            <a href="./jforecastarcy.php">
               <i class="bi bi-circle"></i><span>Forecast Archived OLD</span>
             </a>
           </li>
           <li>
-            <a href="../contents/jpo.php">
+            <a href="./jpo.php">
               <i class="bi bi-circle"></i><span>Purchase Order</span>
             </a>
           </li>
           <li>
-            <a href="../contents/jpoc.php">
+            <a href="./jpoc.php">
               <i class="bi bi-circle"></i><span>Purchase Order Change</span>
             </a>
           </li>
