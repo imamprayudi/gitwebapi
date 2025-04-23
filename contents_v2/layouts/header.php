@@ -295,17 +295,17 @@ $mymail = $_SESSION["usrmail"];
         </a>
         <ul id="order-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
           <li>
-            <a href="./jfc2y.php">
+            <a href="../contents_v2/jfc2y.php">
               <i class="bi bi-circle"></i><span>Forecast</span>
             </a>
           </li>
           <li>
-            <a href="./jfc2yarc.php">
+            <a href="../contents_v2/jfc2yarc.php">
               <i class="bi bi-circle"></i><span>Forecast Archived</span>
             </a>
           </li>
           <li>
-            <a href="./jforecastarcy.php">
+            <a href="../contents_v2/jforecastarcy.php">
               <i class="bi bi-circle"></i><span>Forecast Archived OLD</span>
             </a>
           </li>
@@ -320,7 +320,7 @@ $mymail = $_SESSION["usrmail"];
             </a>
           </li>
           <li>
-            <a href="./jordbal.php">
+            <a href="../contents_v2/jordbal.php">
               <i class="bi bi-circle"></i><span>Order Balance</span>
             </a>
           </li>
@@ -338,12 +338,12 @@ $mymail = $_SESSION["usrmail"];
         </a>
         <ul id="schedule-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
           <li>
-            <a href="./jtds.php">
+            <a href="../contents_v2/jtds.php">
               <i class="bi bi-circle"></i><span>Time Delivery</span>
             </a>
           </li>
           <li>
-            <a href="./jbps.php">
+            <a href="../contents_v2/jbps.php">
               <i class="bi bi-circle"></i><span>Big Parts</span>
             </a>
           </li>
@@ -412,7 +412,7 @@ $mymail = $_SESSION["usrmail"];
             </a>
           </li> -->
           <li>
-            <a href="./print_barcode_label.php">
+            <a href="../contents_v2/print_barcode_label.php">
               <i class="bi bi-circle"></i><span>Print Barcode Label</span>
             </a>
           </li>
