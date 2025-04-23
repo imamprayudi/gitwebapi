@@ -310,12 +310,12 @@ $mymail = $_SESSION["usrmail"];
             </a>
           </li>
           <li>
-            <a href="./jpo.php">
+            <a href="../contents/jpo.php">
               <i class="bi bi-circle"></i><span>Purchase Order</span>
             </a>
           </li>
           <li>
-            <a href="./jpoc.php">
+            <a href="../contents/jpoc.php">
               <i class="bi bi-circle"></i><span>Purchase Order Change</span>
             </a>
           </li>
