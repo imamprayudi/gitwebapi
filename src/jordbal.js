@@ -60,6 +60,11 @@ $(function () {
     $("div.loading").toggleClass("d-none");
     $("div.message").html(null);
 
+    if ($.fn.DataTable.isDataTable('#table-orderBalance')) {
+      $('#table-orderBalance').DataTable().clear().destroy();
+    }
+    $('#table-orderBalance').empty();
+
     axios
       .get("https://svr1.jkei.jvckenwood.com/api_gitweb/api/jordbal.php", {
         params: {

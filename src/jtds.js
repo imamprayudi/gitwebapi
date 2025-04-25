@@ -90,7 +90,12 @@ $(function () {
     $("div.loading").toggleClass("d-none");
     $("div.message").html(null);
 
-    function initializeDataTable(header, data) {
+    if ($.fn.DataTable.isDataTable('#table-timeDelivery')) {
+      $('#table-timeDelivery').DataTable().clear().destroy();
+    }
+    $('#table-timeDelivery').empty();
+
+    /* function initializeDataTable(header, data) {
       // Buat array kolom untuk DataTable
       const columns = Object.keys(header).map((key, index) => {
         return {
@@ -130,7 +135,7 @@ $(function () {
       }).draw();
 
       tableTimeDelivery.columns.adjust().draw();
-    }
+    } */
     axios.get("https://svr1.jkei.jvckenwood.com/api_gitweb/api/controller.php", {
       params: {
         method: "getDataTimeDelivery",
