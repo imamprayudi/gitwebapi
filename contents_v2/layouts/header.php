@@ -355,21 +355,21 @@ $mymail = $_SESSION["usrmail"];
           <i class="bi bi-menu-button-wide"></i><span>Materials</span><i class="bi bi-chevron-down ms-auto"></i>
         </a>
         <ul id="material-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-          <!-- <li>
-            <a href="../contents/jmatsum.php">
+          <li>
+            <a href="../contents_v2/jmatsum.php">
               <i class="bi bi-circle"></i><span>Summary</span>
             </a>
           </li>
           <li>
-            <a href="../contents/jmatrec.php">
+            <a href="../contents_v2/jmatrec.php">
               <i class="bi bi-circle"></i><span>Received Detail</span>
             </a>
           </li>
           <li>
-            <a href="../contents/jmatiss.php">
+            <a href="../contents_v2/jmatiss.php">
               <i class="bi bi-circle"></i><span>Issued Detail</span>
             </a>
-          </li> -->
+          </li>
         </ul>
       </li><!-- End Material Nav -->
 
