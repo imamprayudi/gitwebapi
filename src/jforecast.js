@@ -34,9 +34,13 @@ $(function () {
         usr: authSession.usr
       }
     })
+    // .then((res) => {
+    //   console.log(res.data, "DATA supplier")
+    //   return
+    // })
     .then((res) => res.data.data)
     .then((res) => {
-      console.log("datasupplier ================>", res);
+      // console.log("datasupplier ================>", res);
       var toAppend = "";
       $.each(res, function (i, o) {
         // console.log("data supplier",o)
@@ -52,6 +56,34 @@ $(function () {
       $("#supplier").find("option").remove().end().append(toAppend);
     });
 
+  axios
+    .get("https://svr1.jkei.jvckenwood.com/api_gitweb/api/controller.php", {
+      params: {
+        method: "getTransdateArchive",
+        usr: authSession.usr,
+        usrsecure: authSession.usrsecure
+      }
+    })
+    // .then((res) => {
+    //   console.log(res.data, "DATA TRANSDATE")
+    //   return
+    // })
+    .then((res) => res.data.data)
+    .then((res) => {
+      // console.log("transdate archived ================>", res);
+      var toAppend = "";
+      $.each(res, function (i, o) {
+        // console.log("data transdate archive", o)
+        toAppend +=
+          '<option value="' +
+          o.transdate +
+          '">' +
+          o.transdate +
+          "</option>";
+      });
+      $("#tgl").find("option").remove().end().append(toAppend);
+    });
+
   // END Of getSupplierGroup
   // ------------------------
 
@@ -62,7 +94,12 @@ $(function () {
     $("div.loading").toggleClass("d-none");
     $("div.message").html(null);
 
-    function initializeDataTable(header, data) {
+    if ($.fn.DataTable.isDataTable('#table-forecast')) {
+      $('#table-forecast').DataTable().clear().destroy();
+    }
+    $('#table-forecast').empty();
+
+    /* function initializeDataTable(header, data) {
       // Buat array kolom untuk DataTable
       const columns = Object.keys(header).map((key, index) => {
         return {
@@ -102,7 +139,7 @@ $(function () {
       }).draw();
 
       tableForecast.columns.adjust().draw();
-    }
+    } */
     axios.get("https://svr1.jkei.jvckenwood.com/api_gitweb/api/controller.php", {
       params: {
         method: "getDataForecast2y",
@@ -114,7 +151,7 @@ $(function () {
     })
       .then((res) => res.data)
       .then((res) => {
-        console.log(res)
+        // console.log(res)
         // return;
 
         if (res.success) {
@@ -193,7 +230,12 @@ $(function () {
     $("div.loading").toggleClass("d-none");
     $("div.message").html(null);
 
-    function initializeDataTable(header, data) {
+    if ($.fn.DataTable.isDataTable('#table-forecastArc')) {
+      $('#table-forecastArc').DataTable().clear().destroy();
+    }
+    $('#table-forecastArc').empty();
+
+    /* function initializeDataTable(header, data) {
       // Buat array kolom untuk DataTable
       const columns = Object.keys(header).map((key, index) => {
         return {
@@ -233,11 +275,12 @@ $(function () {
       }).draw();
 
       tableForecastArc.columns.adjust().draw();
-    }
+    } */
     axios.get("https://svr1.jkei.jvckenwood.com/api_gitweb/api/controller.php", {
       params: {
         method: "getDataForecast2yArc",
         supplier: $("[name=supplier]").val(),
+        tgl: $("[name=tgl]").val(),
         tipe: $("[name=tipe]").val(),
         usr: authSession.usr,
         usrsecure: authSession.usrsecure
@@ -245,7 +288,7 @@ $(function () {
     })
       .then((res) => res.data)
       .then((res) => {
-        console.log(res)
+        // console.log(res)
         // return;
 
         if (res.success) {

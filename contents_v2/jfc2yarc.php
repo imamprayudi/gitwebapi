@@ -35,7 +35,11 @@
                 <label for="supplier" class="form-label">Supplier</label>
                   <select type="text" id="supplier" name="supplier" class="form-control"></select>
               </div>
-              <div class="col-3">
+              <div class="col-2">
+                <label for="from_date" class="form-label">Transmission Date</label>
+                <select type="text" id="tgl" name="tgl" class="form-control"></select>
+              </div>
+              <div class="col-2">
                 <label class="col-form-label" for="idsupp">Type</label>
                 <select class="form-select" name="tipe" id="idtipe">
                   <option value="1">Weekly</option>

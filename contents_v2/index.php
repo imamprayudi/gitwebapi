@@ -82,7 +82,7 @@ if (isset($_SESSION['usr'])) {
     <div class="col-12">
       <div class="row">
         <div class="card-body">
-          <input type="month" name="monthly_poc" class="form-control" id="monthly_poc" value="<?= date('Y-m') ?>">
+          <input type="month" name="monthly_poc" class="form-control" id="monthly_poc" onchange="monthly_dashboard_changed" value="<?= date('Y-m') ?>">
         </div>
       </div>
       <div class="row">
@@ -718,97 +718,97 @@ if (isset($_SESSION['usr'])) {
 <!-- <script src="../node_modules/datatables.net-buttons/js/dataTables.buttons.min.js"></script> -->
 <!-- <script src="../node_modules/datatables.net-buttons/js/buttons.html5.min.js"></script> -->
 <script>
-  function detail_click(pono) {
+  // function detail_click(pono) {
 
-    var dummy = '';
+  //   var dummy = '';
 
-    Swal.fire({
-      title: 'Detail PO',
-      customClass: 'swal-wide',
-      html: `<table id="repeated_detail" class="table table-bordered dataTables_filter">
-                      <thead class="t-head">
-                        <tr>
-                          <th style="font:size:12px" scope="col">Transmission No</th>
-                          <th style="font:size:12px"  scope="col">Date</th>
-                          <th style="font:size:12px"  scope="col">Action Code</th>
-                          <th style="font:size:12px"  scope="col">PO Number</th>
-                          <th style="font:size:12px"  scope="col">Part Number</th>
-                          <th style="font:size:12px"  scope="col">Partname</th>
-                          <th style="font:size:12px"  scope="col">New Qty</th>
-                          <th style="font:size:12px"  scope="col">New Date</th>
-                          <th style="font:size:12px"  scope="col">Old Qty</th>
-                          <th style="font:size:12px"  scope="col">Old Date</th>
-                          <th style="font:size:12px"  scope="col">PO Type</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>                     
-                        </tr>
-                      </tbody>
-                    </table>`
-    });
+  //   Swal.fire({
+  //     title: 'Detail PO',
+  //     customClass: 'swal-wide',
+  //     html: `<table id="repeated_detail" class="table table-bordered dataTables_filter">
+  //                     <thead class="t-head">
+  //                       <tr>
+  //                         <th style="font:size:12px" scope="col">Transmission No</th>
+  //                         <th style="font:size:12px"  scope="col">Date</th>
+  //                         <th style="font:size:12px"  scope="col">Action Code</th>
+  //                         <th style="font:size:12px"  scope="col">PO Number</th>
+  //                         <th style="font:size:12px"  scope="col">Part Number</th>
+  //                         <th style="font:size:12px"  scope="col">Partname</th>
+  //                         <th style="font:size:12px"  scope="col">New Qty</th>
+  //                         <th style="font:size:12px"  scope="col">New Date</th>
+  //                         <th style="font:size:12px"  scope="col">Old Qty</th>
+  //                         <th style="font:size:12px"  scope="col">Old Date</th>
+  //                         <th style="font:size:12px"  scope="col">PO Type</th>
+  //                       </tr>
+  //                     </thead>
+  //                     <tbody>
+  //                       <tr>                     
+  //                       </tr>
+  //                     </tbody>
+  //                   </table>`
+  //   });
 
-    axios.get('https://svr1.jkei.jvckenwood.com/api_gitweb/api/dashboard.php', {
-        params: {
-          method: "getDataFilter",
-          supplier: $('[name=supplier]').val(),
-          from_date: $('[name=from_date]').val(),
-          end_date: $('[name=end_date]').val(),
-          select_po: [pono],
-          filter_by: 'pono'
-        }
-      })
-      .then(function(response) {
-      // console.log("repeated_detail => ", response)
+  //   axios.get('https://svr1.jkei.jvckenwood.com/api_gitweb/api/dashboard.php', {
+  //       params: {
+  //         method: "getDataFilter",
+  //         supplier: $('[name=supplier]').val(),
+  //         from_date: $('[name=from_date]').val(),
+  //         end_date: $('[name=end_date]').val(),
+  //         select_po: [pono],
+  //         filter_by: 'pono'
+  //       }
+  //     })
+  //     .then(function(response) {
+  //     // console.log("repeated_detail => ", response)
 
-        let repeate_detail_table = new DataTable('#repeated_detail', {
-          data: response.data.pochange,
-          order: [1, 'desc'],
-          retrieve: true,
-          dom: 'Bfrtip',
-          buttons: [
-            'excelHtml5',
-            'csvHtml5'
-          ],
-          columns: [{
-              data: 'idno'
-            },
-            {
-              data: 'rdate'
-            },
-            {
-              data: 'actioncode'
-            },
-            {
-              data: 'pono'
-            },
-            {
-              data: 'partno'
-            },
-            {
-              data: 'partname'
-            },
-            {
-              data: 'newqty'
-            },
-            {
-              data: 'newdate'
-            },
-            {
-              data: 'oldqty'
-            },
-            {
-              data: 'olddate'
-            },
-            {
-              data: 'potype'
-            }
-          ]
+  //       let repeate_detail_table = new DataTable('#repeated_detail', {
+  //         data: response.data.pochange,
+  //         order: [1, 'desc'],
+  //         retrieve: true,
+  //         dom: 'Bfrtip',
+  //         buttons: [
+  //           'excelHtml5',
+  //           'csvHtml5'
+  //         ],
+  //         columns: [{
+  //             data: 'idno'
+  //           },
+  //           {
+  //             data: 'rdate'
+  //           },
+  //           {
+  //             data: 'actioncode'
+  //           },
+  //           {
+  //             data: 'pono'
+  //           },
+  //           {
+  //             data: 'partno'
+  //           },
+  //           {
+  //             data: 'partname'
+  //           },
+  //           {
+  //             data: 'newqty'
+  //           },
+  //           {
+  //             data: 'newdate'
+  //           },
+  //           {
+  //             data: 'oldqty'
+  //           },
+  //           {
+  //             data: 'olddate'
+  //           },
+  //           {
+  //             data: 'potype'
+  //           }
+  //         ]
 
-        });
-      })
-      .catch(function(error) {
-        console.log(error);
-      });
-  }
+  //       });
+  //     })
+  //     .catch(function(error) {
+  //       console.log(error);
+  //     });
+  // }
 </script>
