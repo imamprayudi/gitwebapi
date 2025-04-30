@@ -84,6 +84,34 @@ $(function () {
       $("#tgl").find("option").remove().end().append(toAppend);
     });
 
+  axios
+    .get("https://svr1.jkei.jvckenwood.com/api_gitweb/api/controller.php", {
+      params: {
+        method: "getTransdateArchiveOneYear",
+        usr: authSession.usr,
+        usrsecure: authSession.usrsecure
+      }
+    })
+    // .then((res) => {
+    //   console.log(res.data, "DATA TRANSDATE")
+    //   return
+    // })
+    .then((res) => res.data.data)
+    .then((res) => {
+      // console.log("transdate archived ================>", res);
+      var toAppend = "";
+      $.each(res, function (i, o) {
+        // console.log("data transdate archive", o)
+        toAppend +=
+          '<option value="' +
+          o.transdate +
+          '">' +
+          o.transdate +
+          "</option>";
+      });
+      $("#tgl").find("option").remove().end().append(toAppend);
+    });
+
   // END Of getSupplierGroup
   // ------------------------
 
@@ -356,6 +384,103 @@ $(function () {
       .finally(() => {
         $("div.loading").addClass("d-none");
         $("#submit_fcyArc").attr("disabled", false);
+      });
+
+
+
+  });
+  $("form[name=submit_fcyArcOld]").submit((e) => {
+    e.preventDefault();
+    $("#submit_fcyArcOld").attr("disabled", true);
+    $("div.loading").toggleClass("d-none");
+    $("div.message").html(null);
+
+    if ($.fn.DataTable.isDataTable('#table-forecastArcOld')) {
+      $('#table-forecastArcOld').DataTable().clear().destroy();
+    }
+    $('#table-forecastArcOld').empty();
+
+
+    axios.get("https://svr1.jkei.jvckenwood.com/api_gitweb/api/controller.php", {
+      params: {
+        method: "getDataForecasty",
+        supplier: $("[name=supplier]").val(),
+        tgl: $("[name=tgl]").val(),
+        tipe: $("[name=tipe]").val(),
+        usr: authSession.usr,
+        usrsecure: authSession.usrsecure
+      }
+    })
+      .then((res) => res.data)
+      .then((res) => {
+        // console.log(res)
+        // return;
+
+        if (res.success) {
+
+          // initializeDataTable(res.header.header[0], res.data);
+          let header = res.header[0];
+          let dataArc = res.data;
+          // console.log(header);
+          // return;
+          const columns = Object.keys(header).map((key, index) => {
+            return {
+              title: header[key], // Judul kolom dari header
+              data: key.toLowerCase() // Properti data sesuai dengan kunci
+            };
+          });
+
+          // Inisialisasi DataTable
+          let tableForecastArcOld = new DataTable("#table-forecastArcOld", {
+            data: dataArc,
+            fixedHeader: false,
+            retrieve: true,
+            responsive: false,
+            linebreaks: true,
+            dom: "Bfrl",
+            order: [2, "desc"],
+            select: {
+              style: "multi",
+              selector: "tr"
+            },
+            buttons: ["excelHtml5", "csvHtml5", "selectAll", "selectNone"],
+            lengthMenu: [
+              [25, 50, 75, -1],
+              [25, 50, 75, "All"]
+            ],
+            columns: columns
+          });
+
+          // Atur ulang nomor urut pada kolom pertama
+          tableForecastArcOld.on('order.dt search.dt', function () {
+            let i = 1;
+            tableForecastArcOld
+              .cells(null, 0, { search: 'applied', order: 'applied' })
+              .every(function (cell) {
+                this.data(i++);
+              });
+          }).draw();
+
+          tableForecastArcOld.columns.adjust().draw();
+        } else {
+          renderMessage({
+            html: res.message,
+            classes: "alert-warning",
+            icons: "fa-solid fa-triangle-exclamation"
+          });
+        }
+      })
+      .catch((error) => {
+        console.error("Terjadi kesalahan:", error);
+        renderMessage({
+          html: "Something went wrong",
+          classes: "alert-danger",
+          icons: "fa-solid fa-ban"
+        });
+      })
+      .finally(() => {
+        $("div.loading").addClass("d-none");
+        $("#submit_fcyArcOld").attr("disabled", false);
       });
 
 
