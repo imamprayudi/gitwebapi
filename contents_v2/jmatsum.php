@@ -4,61 +4,15 @@
 <head>
   <title>Material Summary</title>
   <link href="../assets/css/styles.css" rel="stylesheet" type="text/css">
-  <script src="../assets/js/jquery.js"></script>
 
 </head>
 
 <body>
 
   <?php
-  session_start();
-  if (isset($_SESSION['usr'])) {
-    $myid = $_SESSION["usr"];
-  } else {
-    echo "session time out";
-  ?>
-    <script>
-      window.location.href = '../index.php';
-    </script>
-  <?php
-  }
-
+    include('layouts/header.php');
   ?>
 
-  <script>
-    $(document).ready(function() {
-      $('form[name=jfForm]').submit(function() {
-        $('#fdata').html('<div class="text-center mt-4 g-3">' +
-          '<div class="spinner-border text-danger" role="status">' +
-          '<span class = "visually-hidden" > Loading... < /span>' +
-          '</div>' +
-          '<div class = "spinner-border text-warning" role = "status" > ' +
-          '<span class = "visually-hidden" > Loading... </span>' +
-          '</div>' +
-          '<div class = "spinner-border text-info" role = "status">' +
-          '<span class = "visually-hidden" > Loading... < /span>' +
-          '</div>' +
-          '</div>');
-        $.post('jgetmatsum.php', {
-            suppid: $('[name=supp]').val(),
-            periodid: $('[name=period]').val()
-          },
-          function(data) {
-            $('#fdata').html(data).show();
-          });
-        return false;
-      });
-    });
-  </script>
-  <?php
-  include("koneksi.php");
-  $rs = $db->Execute("select usersupp.UserId,usersupp.SuppCode,supplier.SuppName from UserSupp 
-inner join Supplier on usersupp.SuppCode = Supplier.SuppCode 
-where UserId = '" . $myid . "' order by suppname");
-  // include("jmenucss.php");
-  include('../contents_v2/layouts/header.php');
-
-  ?>
   <main id="main" class="main">
 
     <div class="pagetitle">
@@ -77,58 +31,46 @@ where UserId = '" . $myid . "' order by suppname");
         <div class="card card-info">
           <div class="card-body">
 
-            <!-- /<br />
-        /<img src="../assets/gambar/jvc.gif" alt="JVC KENWOOD CORPORATION" style="float:left;width:220px;height:35px;">
-        /PT.JVCKENWOOD ELECTRONICS INDONESIA 
-        /<br />
-        /MATERIAL STATUS REPORT
-        /<br /><br /> -->
-            <form method="post" action="jgetmatsum.php" name="jfForm" class="row gx-3 gy-2 align-items-center">
+            <form name="submit_summary" class="row gx-3 gy-2 align-items-center">
               <div class="col-7">
-                <label class="col-form-label" for="idsupp">Supplier</label>
-                <select class="form-select" name="supp" id="idsupp">
-                  <?php
-                  while (!$rs->EOF) {
-                    echo '<option value="' . $rs->fields[1] . '">' . $rs->fields[2] . ' - ' . $rs->fields[1] . '</option>';
-                    $rs->MoveNext();
-                  }
-                  ?>
-                </select>
+                <label for="supplier" class="form-label">Supplier</label>
+                  <select type="text" id="supplier" name="supplier" class="form-control"></select>
               </div>
               <?php
-              $rs = $db->Execute("select period from sc01_period order by period desc");
+              // $rs = $db->Execute("select period from sc01_period order by period desc");
               ?>
-              <div class="col-3">
-                <label class="col-form-label" for="idsupp">Periode</label>
-                <select class="form-select" name="period" id="idperiod">
-                  <?php
-                  while (!$rs->EOF) {
-                    echo '<option value="' . $rs->fields[0] . '">' . $rs->fields[0] . '</option>';
-                    $rs->MoveNext();
-                  }
-                  ?>
-
-                </select>
+              <div class="col-2">
+                <label for="periode" class="form-label">Periode</label>
+                <select type="text" id="periode" name="periode" class="form-control"></select>
               </div>
               <div class="col-2 mt-4">
-                <input type=submit value="Display" class="btn btn-info">
+                <input type=submit value="Display" class="btn btn-info" id="submit_summary">
               </div>
             </form>
-            <?php
-            $rs->Close();
-            $db->Close();
-            ?>
-
-            <div id="fdata" class="table-responsive"></div>
-            <!-- <div id="sfcl">
-            </div> -->
-
-          </div>
+            <div class="row mb-3">
+              <div class="message"></div>
+            </div>
+            <div class="loading row col-12 mb-2 d-flex justify-content-center">
+              <div class="spinner-border text-info mt-2" role="status">
+                <span class="visually-hidden">Loading...</span>
+              </div>
+            </div>
+            <div class="row"> <!-- sfcl -->
+              <div class="card recent-sales overflow-auto ml-3">
+                <div class="card-header">
+                  MATERIAL SUMMARY
+                </div>
+                <div class="card-body">
+                  <table id="table-summary" class="table table-striped ml-3 display responsive nowrap"></table>
+                </div>
+              </div>
+            </div>
     </section>
 
   </main><!-- End #main -->
 
   <?php include('../contents_v2/layouts/footer.php'); ?>
+  <script src="../dist/jmaterial.bundle.js"></script>
 </body>
 
 </html>

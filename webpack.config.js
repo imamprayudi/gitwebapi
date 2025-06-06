@@ -17,7 +17,8 @@ module.exports = {
         barcode_label: './src/barcode_label.js',
         jtds: './src/jtds.js',
         jbps: './src/jbps.js',
-        jforecast: './src/jforecast.js'
+        jforecast: './src/jforecast.js',
+        jmaterial: './src/jmaterial.js'
         // utama:'./src/utama.js'
     },
     optimization:{
