@@ -19,7 +19,8 @@ module.exports = {
         jtds: './src/jtds.js',
         jbps: './src/jbps.js',
         jforecast: './src/jforecast.js',
-        jmaterial: './src/jmaterial.js'
+        jmaterial: './src/jmaterial.js',
+        jmatrec: './src/jmatrec.js'
         // utama:'./src/utama.js'
     },
     optimization: {
