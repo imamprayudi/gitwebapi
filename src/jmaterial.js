@@ -91,52 +91,65 @@ $(function () {
                 // console.log(res)
                 // return;
 
-                if (res.success) {
-
-                    // initializeDataTable(res.header.header[0], res.data);
-                    let header = res.header[0];
-                    let dataSummary = res.data;
-                    // console.log(header);
-                    // return;
-                    const columns = Object.keys(header).map((key, index) => {
-                        return {
-                            title: header[key], // Judul kolom dari header
-                            data: key.toLowerCase() // Properti data sesuai dengan kunci
-                        };
-                    });
-
-                    // Inisialisasi DataTable
-                    let tablesummary = new DataTable("#table-summary", {
-                        data: dataSummary,
-                        fixedHeader: false,
-                        retrieve: true,
-                        responsive: false,
-                        linebreaks: true,
-                        dom: "Bfrl",
-                        order: [2, "desc"],
-                        select: {
-                            style: "multi",
-                            selector: "tr"
+                if (res.success == true) {
+                    let tableMaterial = new DataTable("#table-summary", {
+                      data: res.data,
+                      fixedHeader: false,
+                      retrieve: true,
+                      responsive: false,
+                      // dom: "Bfrltip",
+                      dom: "Bfrl",
+                      order: [2, "desc"],
+                      select: {
+                        style: "multi",
+                        selector: "tr"
+                      },
+                      buttons: ["excelHtml5", "csvHtml5", "selectAll", "selectNone"],
+                      lengthMenu: [
+                        [25, 50, 75, -1],
+                        [25, 50, 75, "All"]
+                      ],
+                      columns: [
+                        { title: "NO", data: "partno" },
+                        { title: "PART NUMBER", data: "partno" },
+                        { title: "PART NAME", data: "partname" },
+                        { 
+                          title: "PREVIOUS MONTH BAL QTY", 
+                          data: "prevblncqty",
+                          className: "text-end"
                         },
-                        buttons: ["excelHtml5", "csvHtml5", "selectAll", "selectNone"],
-                        lengthMenu: [
-                            [25, 50, 75, -1],
-                            [25, 50, 75, "All"]
-                        ],
-                        columns: columns
+                        { 
+                          title: "RECEIVE QTY", 
+                          data: "recqty",
+                          className: "text-end" 
+                        },
+                        { 
+                          title: "ISSUE QTY", 
+                          data: "shipqty",
+                          className: "text-end"
+                        },
+                        { 
+                          title: "THIS MONTH BAL QTY", 
+                          data: "thisblncqty",
+                          className: "text-end"
+                        }
+                      ]
                     });
-
-                    // Atur ulang nomor urut pada kolom pertama
-                    tablesummary.on('order.dt search.dt', function () {
-                        let i = 1;
-                        tablesummary
-                            .cells(null, 0, { search: 'applied', order: 'applied' })
-                            .every(function (cell) {
-                                this.data(i++);
-                            });
-                    }).draw();
-
-                    tablesummary.columns.adjust().draw();
+                    tableMaterial.clear().draw();
+          
+                    tableMaterial.rows.add(res.data); // Add new data
+                    tableMaterial.on('order.dt search.dt', function () {
+                      let i = 1;
+          
+                      tableMaterial
+                        .cells(null, 0, { search: 'applied', order: 'applied' })
+                        .every(function (cell) {
+                          this.data(i++);
+                        });
+                    })
+                      .draw();
+                    tableMaterial.columns.adjust().draw();
+          
                 } else {
                     renderMessage({
                         html: res.message,
@@ -146,12 +159,22 @@ $(function () {
                 }
             })
             .catch((error) => {
-                console.error("Terjadi kesalahan:", error);
+                console.log({ error });
+                let res = error.response;
+                let data = res.data;
+                let msg = data.message;
+
+                msg = msg || "Something went wrong";
+
                 renderMessage({
-                    html: "Something went wrong",
-                    classes: "alert-danger",
-                    icons: "fa-solid fa-ban"
+                html: msg,
+                classes: "alert-danger",
+                icons: "fa-solid fa-ban"
                 });
+
+                $("#userid").focus();
+                $("div.loading").addClass("d-none");
+                $("#btn_login").attr("disabled", false);
             })
             .finally(() => {
                 $("div.loading").addClass("d-none");
