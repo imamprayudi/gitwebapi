@@ -31,7 +31,7 @@
         <div class="card card-info">
           <div class="card-body">
 
-            <form name="submit_summary" class="row gx-3 gy-2 align-items-center">
+            <form name="submit_matrec" class="row gx-3 gy-2 align-items-center">
               <div class="col-7">
                 <label for="supplier" class="form-label">Supplier</label>
                   <select type="text" id="supplier" name="supplier" class="form-control"></select>
@@ -45,7 +45,7 @@
                 <input type="date" id="end_date" name="end_date" class="form-control">
               </div>
               <div class="col-2 mt-4">
-                <input type=submit value="Display" class="btn btn-info" id="submit_summary">
+                <input type=submit value="Display" class="btn btn-info" id="submit_matrec">
               </div>
             </form>
             <div class="row mb-3">
@@ -62,7 +62,7 @@
                   MATERIAL DETAIL RECEIVED
                 </div>
                 <div class="card-body">
-                  <table id="table-summary" class="table table-striped ml-3 display responsive nowrap"></table>
+                  <table id="table-matrec" class="table table-striped ml-3 display responsive nowrap"></table>
                 </div>
               </div>
             </div>

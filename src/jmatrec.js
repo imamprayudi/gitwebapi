@@ -16,7 +16,7 @@ $(function () {
     $("div.message").html(null);
     if ($("div.loading").hasClass("d-none") == false)
         $("div.loading").addClass("d-none");
-    $("#submit_summary").attr("disabled", false);
+    $("#submit_matrec").attr("disabled", false);
 
     axios
         .get("https://svr1.jkei.jvckenwood.com/api_gitweb/api/jordbal.php", {
@@ -41,38 +41,38 @@ $(function () {
             $("#supplier").find("option").remove().end().append(toAppend);
         });
 
-    axios
-        .get("https://svr1.jkei.jvckenwood.com/api_gitweb/api/controller.php", {
-            params: {
-                method: "period",
-                usr: authSession.usr,
-                usrsecure: authSession.usrsecure
-            }
-        })
-        .then((res) => res.data.data)
-        .then((res) => {
-            var toAppend = "";
-            $.each(res, function (i, o) {
-                toAppend +=
-                    '<option value="' +
-                    o.Period +
-                    '">' +
-                    o.Period +
-                    "</option>";
-            });
-            $("#periode").find("option").remove().end().append(toAppend);
-        });
+    // axios
+    //     .get("https://svr1.jkei.jvckenwood.com/api_gitweb/api/controller.php", {
+    //         params: {
+    //             method: "period",
+    //             usr: authSession.usr,
+    //             usrsecure: authSession.usrsecure
+    //         }
+    //     })
+    //     .then((res) => res.data.data)
+    //     .then((res) => {
+    //         var toAppend = "";
+    //         $.each(res, function (i, o) {
+    //             toAppend +=
+    //                 '<option value="' +
+    //                 o.Period +
+    //                 '">' +
+    //                 o.Period +
+    //                 "</option>";
+    //         });
+    //         $("#periode").find("option").remove().end().append(toAppend);
+    //     });
 
-    $("form[name=submit_summary]").submit((e) => {
+    $("form[name=submit_matrec]").submit((e) => {
         e.preventDefault();
-        $("#submit_summary").attr("disabled", true);
+        $("#submit_matrec").attr("disabled", true);
         $("div.loading").toggleClass("d-none");
         $("div.message").html(null);
 
-        if ($.fn.DataTable.isDataTable('#table-summary')) {
-            $('#table-summary').DataTable().clear().destroy();
+        if ($.fn.DataTable.isDataTable('#table-matrec')) {
+            $('#table-matrec').DataTable().clear().destroy();
         }
-        $('#table-summary').empty();
+        $('#table-matrec').empty();
 
         axios.get("https://svr1.jkei.jvckenwood.com/api_gitweb/api/controller.php", {
             params: {
@@ -87,7 +87,7 @@ $(function () {
             .then((res) => res.data)
             .then((res) => {
                 if (res.success == true) {
-                    let tableMaterial = new DataTable("#table-summary", {
+                    let tableMatrec = new DataTable("#table-matrec", {
                         data: res.data,
                         fixedHeader: false,
                         retrieve: true,
@@ -104,9 +104,9 @@ $(function () {
                             [25, 50, 75, "All"]
                         ],
                         columns: [
-                            { title: "NO", data: null },
+                            { title: "NO", data: "partno" },
                             { title: "DATE", data: "date" },
-                            { title: "PART NUMBER", data: "partnumber" },
+                            { title: "PART NUMBER", data: "partno" },
                             { title: "PO NUMBER", data: "ponumber" },
                             { 
                                 title: "RECEIVE QTY", 
@@ -126,20 +126,20 @@ $(function () {
                         ]
                     });
 
-                    tableMaterial.clear().draw();
-                    tableMaterial.rows.add(res.data);
+                    tableMatrec.clear().draw();
+                    tableMatrec.rows.add(res.data);
 
                     // Menambahkan nomor urut pada kolom pertama
-                    tableMaterial.on('order.dt search.dt', function () {
+                    tableMatrec.on('order.dt search.dt', function () {
                         let i = 1;
-                        tableMaterial
+                        tableMatrec
                             .cells(null, 0, { search: 'applied', order: 'applied' })
                             .every(function (cell) {
                                 this.data(i++);
                             });
                     }).draw();
 
-                    tableMaterial.columns.adjust().draw();
+                    tableMatrec.columns.adjust().draw();
                 } else {
                     renderMessage({
                         html: res.message,
@@ -158,7 +158,7 @@ $(function () {
             })
             .finally(() => {
                 $("div.loading").addClass("d-none");
-                $("#submit_summary").attr("disabled", false);
+                $("#submit_matrec").attr("disabled", false);
             });
     });
 });
