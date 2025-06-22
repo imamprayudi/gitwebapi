@@ -184,4 +184,112 @@ $(function () {
 
 
     });
+
+    $("form[name=submit_matiss]").submit((e) => {
+        e.preventDefault();
+        $("#submit_matiss").attr("disabled", true);
+        $("div.loading").toggleClass("d-none");
+        $("div.message").html(null);
+
+        if ($.fn.DataTable.isDataTable('#table-matiss')) {
+            $('#table-matiss').DataTable().clear().destroy();
+        }
+        $('#table-matiss').empty();
+
+        axios.get("https://svr1.jkei.jvckenwood.com/api_gitweb/api/controller.php", {
+            params: {
+                method: "getDataMatiss",
+                supplier: $("[name=supplier]").val(),
+                from_date: $("[name=from_date]").val(),
+                end_date: $("[name=end_date]").val(),
+                usr: authSession.usr,
+                usrsecure: authSession.usrsecure
+            }
+        })
+            .then((res) => res.data)
+            .then((res) => {
+                // console.log(res)
+                // return;
+
+                if (res.success == true) {
+                    let tableMatiss = new DataTable("#table-matiss", {
+                        data: res.data,
+                        fixedHeader: false,
+                        retrieve: true,
+                        responsive: false,
+                        // dom: "Bfrltip",
+                        dom: "Bfrl",
+                        order: [2, "desc"],
+                        select: {
+                            style: "multi",
+                            selector: "tr"
+                        },
+                        buttons: ["excelHtml5", "csvHtml5", "selectAll", "selectNone"],
+                        lengthMenu: [
+                            [25, 50, 75, -1],
+                            [25, 50, 75, "All"]
+                        ],
+                        columns: [
+                            { title: "NO", data: "partno" },
+                            { title: "PART NUMBER", data: "partno" },
+                            {
+                                title: "ISSUE QTY",
+                                data: "shipqty",
+                                className: "text-end"
+                            }
+                        ]
+                    });
+                    tableMatiss.clear().draw();
+
+                    tableMatiss.rows.add(res.data); // Add new data
+                    tableMatiss.on('order.dt search.dt', function () {
+                        let i = 1;
+
+                        tableMatiss
+                            .cells(null, 0, { search: 'applied', order: 'applied' })
+                            .every(function (cell) {
+                                this.data(i++);
+                            });
+                    })
+                        .draw();
+                    tableMatiss.columns.adjust().draw();
+
+                } else {
+                    renderMessage({
+                        html: res.message,
+                        classes: "alert-warning",
+                        icons: "fa-solid fa-triangle-exclamation"
+                    });
+                }
+            })
+            .catch((error) => {
+                console.log({ error });
+                let res = error.response;
+                let data = res.data;
+                let msg = data.message;
+
+                msg = msg || "Something went wrong";
+
+                renderMessage({
+                    html: msg,
+                    classes: "alert-danger",
+                    icons: "fa-solid fa-ban"
+                });
+
+                $("#userid").focus();
+                $("div.loading").addClass("d-none");
+                $("#btn_login").attr("disabled", false);
+            })
+            .finally(() => {
+                $("div.loading").addClass("d-none");
+                $("#submit_matiss").attr("disabled", false);
+            });
+
+
+
+    });
+
+
+
+
 })
