@@ -19,7 +19,8 @@ module.exports = {
         jbps: './src/jbps.js',
         jforecast: './src/jforecast.js',
         jmaterial: './src/jmaterial.js',
-        jmatrec: './src/jmatrec.js'
+        jmatrec: './src/jmatrec.js',
+        jsoa: './src/jsoa.js'
         // utama:'./src/utama.js'
     },
     optimization:{
