@@ -6,19 +6,38 @@ import "datatables.net-buttons-dt";
 import "datatables.net-buttons/js/buttons.html5.mjs";
 import "datatables.net-select-dt";
 
-
 window.Swal = Swal;
+
+// Helper function untuk render message
+function renderMessage(options) {
+    const { html, classes, icons } = options;
+    const messageHtml = `
+        <div class="alert ${classes} alert-dismissible fade show" role="alert">
+            <i class="${icons} me-1"></i>
+            ${html}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    `;
+    $(".message").html(messageHtml);
+}
 
 $(function () {
     let authSession = JSON.parse(localStorage.getItem('poc_auth'));
     if (!localStorage.getItem('poc_auth')) {
         window.location.href = "../contents/login.html";
     }
+
+    // Initialize UI
     $("div.message").html(null);
     if ($("div.loading").hasClass("d-none") == false)
         $("div.loading").addClass("d-none");
-    $("#submit_summary").attr("disabled", false);
 
+    // Enable submit buttons
+    $("#submit_soa").attr("disabled", false);
+    $("#submit_soamid").attr("disabled", false);
+    $("#submit_soaend").attr("disabled", false);
+
+    // Load suppliers
     axios
         .get("https://svr1.jkei.jvckenwood.com/api_gitweb/api/jordbal.php", {
             params: {
@@ -42,254 +61,550 @@ $(function () {
             $("#supplier").find("option").remove().end().append(toAppend);
         });
 
-    // axios
-    //     .get("https://svr1.jkei.jvckenwood.com/api_gitweb/api/controller.php", {
-    //         params: {
-    //             method: "period",
-    //             usr: authSession.usr,
-    //             usrsecure: authSession.usrsecure
-    //         }
-    //     })
-    //     .then((res) => res.data.data)
-    //     .then((res) => {
-    //         // console.log("periode summary ================>", res);
-    //         var toAppend = "";
-    //         $.each(res, function (i, o) {
-    //             // console.log("data periode summary", o)
-    //             toAppend +=
-    //                 '<option value="' +
-    //                 o.Period +
-    //                 '">' +
-    //                 o.Period +
-    //                 "</option>";
-    //         });
-    //         $("#periode").find("option").remove().end().append(toAppend);
-    //     });
+    // Load SOA dates
+    axios
+        .get("https://svr1.jkei.jvckenwood.com/api_gitweb/api/controller.php", {
+            params: {
+                method: "soadate",
+                usr: authSession.usr,
+                usrsecure: authSession.usrsecure
+            }
+        })
+        .then((res) => res.data.data)
+        .then((res) => {
+            // Populate SOA date dropdown
+            if (res && res.length > 0) {
+                var toAppend = "<option value=''>Select SOA Date...</option>";
+                $.each(res, function (i, o) {
+                    // Convert TRANSDATE to readable format (e.g., "01 Juli 2025")
+                    const date = new Date(o.TRANSDATE);
+                    const monthNames = [
+                        "Januari", "Februari", "Maret", "April", "Mei", "Juni",
+                        "Juli", "Agustus", "September", "Oktober", "November", "Desember"
+                    ];
+                    
+                    // Format with day, month name, and year
+                    const day = String(date.getDate()).padStart(2, '0');
+                    const monthName = monthNames[date.getMonth()];
+                    const year = date.getFullYear();
+                    const displayText = day + " " + monthName + " " + year;
+                    
+                    // Format date as YYYYMMDD for value
+                    const month = String(date.getMonth() + 1).padStart(2, '0');
+                    const dateValue = year + month + day;
+                    
+                    toAppend += '<option value="' + dateValue + '">' + displayText + '</option>';
+                });
+                $("#soa_date").html(toAppend);
+                
+                // Set default to first option
+                if (res.length > 0) {
+                    const firstDate = new Date(res[0].TRANSDATE);
+                    const year = firstDate.getFullYear();
+                    const month = String(firstDate.getMonth() + 1).padStart(2, '0');
+                    const day = String(firstDate.getDate()).padStart(2, '0');
+                    const defaultValue = year + month + day;
+                    $("#soa_date").val(defaultValue);
+                }
+            }
+        });
 
-    // $("form[name=submit_summary]").submit((e) => {
-    //     e.preventDefault();
-    //     $("#submit_summary").attr("disabled", true);
-    //     $("div.loading").toggleClass("d-none");
-    //     $("div.message").html(null);
+    // SOA Form Submit Handler
+    $("form[name=submit_soa]").submit((e) => {
+        e.preventDefault();
+        $("#submit_soa").attr("disabled", true);
+        $("div.loading").toggleClass("d-none");
+        $("div.message").html(null);
 
-    //     if ($.fn.DataTable.isDataTable('#table-summary')) {
-    //         $('#table-summary').DataTable().clear().destroy();
-    //     }
-    //     $('#table-summary').empty();
+        if ($.fn.DataTable.isDataTable('#table-soa')) {
+            $('#table-soa').DataTable().clear().destroy();
+        }
+        $('#table-soa').empty();
 
-    //     axios.get("https://svr1.jkei.jvckenwood.com/api_gitweb/api/controller.php", {
-    //         params: {
-    //             method: "getDataMatsum",
-    //             supplier: $("[name=supplier]").val(),
-    //             periode: $("[name=periode]").val(),
-    //             usr: authSession.usr,
-    //             usrsecure: authSession.usrsecure
-    //         }
-    //     })
-    //         .then((res) => res.data)
-    //         .then((res) => {
-    //             // console.log(res)
-    //             // return;
+        // First axios call - Get Last Payment and Comment
+        axios.get("https://svr1.jkei.jvckenwood.com/api_gitweb/api/controller.php", {
+            params: {
+                method: "getLastPayment",
+                supplier: $("[name=supplier]").val(),
+                soadate: $("[name=soa_date]").val(),
+                usr: authSession.usr,
+                usrsecure: authSession.usrsecure
+            }
+        })
+        .then((res) => res.data)
+        .then((lastPaymentRes) => {
+            if (lastPaymentRes.success) {
+                // Render Last Payment table
+                renderLastPaymentTable(lastPaymentRes.header, lastPaymentRes.data);
+                
+                // Render Comment section
+                renderCommentSection(lastPaymentRes.soa_comment);
+            }
+        })
+        .catch((error) => {
+            console.log('Last Payment fetch error:', error);
+        });
 
-    //             if (res.success == true) {
-    //                 let tableMaterial = new DataTable("#table-summary", {
-    //                   data: res.data,
-    //                   fixedHeader: false,
-    //                   retrieve: true,
-    //                   responsive: false,
-    //                   // dom: "Bfrltip",
-    //                   dom: "Bfrl",
-    //                   order: [2, "desc"],
-    //                   select: {
-    //                     style: "multi",
-    //                     selector: "tr"
-    //                   },
-    //                   buttons: ["excelHtml5", "csvHtml5", "selectAll", "selectNone"],
-    //                   lengthMenu: [
-    //                     [25, 50, 75, -1],
-    //                     [25, 50, 75, "All"]
-    //                   ],
-    //                   columns: [
-    //                     { title: "NO", data: "partno" },
-    //                     { title: "PART NUMBER", data: "partno" },
-    //                     { title: "PART NAME", data: "partname" },
-    //                     { 
-    //                       title: "PREVIOUS MONTH BAL QTY", 
-    //                       data: "prevblncqty",
-    //                       className: "text-end"
-    //                     },
-    //                     { 
-    //                       title: "RECEIVE QTY", 
-    //                       data: "recqty",
-    //                       className: "text-end" 
-    //                     },
-    //                     { 
-    //                       title: "ISSUE QTY", 
-    //                       data: "shipqty",
-    //                       className: "text-end"
-    //                     },
-    //                     { 
-    //                       title: "THIS MONTH BAL QTY", 
-    //                       data: "thisblncqty",
-    //                       className: "text-end"
-    //                     }
-    //                   ]
-    //                 });
-    //                 tableMaterial.clear().draw();
-          
-    //                 tableMaterial.rows.add(res.data); // Add new data
-    //                 tableMaterial.on('order.dt search.dt', function () {
-    //                   let i = 1;
-          
-    //                   tableMaterial
-    //                     .cells(null, 0, { search: 'applied', order: 'applied' })
-    //                     .every(function (cell) {
-    //                       this.data(i++);
-    //                     });
-    //                 })
-    //                   .draw();
-    //                 tableMaterial.columns.adjust().draw();
-          
-    //             } else {
-    //                 renderMessage({
-    //                     html: res.message,
-    //                     classes: "alert-warning",
-    //                     icons: "fa-solid fa-triangle-exclamation"
-    //                 });
-    //             }
-    //         })
-    //         .catch((error) => {
-    //             console.log({ error });
-    //             let res = error.response;
-    //             let data = res.data;
-    //             let msg = data.message;
+        // Second axios call - Get main SOA data
+        axios.get("https://svr1.jkei.jvckenwood.com/api_gitweb/api/controller.php", {
+            params: {
+                method: "getDataSoa",                
+                supplier: $("[name=supplier]").val(),
+                soadate: $("[name=soa_date]").val(), // Remove .replace(/-/g, '')
+                usr: authSession.usr,
+                usrsecure: authSession.usrsecure
+            }
+        })
+        .then((res) => res.data)
+        .then((res) => {
+            if (res.success == true) {
+                let tableSoa = new DataTable("#table-soa", {
+                    data: res.data,
+                    fixedHeader: false,
+                    retrieve: true,
+                    responsive: false,
+                    dom: "Bfrl",
+                    order: [1, "asc"],
+                    select: {
+                        style: "multi",
+                        selector: "tr"
+                    },
+                    buttons: ["excelHtml5", "csvHtml5", "selectAll", "selectNone"],
+                    lengthMenu: [
+                        [25, 50, 75, -1],
+                        [25, 50, 75, "All"]
+                    ],
+                    columns: [
+                        { title: "NO", data: "no" },
+                        { title: "DATE", data: "transdate", 
+                          render: function(data) {
+                            if (data) {
+                              const date = new Date(data);
+                              return date.toLocaleDateString('id-ID');
+                            }
+                            return '';
+                          }
+                        },
+                        { title: "PO NUMBER\nSO NUMBER", data: "po" },
+                        { title: "SQ", data: "posq" },
+                        { title: "INVOICE NUMBER\nROG SLIP NO.", data: "invoice" },
+                        { title: "PARTS NUMBER", data: "partno" },
+                        { title: "DESCRIPTION", data: "partname" },
+                        { title: "QTY", data: "qty", className: "text-end" },
+                        { 
+                          title: "UNIT PRICE", 
+                          data: "price", 
+                          className: "text-end",
+                          render: function (data) {
+                            if (data && data !== null) {
+                              return new Intl.NumberFormat('id-ID', {
+                                minimumFractionDigits: 5,
+                                maximumFractionDigits: 5
+                              }).format(parseFloat(data));
+                            }
+                            return '';
+                          }
+                        },
+                        { 
+                          title: "AMOUNT", 
+                          data: "amount", 
+                          className: "text-end",
+                          render: function (data) {
+                            if (data && data !== null) {
+                              return new Intl.NumberFormat('id-ID', {
+                                minimumFractionDigits: 2,
+                                maximumFractionDigits: 2
+                              }).format(parseFloat(data));
+                            }
+                            return '';
+                          }
+                        },
+                        { 
+                          title: "OUR DN CN", 
+                          data: "dncnd", 
+                          className: "text-end",
+                          render: function (data) {
+                            if (data && data !== null) {
+                              return new Intl.NumberFormat('id-ID', {
+                                minimumFractionDigits: 2,
+                                maximumFractionDigits: 2
+                              }).format(parseFloat(data));
+                            }
+                            return '';
+                          }
+                        }
+                    ]
+                });
 
-    //             msg = msg || "Something went wrong";
+                tableSoa.clear().draw();
+                tableSoa.rows.add(res.data);
+                tableSoa.on('order.dt search.dt', function () {
+                    let i = 1;
+                    tableSoa
+                        .cells(null, 0, { search: 'applied', order: 'applied' })
+                        .every(function (cell) {
+                            this.data(i++);
+                        });
+                }).draw();
+                tableSoa.columns.adjust().draw();
+            } else {
+                renderMessage({
+                    html: res.message,
+                    classes: "alert-warning",
+                    icons: "fa-solid fa-triangle-exclamation"
+                });
+            }
+        })
+        .catch((error) => {
+            console.log({ error });
+            let msg = "Something went wrong";
+            if (error.response && error.response.data && error.response.data.message) {
+                msg = error.response.data.message;
+            }
+            renderMessage({
+                html: msg,
+                classes: "alert-danger",
+                icons: "fa-solid fa-ban"
+            });
+        })
+        .finally(() => {
+            $("div.loading").addClass("d-none");
+            $("#submit_soa").attr("disabled", false);
+        });
+    });
 
-    //             renderMessage({
-    //             html: msg,
-    //             classes: "alert-danger",
-    //             icons: "fa-solid fa-ban"
-    //             });
+    // SOA Mid Form Submit Handler:
+    $("form[name=submit_soamid]").submit((e) => {
+        e.preventDefault();
+        $("#submit_soamid").attr("disabled", true);
+        $("div.loading").toggleClass("d-none");
+        $("div.message").html(null);
 
-    //             $("#userid").focus();
-    //             $("div.loading").addClass("d-none");
-    //             $("#btn_login").attr("disabled", false);
-    //         })
-    //         .finally(() => {
-    //             $("div.loading").addClass("d-none");
-    //             $("#submit_summary").attr("disabled", false);
-    //         });
+        if ($.fn.DataTable.isDataTable('#table-soamid')) {
+            $('#table-soamid').DataTable().clear().destroy();
+        }
+        $('#table-soamid').empty();
 
+        // First axios call - Get Last Payment and Comment
+        axios.get("https://svr1.jkei.jvckenwood.com/api_gitweb/api/controller.php", {
+            params: {
+                method: "getSoamidLastPayment",
+                supplier: $("[name=supplier]").val(),
+                soadate: $("[name=soa_date]").val(),
+                usr: authSession.usr,
+                usrsecure: authSession.usrsecure
+            }
+        })
+        .then((res) => res.data)
+        .then((lastPaymentRes) => {
+            if (lastPaymentRes.success) {
+                // Render Last Payment table
+                renderLastPaymentTable(lastPaymentRes.header, lastPaymentRes.data);
+                
+                // Render Comment section
+                renderCommentSection(lastPaymentRes.soa_comment);
+            }
+        })
+        .catch((error) => {
+            console.log('SOA Mid Last Payment fetch error:', error);
+        });
 
+        // Second axios call - Get main SOA Mid data
+        axios.get("https://svr1.jkei.jvckenwood.com/api_gitweb/api/controller.php", {
+            params: {
+                method: "getSoamidData",
+                supplier: $("[name=supplier]").val(),
+                soadate: $("[name=soa_date]").val(),
+                usr: authSession.usr,
+                usrsecure: authSession.usrsecure
+            }
+        })
+        .then((res) => res.data)
+        .then((res) => {
+            if (res.success == true) {
+                let tableSoamid = new DataTable("#table-soamid", {
+                    data: res.data,
+                    fixedHeader: false,
+                    retrieve: true,
+                    responsive: false,
+                    dom: "Bfrl",
+                    order: [1, "asc"],
+                    select: {
+                        style: "multi",
+                        selector: "tr"
+                    },
+                    buttons: ["excelHtml5", "csvHtml5", "selectAll", "selectNone"],
+                    lengthMenu: [
+                        [25, 50, 75, -1],
+                        [25, 50, 75, "All"]
+                    ],
+                    columns: [
+                        { title: "NO", data: null },
+                        { title: "INVOICE NO", data: "INVNO" },
+                        { title: "INVOICE DATE", data: "INVDATE" },
+                        {
+                            title: "INVOICE AMOUNT",
+                            data: "INVAMOUNT",
+                            className: "text-end",
+                            render: function (data) {
+                                return new Intl.NumberFormat('id-ID').format(data);
+                            }
+                        },
+                        { title: "CURRENCY", data: "CURRENCY" },
+                        { title: "STATUS", data: "STATUS" }
+                    ]
+                });
 
-    // });
+                tableSoamid.clear().draw();
+                tableSoamid.rows.add(res.data);
+                tableSoamid.on('order.dt search.dt', function () {
+                    let i = 1;
+                    tableSoamid
+                        .cells(null, 0, { search: 'applied', order: 'applied' })
+                        .every(function (cell) {
+                            this.data(i++);
+                        });
+                }).draw();
+                tableSoamid.columns.adjust().draw();
+            } else {
+                renderMessage({
+                    html: res.message,
+                    classes: "alert-warning",
+                    icons: "fa-solid fa-triangle-exclamation"
+                });
+            }
+        })
+        .catch((error) => {
+            console.log({ error });
+            let msg = "Something went wrong";
+            if (error.response && error.response.data && error.response.data.message) {
+                msg = error.response.data.message;
+            }
+            renderMessage({
+                html: msg,
+                classes: "alert-danger",
+                icons: "fa-solid fa-ban"
+            });
+        })
+        .finally(() => {
+            $("div.loading").addClass("d-none");
+            $("#submit_soamid").attr("disabled", false);
+        });
+    });
 
-    // $("form[name=submit_matiss]").submit((e) => {
-    //     e.preventDefault();
-    //     $("#submit_matiss").attr("disabled", true);
-    //     $("div.loading").toggleClass("d-none");
-    //     $("div.message").html(null);
+    // SOA End Form Submit Handler:
+    $("form[name=submit_soaend]").submit((e) => {
+        e.preventDefault();
+        $("#submit_soaend").attr("disabled", true);
+        $("div.loading").toggleClass("d-none");
+        $("div.message").html(null);
 
-    //     if ($.fn.DataTable.isDataTable('#table-matiss')) {
-    //         $('#table-matiss').DataTable().clear().destroy();
-    //     }
-    //     $('#table-matiss').empty();
+        if ($.fn.DataTable.isDataTable('#table-soaend')) {
+            $('#table-soaend').DataTable().clear().destroy();
+        }
+        $('#table-soaend').empty();
 
-    //     axios.get("https://svr1.jkei.jvckenwood.com/api_gitweb/api/controller.php", {
-    //         params: {
-    //             method: "getDataMatiss",
-    //             supplier: $("[name=supplier]").val(),
-    //             from_date: $("[name=from_date]").val(),
-    //             end_date: $("[name=end_date]").val(),
-    //             usr: authSession.usr,
-    //             usrsecure: authSession.usrsecure
-    //         }
-    //     })
-    //         .then((res) => res.data)
-    //         .then((res) => {
-    //             // console.log(res)
-    //             // return;
+        // First axios call - Get Last Payment and Comment
+        axios.get("https://svr1.jkei.jvckenwood.com/api_gitweb/api/controller.php", {
+            params: {
+                method: "getSoaendLastPayment",
+                supplier: $("[name=supplier]").val(),
+                soadate: $("[name=soa_date]").val(),
+                usr: authSession.usr,
+                usrsecure: authSession.usrsecure
+            }
+        })
+        .then((res) => res.data)
+        .then((lastPaymentRes) => {
+            if (lastPaymentRes.success) {
+                // Render Last Payment table
+                renderLastPaymentTable(lastPaymentRes.header, lastPaymentRes.data);
+                
+                // Render Comment section
+                renderCommentSection(lastPaymentRes.soa_comment);
+            }
+        })
+        .catch((error) => {
+            console.log('SOA End Last Payment fetch error:', error);
+        });
 
-    //             if (res.success == true) {
-    //                 let tableMatiss = new DataTable("#table-matiss", {
-    //                     data: res.data,
-    //                     fixedHeader: false,
-    //                     retrieve: true,
-    //                     responsive: false,
-    //                     // dom: "Bfrltip",
-    //                     dom: "Bfrl",
-    //                     order: [2, "desc"],
-    //                     select: {
-    //                         style: "multi",
-    //                         selector: "tr"
-    //                     },
-    //                     buttons: ["excelHtml5", "csvHtml5", "selectAll", "selectNone"],
-    //                     lengthMenu: [
-    //                         [25, 50, 75, -1],
-    //                         [25, 50, 75, "All"]
-    //                     ],
-    //                     columns: [
-    //                         { title: "NO", data: "partno" },
-    //                         { title: "PART NUMBER", data: "partno" },
-    //                         {
-    //                             title: "ISSUE QTY",
-    //                             data: "shipqty",
-    //                             className: "text-end"
-    //                         }
-    //                     ]
-    //                 });
-    //                 tableMatiss.clear().draw();
+        // Second axios call - Get main SOA End data
+        axios.get("https://svr1.jkei.jvckenwood.com/api_gitweb/api/controller.php", {
+            params: {
+                method: "getDataSoaend",
+                supplier: $("[name=supplier]").val(),
+                soadate: $("[name=soa_date]").val(),
+                usr: authSession.usr,
+                usrsecure: authSession.usrsecure
+            }
+        })
+        .then((res) => res.data)
+        .then((res) => {
+            if (res.success == true) {
+                let tableSoaend = new DataTable("#table-soaend", {
+                    data: res.data,
+                    fixedHeader: false,
+                    retrieve: true,
+                    responsive: false,
+                    dom: "Bfrl",
+                    order: [1, "asc"],
+                    select: {
+                        style: "multi",
+                        selector: "tr"
+                    },
+                    buttons: ["excelHtml5", "csvHtml5", "selectAll", "selectNone"],
+                    lengthMenu: [
+                        [25, 50, 75, -1],
+                        [25, 50, 75, "All"]
+                    ],
+                    columns: [
+                        { title: "NO", data: "no" },
+                        { title: "DATE", data: "transdate", 
+                        render: function(data) {
+                            if (data) {
+                            const date = new Date(data);
+                            return date.toLocaleDateString('id-ID');
+                            }
+                            return '';
+                        }
+                        },
+                        { title: "PO NUMBER\nSO NUMBER", data: "po" },
+                        { title: "SQ", data: "posq" },
+                        { title: "INVOICE NUMBER\nROG SLIP NO.", data: "invoice" },
+                        { title: "PARTS NUMBER", data: "partno" },
+                        { title: "DESCRIPTION", data: "partname" },
+                        { title: "QTY", data: "qty", className: "text-end" },
+                        { 
+                        title: "UNIT PRICE", 
+                        data: "price", 
+                        className: "text-end",
+                        render: function (data) {
+                            if (data && data !== null) {
+                            return new Intl.NumberFormat('id-ID', {
+                                minimumFractionDigits: 5,
+                                maximumFractionDigits: 5
+                            }).format(parseFloat(data));
+                            }
+                            return '';
+                        }
+                        },
+                        { 
+                        title: "AMOUNT", 
+                        data: "amount", 
+                        className: "text-end",
+                        render: function (data) {
+                            if (data && data !== null) {
+                            return new Intl.NumberFormat('id-ID', {
+                                minimumFractionDigits: 2,
+                                maximumFractionDigits: 2
+                            }).format(parseFloat(data));
+                            }
+                            return '';
+                        }
+                        },
+                        { 
+                        title: "OUR DN CN", 
+                        data: "dncnd", 
+                        className: "text-end",
+                        render: function (data) {
+                            if (data && data !== null) {
+                            return new Intl.NumberFormat('id-ID', {
+                                minimumFractionDigits: 2,
+                                maximumFractionDigits: 2
+                            }).format(parseFloat(data));
+                            }
+                            return '';
+                        }
+                        }
+                    ]
+                });
 
-    //                 tableMatiss.rows.add(res.data); // Add new data
-    //                 tableMatiss.on('order.dt search.dt', function () {
-    //                     let i = 1;
+                tableSoaend.clear().draw();
+                tableSoaend.rows.add(res.data);
+                tableSoaend.on('order.dt search.dt', function () {
+                    let i = 1;
+                    tableSoaend
+                        .cells(null, 0, { search: 'applied', order: 'applied' })
+                        .every(function (cell) {
+                            this.data(i++);
+                        });
+                }).draw();
+                tableSoaend.columns.adjust().draw();
+            } else {
+                renderMessage({
+                    html: res.message,
+                    classes: "alert-warning",
+                    icons: "fa-solid fa-triangle-exclamation"
+                });
+            }
+        })
+        .catch((error) => {
+            console.log({ error });
+            let msg = "Something went wrong";
+            if (error.response && error.response.data && error.response.data.message) {
+                msg = error.response.data.message;
+            }
+            renderMessage({
+                html: msg,
+                classes: "alert-danger",
+                icons: "fa-solid fa-ban"
+            });
+        })
+        .finally(() => {
+            $("div.loading").addClass("d-none");
+            $("#submit_soaend").attr("disabled", false);
+        });
+    });
+});
 
-    //                     tableMatiss
-    //                         .cells(null, 0, { search: 'applied', order: 'applied' })
-    //                         .every(function (cell) {
-    //                             this.data(i++);
-    //                         });
-    //                 })
-    //                     .draw();
-    //                 tableMatiss.columns.adjust().draw();
+// Helper function untuk render Last Payment table
+function renderLastPaymentTable(header, data) {
+    if ($.fn.DataTable.isDataTable('#table-last-payment')) {
+        $('#table-last-payment').DataTable().clear().destroy();
+    }
+    $('#table-last-payment').empty();
+    
+    if (data) {
+        // Convert data object to array format for DataTable
+        const tableData = [{
+            lastpay: data.lastpay || '',
+            purchase: data.purchase || '',
+            dncns: data.dncns || '',
+            netpur: data.netpur || '',
+            vat: data.vat || '',
+            payment: data.payment || '',
+            balance: data.balance || ''
+        }];
+        
+        let tableLastPayment = new DataTable("#table-last-payment", {
+            data: tableData,
+            paging: false,
+            searching: false,
+            info: false,
+            columns: [
+                { title: header.lastpay || "LAST PAYMENT", data: "lastpay" },
+                { title: header.purchase || "PURCHASE", data: "purchase", className: "text-end" },
+                { title: header.dncns || "DN CN (PUR)", data: "dncns", className: "text-end" },
+                { title: header.netpur || "NET PURCHASE", data: "netpur", className: "text-end" },
+                { title: header.vat || "VAT", data: "vat", className: "text-end" },
+                { title: header.payment || "PAYMENT", data: "payment", className: "text-end" },
+                { title: header.balance || "THIS BALANCE", data: "balance", className: "text-end" }
+            ]
+        });
+        
+        $('#last-payment-section').show();
+    } else {
+        $('#last-payment-section').hide();
+    }
+}
 
-    //             } else {
-    //                 renderMessage({
-    //                     html: res.message,
-    //                     classes: "alert-warning",
-    //                     icons: "fa-solid fa-triangle-exclamation"
-    //                 });
-    //             }
-    //         })
-    //         .catch((error) => {
-    //             console.log({ error });
-    //             let res = error.response;
-    //             let data = res.data;
-    //             let msg = data.message;
-
-    //             msg = msg || "Something went wrong";
-
-    //             renderMessage({
-    //                 html: msg,
-    //                 classes: "alert-danger",
-    //                 icons: "fa-solid fa-ban"
-    //             });
-
-    //             $("#userid").focus();
-    //             $("div.loading").addClass("d-none");
-    //             $("#btn_login").attr("disabled", false);
-    //         })
-    //         .finally(() => {
-    //             $("div.loading").addClass("d-none");
-    //             $("#submit_matiss").attr("disabled", false);
-    //         });
-
-
-
-    // });
-
-
-
-
-})
+// Helper function untuk render Comment section
+function renderCommentSection(soaComment) {
+    if (soaComment) {
+        $('#supplier_comment').val(soaComment.suppcom || '');
+        $('#jkei_comment').val(soaComment.jeincom || '');
+        $('#comment-section').show();
+    } else {
+        $('#comment-section').hide();
+    }
+}

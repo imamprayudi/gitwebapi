@@ -5,73 +5,14 @@
   <title>Statement Of Account Mid Term Payment</title>
   <link href="../assets/css/styles.css" rel="stylesheet" type="text/css">
   <link href="../assets/css/default.css" rel="stylesheet" type="text/css">
-  <script type="text/javascript">
-    function ShowBps(supp, tgl) {
-      var xmlhttp;
-      if (supp == "") {
-        document.getElementById("sbps").innerHTML = "";
-        return;
-      }
-      if (window.XMLHttpRequest) { // code for IE7+, Firefox, Chrome, Opera, Safari
-        xmlhttp = new XMLHttpRequest();
-      } else { // code for IE6, IE5
-        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-      }
-      xmlhttp.onreadystatechange = function() {
-        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-          document.getElementById("sbps").innerHTML = xmlhttp.responseText;
-        }
-      }
-      xmlhttp.open("GET", "jgetsoamid.php?supp=" + supp + "&tgl=" + tgl, true);
-      xmlhttp.send();
-    }
-
-    function setText() {
-      event.preventDefault();
-      var e = document.getElementById("idsupp");
-      var strsupp = e.options[e.selectedIndex].value;
-      var t = document.getElementById("idtgl");
-      var strtgl = t.options[t.selectedIndex].value;
-      document.getElementById("sbps").innerHTML = '<div class="text-center mt-4 g-3">' +
-        '<div class="spinner-border text-danger" role="status">' +
-        '<span class = "visually-hidden" > Loading... < /span>' +
-        '</div>' +
-        '<div class = "spinner-border text-warning" role = "status" > ' +
-        '<span class = "visually-hidden" > Loading... </span>' +
-        '</div>' +
-        '<div class = "spinner-border text-info" role = "status">' +
-        '<span class = "visually-hidden" > Loading... < /span>' +
-        '</div>' +
-        '</div>';
-      ShowBps(strsupp, strtgl);
-    }
-  </script>
 </head>
 
 <body>
 
   <?php
-  session_start();
-  if (isset($_SESSION['usr'])) {
-    $myid = $_SESSION["usr"];
-  } else {
-    echo "session time out";
+    include('layouts/header.php');
   ?>
-    <script>
-      window.location.href = '../index.php';
-    </script>
-  <?php
-  }
 
-  include("koneksi.php");
-  $query = "select usersupp.UserId,usersupp.SuppCode,supplier.SuppName from UserSupp 
-inner join Supplier on usersupp.SuppCode = Supplier.SuppCode 
-where UserId = '" . $myid . "' order by suppname";
-  $rs = $db->Execute($query);
-  // include("jmenucss.php");
-  include('../contents_v2/layouts/header.php');
-
-  ?>
   <main id="main" class="main">
 
     <div class="pagetitle">
@@ -90,58 +31,98 @@ where UserId = '" . $myid . "' order by suppname";
         <div class="card card-info">
           <div class="card-body">
 
-
-            <!-- <br />
-        <img src="../assets/gambar/jvc.gif" alt="JVC KENWOOD CORPORATION" style="float:left;width:220px;height:35px;">
-        PT.JVCKENWOOD ELECTRONICS INDONESIA 
-        <br />
-        STATEMENT OF ACCOUNT - MID TERM PAYMENT
-        <br /><br /> -->
-            <form action="" class="row gx-3 gy-2 align-items-center">
+            <form name="submit_soamid" class="row gx-3 gy-2 align-items-center">
               <div class="col-7">
-                <label class="col-form-label" for="idsupp">Supplier</label>
-                <select class="form-select" name="supp" id="idsupp">
-                  <?php
-                  while (!$rs->EOF) {
-                    echo '<option value="' . $rs->fields[1] . '">' . $rs->fields[2] . ' - ' . $rs->fields[1] . '</option>';
-                    $rs->MoveNext();
-                  }
-                  ?>
-                </select>
+                <label for="supplier" class="form-label">Supplier</label>
+                <select type="text" id="supplier" name="supplier" class="form-control"></select>
               </div>
-              <?php
-              $rs = $db->Execute("select distinct transdate from soamid order by transdate desc");
-              ?>
               <div class="col-3">
-                <label class="col-form-label" for="idsupp">Tanggal</label>
-                <select class="form-select" name="tgl" id="idtgl">
-                  <?php
-                  while (!$rs->EOF) {
-                    echo '<option value="' . substr($rs->fields[0], 0, 10) . '">' . substr($rs->fields[0], 0, 10) . '</option>';
-                    $rs->MoveNext();
-                  }
-                  ?>
+                <label for="soa_date" class="form-label">SOA Date</label>
+                <select id="soa_date" name="soa_date" class="form-control">
+                  <option value="">Select SOA Date...</option>
                 </select>
               </div>
               <div class="col-2 mt-4">
-                <input type="button" value="Display" name="mybtn" id="btn" class="btn btn-info" onClick="setText()">
+                <input type="submit" value="Display" class="btn btn-info" id="submit_soamid">
               </div>
             </form>
-            <?php
-            $rs->Close();
-            $db->Close();
-            ?>
-            <!-- <div id="fdata">
-            </div> -->
-            <div id="sbps" class="table-responsive">
+            
+            <div class="row mb-3">
+              <div class="message"></div>
+            </div>
+            
+            <div class="loading row col-12 mb-2 d-flex justify-content-center">
+              <div class="spinner-border text-info mt-2" role="status">
+                <span class="visually-hidden">Loading...</span>
+              </div>
             </div>
 
+            <!-- Comment Card -->
+            <div class="row mb-3" id="comment-section" style="display: none;">
+              <div class="card">
+                <div class="card-header">
+                  <h5>SUPPLIER COMMENT</h5>
+                </div>
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col-6">
+                      <label class="form-label">Supplier Comment:</label>
+                      <textarea class="form-control" id="supplier_comment" rows="3" readonly></textarea>
+                    </div>
+                    <div class="col-6">
+                      <label class="form-label">JKEI Comment:</label>
+                      <textarea class="form-control" id="jkei_comment" rows="3"></textarea>
+                      <button type="button" class="btn btn-primary mt-2" id="update_comment">Update Comment</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Last Payment Card -->
+            <div class="row mb-3" id="last-payment-section" style="display: none;">
+              <div class="card">
+                <div class="card-header">
+                  <h5>LAST PAYMENT SUMMARY</h5>
+                </div>
+                <div class="card-body">
+                  <table id="table-last-payment" class="table table-striped"></table>
+                </div>
+              </div>
+            </div>
+
+            <!-- Term Table -->
+            <div class="row mb-3" id="term-section" style="display: none;">
+              <div class="card">
+                <div class="card-header">
+                  <h5>PAYMENT TERMS</h5>
+                </div>
+                <div class="card-body">
+                  <table id="table-term" class="table table-striped"></table>
+                </div>
+              </div>
+            </div>
+
+            <!-- SOA Mid Data Table -->
+            <div class="row">
+              <div class="card recent-sales overflow-auto ml-3">
+                <div class="card-header">
+                  STATEMENT OF ACCOUNT - MID TERM PAYMENT
+                </div>
+                <div class="card-body">
+                  <table id="table-soamid" class="table table-striped ml-3 display responsive nowrap"></table>
+                </div>
+              </div>
+            </div>
           </div>
+        </div>
+      </div>
     </section>
 
   </main><!-- End #main -->
 
   <?php include('../contents_v2/layouts/footer.php'); ?>
+  <script src="../dist/jsoamid.bundle.js"></script>
 </body>
 
 </html>
