@@ -122,7 +122,7 @@
   </main><!-- End #main -->
 
   <?php include('../contents_v2/layouts/footer.php'); ?>
-  <script src="../dist/jsoamid.bundle.js"></script>
+  <script src="../dist/jsoa.bundle.js"></script>
 </body>
 
 </html>
