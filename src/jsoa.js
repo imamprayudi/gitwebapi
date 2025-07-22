@@ -803,7 +803,7 @@ $(function () {
         // Second axios call - Get main SOA End data
         axios.get("https://svr1.jkei.jvckenwood.com/api_gitweb/api/controller.php", {
             params: {
-                method: "getDataSoaend",
+                method: "getSoaendData",
                 supplier: $("[name=supplier]").val(),
                 soadate: $("[name=soa_date]").val(),
                 usr: authSession.usr,
@@ -815,80 +815,364 @@ $(function () {
             if (res.success == true) {
                 let tableSoaend = new DataTable("#table-soaend", {
                     data: res.data,
-                    fixedHeader: false,
+                    fixedHeader: true,
                     retrieve: true,
-                    responsive: false,
-                    dom: "Bfrl",
+                    responsive: true,
+                    autoWidth: false,
+                    scrollX: true,
+                    scrollY: "60vh",
+                    dom: "<'row'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6'f>>" +
+                         "<'row'<'col-sm-12'tr>>" +
+                         "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>" +
+                         "<'row'<'col-sm-12'B>>",
                     order: [1, "asc"],
                     select: {
                         style: "multi",
-                        selector: "tr"
+                        selector: "tr",
+                        className: "selected"
                     },
-                    buttons: ["excelHtml5", "csvHtml5", "selectAll", "selectNone"],
+                    buttons: [
+                        {
+                            extend: "excelHtml5",
+                            text: '<i class="fas fa-file-excel"></i> Excel',
+                            className: "btn btn-success btn-sm"
+                        },
+                        {
+                            extend: "csvHtml5",
+                            text: '<i class="fas fa-file-csv"></i> CSV',
+                            className: "btn btn-info btn-sm"
+                        },
+                        {
+                            extend: "selectAll",
+                            text: '<i class="fas fa-check-square"></i> Select All',
+                            className: "btn btn-primary btn-sm"
+                        },
+                        {
+                            extend: "selectNone",
+                            text: '<i class="fas fa-square"></i> Select None',
+                            className: "btn btn-secondary btn-sm"
+                        }
+                    ],
                     lengthMenu: [
-                        [25, 50, 75, -1],
-                        [25, 50, 75, "All"]
+                        [10, 25, 50, 75, 100, -1],
+                        [10, 25, 50, 75, 100, "All"]
+                    ],
+                    pageLength: 25,
+                    language: {
+                        search: "Cari:",
+                        lengthMenu: "Tampilkan _MENU_ data per halaman",
+                        info: "Menampilkan _START_ sampai _END_ dari _TOTAL_ data",
+                        infoEmpty: "Menampilkan 0 sampai 0 dari 0 data",
+                        infoFiltered: "(difilter dari _MAX_ total data)",
+                        paginate: {
+                            first: "Pertama",
+                            last: "Terakhir",
+                            next: "Selanjutnya",
+                            previous: "Sebelumnya"
+                        },
+                        emptyTable: "Tidak ada data yang tersedia",
+                        zeroRecords: "Tidak ditemukan data yang sesuai"
+                    },
+                    columnDefs: [
+                        {
+                            targets: "_all",
+                            createdCell: function (td, cellData, rowData, row, col) {
+                                $(td).css({
+                                    'border': '1px solid #dee2e6',
+                                    'padding': '8px 12px',
+                                    'vertical-align': 'middle',
+                                    'box-sizing': 'border-box',
+                                    'white-space': 'normal',
+                                    'word-wrap': 'break-word'
+                                });
+                            }
+                        },
+                        { 
+                            targets: 0, 
+                            width: "60px", 
+                            className: "text-center fw-bold",
+                            createdCell: function (td, cellData, rowData, row, col) {
+                                $(td).css({
+                                    'background-color': '#f8f9fa',
+                                    'font-weight': 'bold',
+                                    'width': '60px',
+                                    'min-width': '60px',
+                                    'max-width': '60px'
+                                });
+                            }
+                        },
+                        { 
+                            targets: 1, 
+                            width: "100px", 
+                            className: "text-center",
+                            createdCell: function (td, cellData, rowData, row, col) {
+                                $(td).css({
+                                    'background-color': '#fff3cd',
+                                    'width': '100px',
+                                    'min-width': '100px',
+                                    'max-width': '100px'
+                                });
+                            }
+                        },
+                        { 
+                            targets: 2, 
+                            width: "120px", 
+                            className: "text-left",
+                            createdCell: function (td, cellData, rowData, row, col) {
+                                $(td).css({
+                                    'width': '120px',
+                                    'min-width': '120px',
+                                    'max-width': '120px'
+                                });
+                            }
+                        },
+                        { 
+                            targets: 3, 
+                            width: "80px", 
+                            className: "text-left",
+                            createdCell: function (td, cellData, rowData, row, col) {
+                                $(td).css({
+                                    'width': '80px',
+                                    'min-width': '80px',
+                                    'max-width': '80px'
+                                });
+                            }
+                        },
+                        { 
+                            targets: 4, 
+                            width: "140px", 
+                            className: "text-left",
+                            createdCell: function (td, cellData, rowData, row, col) {
+                                $(td).css({
+                                    'width': '140px',
+                                    'min-width': '140px',
+                                    'max-width': '140px'
+                                });
+                            }
+                        },
+                        { 
+                            targets: 5, 
+                            width: "120px", 
+                            className: "text-left",
+                            createdCell: function (td, cellData, rowData, row, col) {
+                                $(td).css({
+                                    'width': '120px',
+                                    'min-width': '120px',
+                                    'max-width': '120px'
+                                });
+                            }
+                        },
+                        { 
+                            targets: 6, 
+                            width: "200px", 
+                            className: "text-left",
+                            createdCell: function (td, cellData, rowData, row, col) {
+                                $(td).css({
+                                    'width': '200px',
+                                    'min-width': '200px'
+                                });
+                            }
+                        },
+                        { 
+                            targets: 7, 
+                            width: "80px", 
+                            className: "text-end",
+                            createdCell: function (td, cellData, rowData, row, col) {
+                                $(td).css({
+                                    'width': '80px',
+                                    'min-width': '80px',
+                                    'max-width': '80px'
+                                });
+                            }
+                        },
+                        { 
+                            targets: 8, 
+                            width: "100px", 
+                            className: "text-end",
+                            createdCell: function (td, cellData, rowData, row, col) {
+                                $(td).css({
+                                    'width': '100px',
+                                    'min-width': '100px',
+                                    'max-width': '100px'
+                                });
+                            }
+                        },
+                        { 
+                            targets: 9, 
+                            width: "100px", 
+                            className: "text-end",
+                            createdCell: function (td, cellData, rowData, row, col) {
+                                $(td).css({
+                                    'width': '100px',
+                                    'min-width': '100px',
+                                    'max-width': '100px'
+                                });
+                            }
+                        },
+                        { 
+                            targets: 10, 
+                            width: "100px", 
+                            className: "text-end",
+                            createdCell: function (td, cellData, rowData, row, col) {
+                                $(td).css({
+                                    'width': '100px',
+                                    'min-width': '100px',
+                                    'max-width': '100px'
+                                });
+                            }
+                        }
                     ],
                     columns: [
-                        { title: "NO", data: "no" },
-                        { title: "DATE", data: "transdate", 
-                        render: function(data) {
-                            if (data) {
-                            const date = new Date(data);
-                            return date.toLocaleDateString('id-ID');
-                            }
-                            return '';
-                        }
-                        },
-                        { title: "PO NUMBER\nSO NUMBER", data: "po" },
-                        { title: "SQ", data: "posq" },
-                        { title: "INVOICE NUMBER\nROG SLIP NO.", data: "invoice" },
-                        { title: "PARTS NUMBER", data: "partno" },
-                        { title: "DESCRIPTION", data: "partname" },
-                        { title: "QTY", data: "qty", className: "text-end" },
+                        { title: res.header.no || "NO", data: "no" },
                         { 
-                        title: "UNIT PRICE", 
-                        data: "price", 
-                        className: "text-end",
-                        render: function (data) {
-                            if (data && data !== null) {
-                            return new Intl.NumberFormat('id-ID', {
-                                minimumFractionDigits: 5,
-                                maximumFractionDigits: 5
-                            }).format(parseFloat(data));
+                            title: res.header.transdate || "DATE", 
+                            data: "transdate", 
+                            render: function(data) {
+                                if (data) {
+                                    const date = new Date(data);
+                                    return '<span class="badge bg-info text-dark">' + date.toLocaleDateString('id-ID') + '</span>';
+                                }
+                                return '';
                             }
-                            return '';
-                        }
                         },
                         { 
-                        title: "AMOUNT", 
-                        data: "amount", 
-                        className: "text-end",
-                        render: function (data) {
-                            if (data && data !== null) {
-                            return new Intl.NumberFormat('id-ID', {
-                                minimumFractionDigits: 2,
-                                maximumFractionDigits: 2
-                            }).format(parseFloat(data));
+                            title: "PO NUMBER<br>SO NUMBER", 
+                            data: "po",
+                            render: function(data) {
+                                return data ? '<code class="text-dark" style="font-size: 14px; font-weight: 500;">' + data + '</code>' : '';
                             }
-                            return '';
-                        }
+                        },
+                        { title: res.header.posq || "SQ", data: "posq" },
+                        { 
+                            title: "INVOICE NUMBER<br>ROG SLIP NO", 
+                            data: "invoice",
+                            render: function(data) {
+                                return data ? '<code class="text-primary" style="font-size: 14px; font-weight: 500;">' + data + '</code>' : '';
+                            }
                         },
                         { 
-                        title: "OUR DN CN", 
-                        data: "dncnd", 
-                        className: "text-end",
-                        render: function (data) {
-                            if (data && data !== null) {
-                            return new Intl.NumberFormat('id-ID', {
-                                minimumFractionDigits: 2,
-                                maximumFractionDigits: 2
-                            }).format(parseFloat(data));
+                            title: res.header.partno || "PARTS NUMBER", 
+                            data: "partno",
+                            render: function(data) {
+                                return data ? '<code class="text-dark" style="font-size: 14px; font-weight: 500;">' + data + '</code>' : '';
                             }
-                            return '';
+                        },
+                        { title: res.header.partname || "DESCRIPTION", data: "partname" },
+                        { 
+                            title: res.header.qty || "QTY", 
+                            data: "qty",
+                            render: function (data) {
+                                if (data && data !== null) {
+                                    const formatted = new Intl.NumberFormat('id-ID').format(parseFloat(data));
+                                    return '<span class="text-primary fw-bold">' + formatted + '</span>';
+                                }
+                                return '';
+                            }
+                        },
+                        { 
+                            title: res.header.price || "UNIT PRICE", 
+                            data: "price", 
+                            render: function (data) {
+                                if (data && data !== null) {
+                                    const formatted = new Intl.NumberFormat('id-ID', {
+                                        minimumFractionDigits: 2,
+                                        maximumFractionDigits: 2
+                                    }).format(parseFloat(data));
+                                    return '<span class="text-success fw-bold">' + formatted + '</span>';
+                                }
+                                return '';
+                            }
+                        },
+                        { 
+                            title: res.header.amount || "AMOUNT", 
+                            data: "amount", 
+                            render: function (data) {
+                                if (data && data !== null) {
+                                    const formatted = new Intl.NumberFormat('id-ID', {
+                                        minimumFractionDigits: 2,
+                                        maximumFractionDigits: 2
+                                    }).format(parseFloat(data));
+                                    return '<span class="text-success fw-bold">' + formatted + '</span>';
+                                }
+                                return '';
+                            }
+                        },
+                        { 
+                            title: "OUR<br>DN CN", 
+                            data: "dncnd", 
+                            render: function (data) {
+                                if (data && data !== null) {
+                                    const formatted = new Intl.NumberFormat('id-ID', {
+                                        minimumFractionDigits: 2,
+                                        maximumFractionDigits: 2
+                                    }).format(parseFloat(data));
+                                    const isPositive = parseFloat(data) >= 0;
+                                    const colorClass = isPositive ? 'text-success' : 'text-danger';
+                                    return '<span class="' + colorClass + ' fw-bold">' + formatted + '</span>';
+                                }
+                                return '';
+                            }
                         }
-                        }
-                    ]
+                    ],
+                    initComplete: function () {
+                        // Styling untuk header tabel
+                        $('#table-soaend thead th').css({
+                            'background': 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                            'color': 'white',
+                            'font-weight': 'bold',
+                            'text-align': 'center',
+                            'vertical-align': 'middle',
+                            'border': '1px solid #dee2e6',
+                            'padding': '12px 8px',
+                            'font-size': '13px',
+                            'white-space': 'normal',
+                            'word-wrap': 'break-word',
+                            'box-sizing': 'border-box'
+                        });
+                        
+                        // Set width spesifik untuk setiap header kolom agar simetris dengan konten
+                        $('#table-soaend thead th:nth-child(1)').css({'width': '60px', 'min-width': '60px', 'max-width': '60px'});
+                        $('#table-soaend thead th:nth-child(2)').css({'width': '100px', 'min-width': '100px', 'max-width': '100px'});
+                        $('#table-soaend thead th:nth-child(3)').css({'width': '120px', 'min-width': '120px', 'max-width': '120px'});
+                        $('#table-soaend thead th:nth-child(4)').css({'width': '80px', 'min-width': '80px', 'max-width': '80px'});
+                        $('#table-soaend thead th:nth-child(5)').css({'width': '140px', 'min-width': '140px', 'max-width': '140px'});
+                        $('#table-soaend thead th:nth-child(6)').css({'width': '120px', 'min-width': '120px', 'max-width': '120px'});
+                        $('#table-soaend thead th:nth-child(7)').css({'width': '200px', 'min-width': '200px'});
+                        $('#table-soaend thead th:nth-child(8)').css({'width': '80px', 'min-width': '80px', 'max-width': '80px'});
+                        $('#table-soaend thead th:nth-child(9)').css({'width': '100px', 'min-width': '100px', 'max-width': '100px'});
+                        $('#table-soaend thead th:nth-child(10)').css({'width': '100px', 'min-width': '100px', 'max-width': '100px'});
+                        $('#table-soaend thead th:nth-child(11)').css({'width': '100px', 'min-width': '100px', 'max-width': '100px'});
+                        
+                        // Styling untuk container dan tabel
+                        $('#table-soaend_wrapper').css({
+                            'width': '100%',
+                            'margin': '0 auto',
+                            'overflow-x': 'auto'
+                        });
+                        
+                        $('#table-soaend').css({
+                            'width': '100%',
+                            'border-collapse': 'collapse',
+                            'font-size': '13px',
+                            'table-layout': 'fixed'
+                        });
+                        
+                        // Hover effect
+                        $('#table-soaend tbody tr').hover(
+                            function() {
+                                $(this).css('background-color', '#f5f5f5');
+                            },
+                            function() {
+                                $(this).css('background-color', '');
+                            }
+                        );
+                    },
+                    drawCallback: function() {
+                        $('#table-soaend tbody tr.selected').css({
+                            'background-color': '#b3d7ff !important',
+                            'color': '#000'
+                        });
+                    }
                 });
 
                 tableSoaend.clear().draw();
