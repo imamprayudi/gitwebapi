@@ -324,35 +324,407 @@ $(function () {
             if (res.success == true) {
                 let tableSoamid = new DataTable("#table-soamid", {
                     data: res.data,
-                    fixedHeader: false,
+                    fixedHeader: true,
                     retrieve: true,
-                    responsive: false,
-                    dom: "Bfrl",
+                    responsive: true,
+                    autoWidth: false,
+                    scrollX: true,
+                    scrollY: "60vh",
+                    dom: "<'row'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6'f>>" +
+                         "<'row'<'col-sm-12'tr>>" +
+                         "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>" +
+                         "<'row'<'col-sm-12'B>>",
                     order: [1, "asc"],
                     select: {
                         style: "multi",
-                        selector: "tr"
+                        selector: "tr",
+                        className: "selected"
                     },
-                    buttons: ["excelHtml5", "csvHtml5", "selectAll", "selectNone"],
-                    lengthMenu: [
-                        [25, 50, 75, -1],
-                        [25, 50, 75, "All"]
-                    ],
-                    columns: [
-                        { title: "NO", data: null },
-                        { title: "INVOICE NO", data: "INVNO" },
-                        { title: "INVOICE DATE", data: "INVDATE" },
+                    buttons: [
                         {
-                            title: "INVOICE AMOUNT",
-                            data: "INVAMOUNT",
-                            className: "text-end",
-                            render: function (data) {
-                                return new Intl.NumberFormat('id-ID').format(data);
+                            extend: "excelHtml5",
+                            text: '<i class="fas fa-file-excel"></i> Excel',
+                            className: "btn btn-success btn-sm"
+                        },
+                        {
+                            extend: "csvHtml5",
+                            text: '<i class="fas fa-file-csv"></i> CSV',
+                            className: "btn btn-info btn-sm"
+                        },
+                        {
+                            extend: "selectAll",
+                            text: '<i class="fas fa-check-square"></i> Select All',
+                            className: "btn btn-primary btn-sm"
+                        },
+                        {
+                            extend: "selectNone",
+                            text: '<i class="fas fa-square"></i> Select None',
+                            className: "btn btn-secondary btn-sm"
+                        }
+                    ],
+                    lengthMenu: [
+                        [10, 25, 50, 75, 100, -1],
+                        [10, 25, 50, 75, 100, "All"]
+                    ],
+                    pageLength: 25,
+                    language: {
+                        search: "Cari:",
+                        lengthMenu: "Tampilkan _MENU_ data per halaman",
+                        info: "Menampilkan _START_ sampai _END_ dari _TOTAL_ data",
+                        infoEmpty: "Menampilkan 0 sampai 0 dari 0 data",
+                        infoFiltered: "(difilter dari _MAX_ total data)",
+                        paginate: {
+                            first: "Pertama",
+                            last: "Terakhir",
+                            next: "Selanjutnya",
+                            previous: "Sebelumnya"
+                        },
+                        emptyTable: "Tidak ada data yang tersedia",
+                        zeroRecords: "Tidak ditemukan data yang sesuai"
+                    },
+                    columnDefs: [
+                        // Header styling untuk semua kolom dengan width yang konsisten
+                        {
+                            targets: "_all",
+                            createdCell: function (td, cellData, rowData, row, col) {
+                                $(td).css({
+                                    'border': '1px solid #dee2e6',
+                                    'padding': '8px 12px',
+                                    'vertical-align': 'middle',
+                                    'box-sizing': 'border-box'
+                                });
                             }
                         },
-                        { title: "CURRENCY", data: "CURRENCY" },
-                        { title: "STATUS", data: "STATUS" }
-                    ]
+                        // Kolom NO - width tetap
+                        { 
+                            targets: 0, 
+                            width: "60px", 
+                            className: "text-center fw-bold",
+                            createdCell: function (td, cellData, rowData, row, col) {
+                                $(td).css({
+                                    'background-color': '#f8f9fa',
+                                    'font-weight': 'bold',
+                                    'min-width': '60px',
+                                    'max-width': '60px',
+                                    'width': '60px'
+                                });
+                            }
+                        },
+                        // Kolom DATE - width tetap
+                        { 
+                            targets: 1, 
+                            width: "100px", 
+                            className: "text-center",
+                            createdCell: function (td, cellData, rowData, row, col) {
+                                $(td).css({
+                                    'background-color': '#fff3cd',
+                                    'min-width': '100px',
+                                    'max-width': '100px',
+                                    'width': '100px'
+                                });
+                            }
+                        },
+                        // Kolom PO NUMBER SO NUMBER - width tetap
+                        { 
+                            targets: 2, 
+                            width: "120px", 
+                            className: "text-left",
+                            createdCell: function (td, cellData, rowData, row, col) {
+                                $(td).css({
+                                    'min-width': '120px',
+                                    'max-width': '120px',
+                                    'width': '120px',
+                                    'word-wrap': 'break-word'
+                                });
+                            }
+                        },
+                        // Kolom SQ - width tetap
+                        { 
+                            targets: 3, 
+                            width: "80px", 
+                            className: "text-left",
+                            createdCell: function (td, cellData, rowData, row, col) {
+                                $(td).css({
+                                    'min-width': '80px',
+                                    'max-width': '80px',
+                                    'width': '80px'
+                                });
+                            }
+                        },
+                        // Kolom INVOICE NUMBER - width tetap
+                        { 
+                            targets: 4, 
+                            width: "140px", 
+                            className: "text-left",
+                            createdCell: function (td, cellData, rowData, row, col) {
+                                $(td).css({
+                                    'min-width': '140px',
+                                    'max-width': '140px',
+                                    'width': '140px',
+                                    'word-wrap': 'break-word'
+                                });
+                            }
+                        },
+                        // Kolom PARTS NUMBER - width tetap
+                        { 
+                            targets: 5, 
+                            width: "120px", 
+                            className: "text-left",
+                            createdCell: function (td, cellData, rowData, row, col) {
+                                $(td).css({
+                                    'min-width': '120px',
+                                    'max-width': '120px',
+                                    'width': '120px',
+                                    'word-wrap': 'break-word'
+                                });
+                            }
+                        },
+                        // Kolom DESCRIPTION - width fleksibel tapi terkontrol
+                        { 
+                            targets: 6, 
+                            width: "200px", 
+                            className: "text-left",
+                            createdCell: function (td, cellData, rowData, row, col) {
+                                $(td).css({
+                                    'min-width': '200px',
+                                    'word-wrap': 'break-word',
+                                    'white-space': 'normal'
+                                });
+                            }
+                        },
+                        // Kolom QTY - width tetap
+                        { 
+                            targets: 7, 
+                            width: "80px", 
+                            className: "text-end fw-semibold",
+                            createdCell: function (td, cellData, rowData, row, col) {
+                                $(td).css({
+                                    'background-color': '#e7f3ff',
+                                    'min-width': '80px',
+                                    'max-width': '80px',
+                                    'width': '80px'
+                                });
+                            }
+                        },
+                        // Kolom UNIT PRICE - width tetap
+                        { 
+                            targets: 8, 
+                            width: "100px", 
+                            className: "text-end fw-semibold",
+                            createdCell: function (td, cellData, rowData, row, col) {
+                                $(td).css({
+                                    'background-color': '#e7f3ff',
+                                    'min-width': '100px',
+                                    'max-width': '100px',
+                                    'width': '100px'
+                                });
+                            }
+                        },
+                        // Kolom AMOUNT - width tetap
+                        { 
+                            targets: 9, 
+                            width: "100px", 
+                            className: "text-end fw-semibold",
+                            createdCell: function (td, cellData, rowData, row, col) {
+                                $(td).css({
+                                    'background-color': '#d4edda',
+                                    'min-width': '100px',
+                                    'max-width': '100px',
+                                    'width': '100px'
+                                });
+                            }
+                        },
+                        // Kolom OUR DN CN - width tetap
+                        { 
+                            targets: 10, 
+                            width: "100px", 
+                            className: "text-end fw-semibold",
+                            createdCell: function (td, cellData, rowData, row, col) {
+                                $(td).css({
+                                    'background-color': '#f8d7da',
+                                    'min-width': '100px',
+                                    'max-width': '100px',
+                                    'width': '100px'
+                                });
+                            }
+                        }
+                    ],
+                    columns: [
+                        { 
+                            title: "NO", 
+                            data: "no",
+                            render: function (data, type, row, meta) {
+                                return '<span class="badge bg-primary">' + (meta.row + 1) + '</span>';
+                            }
+                        },
+                        { 
+                            title: "DATE", 
+                            data: "transdate",
+                            render: function(data) {
+                                if (data) {
+                                    const date = new Date(data);
+                                    const formatted = date.toLocaleDateString('id-ID', {
+                                        day: '2-digit',
+                                        month: '2-digit',
+                                        year: 'numeric'
+                                    });
+                                    return '<span class="text-primary fw-semibold">' + formatted + '</span>';
+                                }
+                                return '';
+                            }
+                        },
+                        { 
+                            title: "PO NUMBER<br>SO NUMBER", 
+                            data: "po",
+                            render: function(data) {
+                                return data ? '<span class="text-dark">' + data + '</span>' : '';
+                            }
+                        },
+                        { 
+                            title: "SQ", 
+                            data: "posq",
+                            render: function(data) {
+                                return data ? '<span class="text-muted">' + data + '</span>' : '';
+                            }
+                        },
+                        { 
+                            title: "INVOICE NUMBER<br>ROG SLIP NO.", 
+                            data: "invoice",
+                            render: function(data) {
+                                return data ? '<span class="text-info fw-semibold">' + data + '</span>' : '';
+                            }
+                        },
+                        { 
+                            title: "PARTS NUMBER", 
+                            data: "partno",
+                            render: function(data) {
+                                return data ? '<code class="text-dark" style="font-size: 16px; font-weight: 500;">' + data + '</code>' : '';
+                            }
+                        },
+                        { 
+                            title: "DESCRIPTION", 
+                            data: "partname",
+                            render: function(data) {
+                                return data ? '<span class="text-dark">' + data + '</span>' : '';
+                            }
+                        },
+                        { 
+                            title: "QTY", 
+                            data: "qty", 
+                            render: function (data) {
+                                if (data && data !== null) {
+                                    const formatted = new Intl.NumberFormat('id-ID').format(data);
+                                    return '<span class="text-primary fw-bold">' + formatted + '</span>';
+                                }
+                                return '';
+                            }
+                        },
+                        { 
+                            title: "UNIT PRICE", 
+                            data: "price", 
+                            render: function (data) {
+                                if (data && data !== null) {
+                                    const formatted = new Intl.NumberFormat('id-ID', {
+                                        minimumFractionDigits: 2,
+                                        maximumFractionDigits: 2
+                                    }).format(parseFloat(data));
+                                    return '<span class="text-success fw-bold">' + formatted + '</span>';
+                                }
+                                return '';
+                            }
+                        },
+                        { 
+                            title: "AMOUNT", 
+                            data: "amount", 
+                            render: function (data) {
+                                if (data && data !== null) {
+                                    const formatted = new Intl.NumberFormat('id-ID', {
+                                        minimumFractionDigits: 2,
+                                        maximumFractionDigits: 2
+                                    }).format(parseFloat(data));
+                                    return '<span class="text-success fw-bold">' + formatted + '</span>';
+                                }
+                                return '';
+                            }
+                        },
+                        { 
+                            title: "OUR<br>DN CN", 
+                            data: "dncnd", 
+                            render: function (data) {
+                                if (data && data !== null) {
+                                    const formatted = new Intl.NumberFormat('id-ID', {
+                                        minimumFractionDigits: 2,
+                                        maximumFractionDigits: 2
+                                    }).format(parseFloat(data));
+                                    const isPositive = parseFloat(data) >= 0;
+                                    const colorClass = isPositive ? 'text-success' : 'text-danger';
+                                    return '<span class="' + colorClass + ' fw-bold">' + formatted + '</span>';
+                                }
+                                return '';
+                            }
+                        }
+                    ],
+                    initComplete: function () {
+                        // Styling untuk header tabel dengan width yang konsisten
+                        $('#table-soamid thead th').css({
+                            'background': 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                            'color': 'white',
+                            'font-weight': 'bold',
+                            'text-align': 'center',
+                            'vertical-align': 'middle',
+                            'border': '1px solid #dee2e6',
+                            'padding': '12px 8px',
+                            'font-size': '13px',
+                            'white-space': 'normal',
+                            'word-wrap': 'break-word',
+                            'box-sizing': 'border-box'
+                        });
+                        
+                        // Set width spesifik untuk setiap header kolom
+                        $('#table-soamid thead th:nth-child(1)').css({'width': '60px', 'min-width': '60px', 'max-width': '60px'});
+                        $('#table-soamid thead th:nth-child(2)').css({'width': '100px', 'min-width': '100px', 'max-width': '100px'});
+                        $('#table-soamid thead th:nth-child(3)').css({'width': '120px', 'min-width': '120px', 'max-width': '120px'});
+                        $('#table-soamid thead th:nth-child(4)').css({'width': '80px', 'min-width': '80px', 'max-width': '80px'});
+                        $('#table-soamid thead th:nth-child(5)').css({'width': '140px', 'min-width': '140px', 'max-width': '140px'});
+                        $('#table-soamid thead th:nth-child(6)').css({'width': '120px', 'min-width': '120px', 'max-width': '120px'});
+                        $('#table-soamid thead th:nth-child(7)').css({'width': '200px', 'min-width': '200px'});
+                        $('#table-soamid thead th:nth-child(8)').css({'width': '80px', 'min-width': '80px', 'max-width': '80px'});
+                        $('#table-soamid thead th:nth-child(9)').css({'width': '100px', 'min-width': '100px', 'max-width': '100px'});
+                        $('#table-soamid thead th:nth-child(10)').css({'width': '100px', 'min-width': '100px', 'max-width': '100px'});
+                        $('#table-soamid thead th:nth-child(11)').css({'width': '100px', 'min-width': '100px', 'max-width': '100px'});
+                        
+                        // Styling untuk container tabel
+                        $('#table-soamid_wrapper').css({
+                            'width': '100%',
+                            'margin': '0 auto',
+                            'overflow-x': 'auto'
+                        });
+                        
+                        // Styling untuk tabel utama
+                        $('#table-soamid').css({
+                            'width': '100%',
+                            'border-collapse': 'collapse',
+                            'font-size': '13px',
+                            'table-layout': 'fixed' // Penting untuk mempertahankan width yang konsisten
+                        });
+                        
+                        // Hover effect untuk baris
+                        $('#table-soamid tbody tr').hover(
+                            function() {
+                                $(this).css('background-color', '#f5f5f5');
+                            },
+                            function() {
+                                $(this).css('background-color', '');
+                            }
+                        );
+                    },
+                    drawCallback: function() {
+                        // Styling untuk baris yang dipilih
+                        $('#table-soamid tbody tr.selected').css({
+                            'background-color': '#b3d7ff !important',
+                            'color': '#000'
+                        });
+                    }
                 });
 
                 tableSoamid.clear().draw();

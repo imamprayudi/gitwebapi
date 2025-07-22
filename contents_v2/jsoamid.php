@@ -5,6 +5,7 @@
   <title>Statement Of Account Mid Term Payment</title>
   <link href="../assets/css/styles.css" rel="stylesheet" type="text/css">
   <link href="../assets/css/default.css" rel="stylesheet" type="text/css">
+  
 </head>
 
 <body>
